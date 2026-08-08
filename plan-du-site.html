@@ -1409,6 +1409,227 @@ img { max-width: 100%; height: auto; }
 .legal-section a { color: var(--primary-dark); }
 .legal-section a:hover { text-decoration: underline; }
 
+/* ------------------------------------------------------------
+   FORMULAIRE DE CONTACT
+   ------------------------------------------------------------ */
+.contact-wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 36px;
+  align-items: start;
+}
+
+.contact-form-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.09);
+  border: 1px solid #eaecEE;
+  padding: 30px 32px;
+}
+.contact-form-card h2 {
+  font-family: Lato, Arial, sans-serif;
+  font-size: 22px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 6px;
+}
+.contact-form-card .cf-sub {
+  font-size: 14px;
+  color: #777;
+  margin: 0 0 22px;
+}
+
+.cf-field { margin-bottom: 16px; }
+.cf-field label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: #333;
+  margin-bottom: 6px;
+}
+.cf-field label .req { color: #e74c3c; }
+.cf-field input,
+.cf-field select,
+.cf-field textarea {
+  width: 100%;
+  padding: 11px 14px;
+  border: 1.5px solid #dde1e4;
+  border-radius: 10px;
+  font-size: 14.5px;
+  font-family: Lato, Arial, sans-serif;
+  color: #222;
+  outline: none;
+  transition: border-color .25s, box-shadow .25s;
+  box-sizing: border-box;
+  background: #fafbfc;
+}
+.cf-field input:focus,
+.cf-field select:focus,
+.cf-field textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(126, 198, 198, 0.2);
+  background: #fff;
+}
+.cf-field textarea { resize: vertical; min-height: 120px; }
+
+.cf-submit {
+  width: 100%;
+  border: 0;
+  background: var(--primary);
+  color: #113;
+  font-family: Lato, Arial, sans-serif;
+  font-size: 15.5px;
+  font-weight: 700;
+  padding: 13px 20px;
+  border-radius: 30px;
+  cursor: pointer;
+  transition: background .3s, transform .2s;
+}
+.cf-submit:hover { background: var(--primary-dark); color: #fff; transform: translateY(-1px); }
+
+.cf-note {
+  font-size: 12px;
+  color: #999;
+  text-align: center;
+  margin-top: 12px;
+}
+.cf-success {
+  display: none;
+  background: #e8f7ee;
+  border: 1px solid #b8e6c9;
+  color: #1d7a3e;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 14px;
+  margin-bottom: 16px;
+}
+.cf-success.show { display: block; }
+
+@media (max-width: 991px) {
+  .contact-wrap { grid-template-columns: 1fr; }
+}
+
+/* ============================================================
+   RESPONSIVE ULTRA — breakpoints fins pour tous les écrans
+   ============================================================ */
+
+/* --- Très grands écrans (≥ 1600px) --- */
+@media (min-width: 1600px) {
+  .container { max-width: 1360px; }
+  .about-section-inner { padding: 64px 80px; }
+  .actus-articles { max-width: 1100px; }
+}
+
+/* --- Grands écrans (1200-1599px) : déjà couverts par le design de base --- */
+
+/* --- Tablette paysage / petit laptop (992-1199px) --- */
+@media (min-width: 992px) and (max-width: 1199px) {
+  .container { padding: 0 28px; }
+  .about-section-inner { padding: 44px 40px; gap: 32px; }
+  .homepromo { gap: 18px; }
+  .media-grid { gap: 12px; }
+  .captiontitle { font-size: 40px; }
+  .captiontext { font-size: 19px; }
+  .actus-articles { grid-template-columns: 1fr 1fr; gap: 20px; }
+}
+
+/* --- Tablette portrait (768-991px) --- */
+@media (min-width: 768px) and (max-width: 991px) {
+  .container { padding: 0 24px; }
+  .about-section-inner { padding: 38px 30px; }
+  .about-text p { font-size: 16px; line-height: 1.85; }
+  .home-message h4 { font-size: 18px; }
+  .home-message h5 { font-size: 14px; }
+  .home-icon-item { padding: 26px 20px 22px; }
+  .home-icon-item h4 { font-size: 18px; }
+  .media-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .contact-info { padding: 24px; }
+  .actus-articles { gap: 18px; }
+  .footer-credits { flex-direction: column; gap: 10px; }
+  .footer-menu { margin-top: 4px; }
+}
+
+/* --- Mobile moyen (480-767px) --- */
+@media (min-width: 480px) and (max-width: 767px) {
+  .container { padding: 0 18px; }
+  .home-slider { height: 300px; }
+  .home-slider .slide { height: 300px; }
+  .captiontitle { font-size: 24px; }
+  .captiontext { font-size: 15px; }
+  .infobanner { height: 300px; }
+  .home-message h4 { font-size: 17px; }
+  .home-message h5 { font-size: 13px; }
+  .page-title h1 { font-size: 23px; }
+  .actus-fb-head { padding: 12px 14px; }
+  .realisation-carousel .rc-prev { left: 6px; }
+  .realisation-carousel .rc-next { right: 6px; }
+}
+
+/* --- Très petit mobile (≤ 479px) : optimisé --- */
+@media (max-width: 479px) {
+  .container { padding: 0 14px; }
+  .site-header .header-top { padding: 6px 12px; }
+  .topbar-nav a { font-size: 11.5px; padding: 4px 8px; }
+  .topbar-nav .topbar-icons a { padding: 4px; }
+  .topbar-nav .topbar-icons svg { width: 11px; height: 11px; }
+  #logo img { width: 110px; }
+  .main-nav > ul > li > a { padding: 6px 11px; font-size: 12.5px; }
+  .page-title { padding: 16px 0 14px; margin-bottom: 20px; }
+  .page-title h1 { font-size: 21px; }
+  .breadcrumbs { font-size: 11px; padding: 4px 10px; }
+  .home-slider { height: 240px; }
+  .home-slider .slide { height: 240px; }
+  .captiontitle { font-size: 20px; padding: 6px 10px; }
+  .captiontext { font-size: 13px; padding: 4px 10px; }
+  .home-slider .slick-prev, .home-slider .slick-next { width: 34px; height: 34px; }
+  .infobanner { height: 240px; }
+  .home-message h4 { font-size: 15px; padding: 6px 10px; top: 10px; left: 10px; }
+  .home-message h5 { font-size: 12px; padding: 6px 10px; bottom: 10px; right: 10px; max-width: 85%; }
+  .home-icon-item { padding: 20px 14px 16px; }
+  .home-icon-item i svg { width: 36px; height: 36px; }
+  .home-icon-item h4 { font-size: 16px; }
+  .home-icon-item p { font-size: 13px; }
+  .prestation-title { font-size: 18px; }
+  .realisation-title { font-size: 18px; }
+  .realisation-carousel { padding: 8px; }
+  .realisation-carousel .rc-prev { left: 4px; width: 34px; height: 34px; }
+  .realisation-carousel .rc-next { right: 4px; width: 34px; height: 34px; }
+  .rc-thumbs img { width: 48px; height: 48px; }
+  .actus-header h2 { font-size: 21px; }
+  .actus-card-body { padding: 14px 16px 16px; }
+  .actus-card-title { font-size: 15px; }
+  .actus-card-text { font-size: 13.5px; }
+  .contact-info { padding: 18px; font-size: 14.5px; }
+  .contact-form-card { padding: 20px 18px; }
+  .legal-section h2 { font-size: 18px; }
+  .footer-credits { flex-direction: column; gap: 8px; }
+  .footer-menu a { font-size: 11.5px; padding: 3px 7px; }
+  .footer-credits p { font-size: 12px; }
+}
+
+/* --- Ultra petits écrans (≤ 360px) --- */
+@media (max-width: 360px) {
+  .container { padding: 0 10px; }
+  .topbar-nav ul li a { font-size: 10.5px; padding: 3px 6px; }
+  #logo img { width: 100px; }
+  .captiontitle { font-size: 18px; }
+  .captiontext { font-size: 12px; }
+  .home-slider { height: 210px; }
+  .home-slider .slide { height: 210px; }
+  .infobanner { height: 210px; }
+  .media-grid { gap: 8px; }
+  .rc-thumbs img { width: 40px; height: 40px; }
+}
+
+/* --- Impression (pour un rendu propre si imprimé) --- */
+@media print {
+  .site-header, .topbar, .footer, .cookie-notice, .nav-trigger, .admin-trigger-wrap { display: none !important; }
+  .site-content { padding: 0; }
+  body { font-size: 12px; }
+}
+
 /* ============================================================
    PANNEAU ADMINISTRATEUR — ajout de photos
    ============================================================ */
@@ -2311,6 +2532,32 @@ img { max-width: 100%; height: auto; }
   } else {
     initArticles();
   }
+})();
+
+/* ---- Formulaire de contact : confirmation après envoi ---- */
+(function () {
+  'use strict';
+  var form = document.getElementById('contact-form');
+  if (!form) return;
+  var success = document.getElementById('cf-success');
+  var btn = document.getElementById('cf-submit');
+
+  form.addEventListener('submit', function () {
+    if (btn) {
+      btn.disabled = true;
+      btn.textContent = '⏳ Envoi en cours...';
+    }
+    /* le formulaire part vers formsubmit.co ; on réaffiche le bouton
+       si l'utilisateur revient sur la page */
+    setTimeout(function () {
+      if (success) success.classList.add('show');
+      if (btn) {
+        btn.disabled = false;
+        btn.textContent = '📨 Envoyer le message';
+      }
+      if (form) form.reset();
+    }, 2500);
+  });
 })();
 
 /* ============================================================

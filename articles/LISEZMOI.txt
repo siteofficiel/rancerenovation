@@ -1,0 +1,10 @@
+📁 DOSSIER ARTICLES — RANCE RENOVATION
+
+Déposez ici les fichiers générés par le panneau admin
+(bouton « 📦 Générer le pack articles ») :
+  - articles.json
+  - les images des articles
+
+Le site en ligne lira automatiquement ce dossier et
+affichera les articles sur la page Actualités.
+Vous n'avez JAMAIS besoin de ré-uploader les pages du site.

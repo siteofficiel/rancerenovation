@@ -56,3 +56,15 @@ https://VOTRE-PSEUDO.github.io/rance-renovation-site/
 
 ## 💡 Tester en local avant GitHub
 Double-cliquez sur `index.html` — tout fonctionne sans serveur (les liens entre pages sont normaux : `a-propos.html`, etc.).
+
+## 📰 Page Actualités — flux Facebook
+
+La page `actualites.html` affiche automatiquement les publications de la page
+Facebook **Rance Rénovation** (via le plugin officiel Facebook).
+
+- Publiez sur Facebook → la publication apparaît sur le site (quelques secondes)
+- Aucune manipulation nécessaire après la mise en ligne
+- Si le flux ne peut pas s'afficher (page privée, région, etc.), un message de
+  secours propose un lien direct vers la page Facebook
+- Pour changer la page affichée : dans `actualites.html`, modifiez le
+  `data-href` du bloc `.fb-page` avec l'URL de votre page

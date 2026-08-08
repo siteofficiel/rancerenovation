@@ -1,0 +1,16 @@
+📁 DOSSIER PHOTOS — RANCE RENOVATION
+
+Ce dossier est vide et prêt à l'emploi.
+
+Déposez ici les fichiers générés par le panneau admin
+(bouton « 📦 Générer le pack photos ») :
+  - photos.json
+  - vos nouvelles images
+
+Structure attendue :
+  photos/
+  ├── photos.json
+  └── (vos images, éventuellement dans des sous-dossiers s0, s1...)
+
+Le site en ligne lira automatiquement ce dossier.
+Vous n'avez JAMAIS besoin de ré-uploader les pages du site.

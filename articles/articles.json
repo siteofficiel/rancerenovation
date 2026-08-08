@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "generated": "2026-08-08T20:30:00Z",
+  "articles": [
+    {
+      "id": "fb-2026-1",
+      "title": "Nouvelle vidéo : un aperçu de nos chantiers",
+      "date": "2026-08-08",
+      "text": "Retrouvez en vidéo un aperçu de nos chantiers en cours : maçonnerie, isolation et menuiseries. Professionnel certifié RGE, RANCE RENOVATION intervient dans toute la région de Dinan à Rennes.",
+      "image": "articles/fb-2026-1.jpg"
+    },
+    {
+      "id": "fb-2026-2",
+      "title": "Travaux de maçonnerie en cours",
+      "date": "2026-07-28",
+      "text": "Notre équipe intervient sur un chantier de maçonnerie : gros œuvre, ouvertures et réfections. Spécialistes du tous corps d'état avec plus de 30 ans d'expérience.",
+      "image": "articles/fb-2026-2.jpg"
+    },
+    {
+      "id": "fb-2026-3",
+      "title": "Isolation et plâtrerie : confort et économies d'énergie",
+      "date": "2026-07-15",
+      "text": "Chantier d'isolation par l'intérieur : murs, plafonds et rampants. Certifié RGE, nous vous accompagnons dans vos projets de rénovation énergétique.",
+      "image": "articles/fb-2026-3.jpg"
+    },
+    {
+      "id": "fb-2026-4",
+      "title": "Menuiseries extérieures : pose de fenêtres",
+      "date": "2026-06-30",
+      "text": "Pose de fenêtres et portes-fenêtres sur un chantier à Dinan. Menuiseries performantes pour un meilleur confort thermique et acoustique.",
+      "image": "articles/fb-2026-4.jpg"
+    },
+    {
+      "id": "fb-2026-5",
+      "title": "Rénovation générale de votre habitat",
+      "date": "2026-06-15",
+      "text": "RANCE RENOVATION est spécialisée dans la rénovation générale de votre habitat : maçonnerie, isolation, plâtrerie, menuiseries, revêtements de sols et aménagement de salles de bain et cuisines.",
+      "image": "articles/fb-2026-5.jpg"
+    },
+    {
+      "id": "fb-2026-6",
+      "title": "Suivez l'avancement de nos chantiers",
+      "date": "2026-06-01",
+      "text": "Découvrez les photos de nos derniers chantiers : extensions, salles de bain, terrasses et rénovations énergétiques. Une question ? Contactez-nous au 07 71 45 46 19.",
+      "image": "articles/fb-2026-6.jpg"
+    }
+  ]
+}

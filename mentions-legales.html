@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Mentions légales - RANCE RENOVATION</title>
-  <meta name="description" content="Mentions légales de RANCE RENOVATION.">
+  <meta name="description" content="Mentions légales de RANCE RENOVATION : entité, hébergement, propriété intellectuelle, responsabilité, cookies, données nominatives."> : maçonnerie, isolation/plâtrerie, menuiseries extérieures, revêtements de sols et peinture.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="favicon.png">
   <style>
 /* ============================================================
    RANCE RENOVATION — Design épuré
@@ -711,12 +712,19 @@ img { max-width: 100%; height: auto; }
 }
 .realisation-carousel .rc-viewport { overflow: hidden; border-radius: 12px; }
 .realisation-carousel .rc-track { display: flex; transition: transform .45s ease; }
-.realisation-carousel .rc-slide { flex: 0 0 100%; text-align: center; }
+.realisation-carousel .rc-slide {
+  flex: 0 0 100%;
+  text-align: center;
+  aspect-ratio: 16 / 9;
+  background: #e9ecee;
+  overflow: hidden;
+}
 .realisation-carousel .rc-slide img {
-  max-width: 100%;
-  height: auto;
-  max-height: 460px;
-  display: inline-block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;          /* recadrage propre et uniforme */
+  object-position: center;
+  display: block;
   border-radius: 12px;
 }
 .realisation-carousel .rc-prev,
@@ -972,13 +980,24 @@ img { max-width: 100%; height: auto; }
   aspect-ratio: 16 / 9;
   overflow: hidden;
   background: #eef1f3;
+  position: relative;
+}
+.actus-card-img::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.25), transparent 45%);
+  pointer-events: none;
 }
 .actus-card-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
+  transition: transform .5s ease;
 }
+.actus-card:hover .actus-card-img img { transform: scale(1.05); }
 
 .actus-card-body {
   padding: 20px 22px 22px;
@@ -991,21 +1010,25 @@ img { max-width: 100%; height: auto; }
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   color: #449699;
   text-transform: uppercase;
   letter-spacing: .8px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  background: rgba(126, 198, 198, 0.14);
+  padding: 4px 10px;
+  border-radius: 20px;
+  align-self: flex-start;
 }
 
 .actus-card-title {
   font-family: Lato, Arial, sans-serif;
-  font-size: 19px;
+  font-size: 16.5px;
   font-weight: 600;
   color: #1a1a1a;
-  margin: 0 0 10px;
-  line-height: 1.4;
+  margin: 0 0 8px;
+  line-height: 1.45;
 }
 
 .actus-card-text {
@@ -1340,6 +1363,52 @@ img { max-width: 100%; height: auto; }
   .actus-fb-card { max-width: 100%; border-radius: 14px; }
   .actus-fb-head { padding: 12px 14px; }
 }
+
+/* ------------------------------------------------------------
+   PAGES LÉGALES (mentions légales, confidentialité)
+   ------------------------------------------------------------ */
+.legal-page {
+  max-width: 860px;
+  margin: 0 auto 50px;
+}
+.legal-section {
+  margin-bottom: 34px;
+}
+.legal-section h2 {
+  font-family: Lato, Arial, sans-serif;
+  font-size: 21px;
+  font-weight: 600;
+  color: #222;
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--primary);
+  display: inline-block;
+}
+.legal-section h3 {
+  font-family: Lato, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 18px 0 8px;
+}
+.legal-section p {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: #444;
+  margin: 0 0 10px;
+}
+.legal-section ul {
+  margin: 0 0 10px 20px;
+  padding: 0;
+}
+.legal-section ul li {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: #444;
+  margin-bottom: 6px;
+}
+.legal-section a { color: var(--primary-dark); }
+.legal-section a:hover { text-decoration: underline; }
 
 /* ============================================================
    PANNEAU ADMINISTRATEUR — ajout de photos
@@ -1731,26 +1800,9 @@ img { max-width: 100%; height: auto; }
 </style>
 </head>
 <body>
-
-  <!-- ==================== BARRE SUPÉRIEURE ==================== -->
-  <div class="topbar">
-    <div class="container topbar-inner">
-
-      <div class="topbar-search">
-        <form role="search" method="get" class="form-search" action="index.html">
-          <label>
-            <span class="screen-reader-text" style="position:absolute;left:-9999px;">Rechercher :</span>
-            <input type="text" name="s" class="search-query" placeholder="Recherche">
-          </label>
-          <button type="submit" class="search-icon" aria-label="Submit Search">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-              <circle cx="11" cy="11" r="7"></circle>
-              <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
-            </svg>
-          </button>
-        </form>
-      </div>
-
+  <!-- ==================== EN-TÊTE ==================== -->
+  <header class="site-header">
+    <div class="container header-top">
       <nav class="topbar-nav" aria-label="Barre supérieure">
         <ul>
           <li><a href="contactez-nous.html">Contactez-nous</a></li>
@@ -1770,12 +1822,7 @@ img { max-width: 100%; height: auto; }
           </a>
         </div>
       </nav>
-
     </div>
-  </div>
-
-  <!-- ==================== EN-TÊTE ==================== -->
-  <header class="site-header">
     <div class="container header-inner">
 
       <div id="logo">
@@ -1786,7 +1833,7 @@ img { max-width: 100%; height: auto; }
 
       <nav id="nav-main" class="main-nav" aria-label="Menu principal">
         <ul>
-          <li><a href="index.html">Accueil</a></li>
+          <li><a href="index.html" >Accueil</a></li>
           <li><a href="a-propos.html">A propos</a></li>
           <li><a href="nos-prestations.html">Nos prestations</a></li>
           <li class="has-children">
@@ -1810,15 +1857,6 @@ img { max-width: 100%; height: auto; }
       </div>
 
       <div id="mobile-nav" class="mobile-nav" aria-label="Menu mobile">
-        <form role="search" method="get" class="form-search" action="index.html">
-          <label>
-            <span style="position:absolute;left:-9999px;">Rechercher :</span>
-            <input type="text" name="s" class="search-query" placeholder="Recherche">
-          </label>
-          <button type="submit" class="search-icon" aria-label="Submit Search">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>
-          </button>
-        </form>
         <ul>
           <li><a href="index.html">Accueil</a></li>
           <li><a href="a-propos.html">A propos de RANCE RENOVATION</a></li>
@@ -1826,16 +1864,13 @@ img { max-width: 100%; height: auto; }
           <li><a href="nos-prestations.html">Nos prestations</a></li>
           <li><a href="nos-realisations.html">Nos réalisations</a></li>
           <li><a href="contactez-nous.html">Contactez-nous</a></li>
-          <li><a href="politique-de-confidentialite.html">Politique de confidentialité</a></li>
-          <li><a href="mentions-legales.html">Mentions légales</a></li>
-          <li><a href="plan-du-site.html">Plan du site</a></li>
         </ul>
       </div>
 
     </div>
   </header>
 
-  <!-- ==================== TITRE DE PAGE ==================== -->
+      <!-- ==================== TITRE DE PAGE ==================== -->
   <div class="container">
     <div class="page-title">
       <h1>Mentions légales</h1>
@@ -1846,17 +1881,78 @@ img { max-width: 100%; height: auto; }
       </div>
     </div>
   </div>
-
   <main class="site-content">
     <div class="container">
-      <div class="placeholder">
-        <h2>Mentions légales</h2>
-        <p>Cette page est en cours de construction. Elle reprendra les mentions légales du site original.</p>
+      <div class="legal-page">
+
+        <section class="legal-section">
+          <h2>Entité</h2>
+          <p><strong>RANCE RENOVATION</strong></p>
+          <p>44 RUE DE LA COULEBART, 22100 DINAN</p>
+          <p>Siret : 97895947600018</p>
+          <p>Tél. : 0771454619</p>
+          <p>E-mail : <a href="mailto:contact@rancerenovation.fr">contact@rancerenovation.fr</a></p>
+          <p>Directeur de publication : Christophe BEURIER</p>
+        </section>
+
+        <section class="legal-section">
+          <h2>Hébergement</h2>
+          <p><strong>LWS (Ligne Web Services)</strong></p>
+          <p>2 rue Jules Ferry 88190 Golbey</p>
+          <p>Tél. : 01 77 62 30 03</p>
+        </section>
+
+        <section class="legal-section">
+          <h2>Propriété intellectuelle</h2>
+          <p>La structure générale ainsi que les logiciels, textes, images, vidéos, sons, animations, graphismes … et tout autre élément composant le site sont la propriété exclusive de l&rsquo;ENTITE, ou bien sont régulièrement exploités sous licence. Toute représentation totale ou partielle de ce site par quelque procédé que ce soit, sans l&rsquo;autorisation expresse de l&rsquo;ENTITE, est interdite et constituerait une contrefaçon sanctionnée par les articles L.335-2 et suivants du Code de la propriété intellectuelle.</p>
+          <p>L&rsquo;ensemble des textes et illustrations mis en ligne par l&rsquo;ENTITE est protégé par le droit d&rsquo;auteur et par le droit protégeant les bases de données dont l&rsquo;Editeur est producteur au sens des articles L 341-1 et suivants du Code de la Propriété Intellectuelle.</p>
+          <p>Les marques de l&rsquo;ENTITE et de ses partenaires, ainsi que les logos, figurant sur le site sont des marques (semi figuratives ou non) déposées. Toute reproduction ou représentation totale ou partielle de ces marques, toute modification, toute altération de ces marques et/ou logos sans l&rsquo;autorisation expresse de l&rsquo;ENTITE sont donc prohibées, au sens de l&rsquo;article L.713-2 du Code de la propriété intellectuelle.</p>
+        </section>
+
+        <section class="legal-section">
+          <h2>Limite de responsabilité</h2>
+          <p>L&rsquo;utilisateur utilise le site à ses seuls risques. En aucun cas, nous ne pourrons être tenue responsable des dommages directs ou indirects, et notamment préjudice matériel, perte de données ou de programme, préjudice financier, résultant de l&rsquo;accès ou de l&rsquo;utilisation de ce site ou de tous sites qui lui sont liés.</p>
+          <p>Le contenu du site est présenté sans aucune garantie de quelque nature que ce soit. Les informations sur les produits et leurs caractéristiques correspondent à une définition au moment de la mise en ligne ou des mises à jour des différentes pages du site ; elles ne sont données qu&rsquo;à titre indicatif et ne sauraient être considérées comme constituant une offre contractuelle de produits ou services émanant de notre société. Des erreurs ou omissions peuvent survenir.</p>
+          <p>L&rsquo;accès aux produits et services présentés sur le site peut faire l&rsquo;objet de restrictions. Vous devez donc vous assurer que la loi du pays à partir duquel la connexion est établie vous autorise à accéder à notre site.</p>
+        </section>
+
+        <section class="legal-section">
+          <h2>Cookies</h2>
+          <p>Nous souhaitons implanter un cookie dans votre ordinateur. Un cookie ne nous permet pas de vous identifier; en revanche, il enregistre des informations relatives à la navigation de votre ordinateur sur notre site (les pages que vous avez consultées, la date et l&rsquo;heure de la consultation, etc.) que nous pourrons lire lors de vos visites ultérieures.</p>
+          <p>La durée de conservation de ces informations dans votre ordinateur n&rsquo;excède pas un an. Nous vous informons que vous pouvez vous opposer à l&rsquo;enregistrement de « cookies » en paramétrant votre navigateur.</p>
+        </section>
+
+        <section class="legal-section">
+          <h2>Données nominatives</h2>
+          <p>En application de la Loi n° 78-17 du 6 janvier 1978 relative à l&rsquo;Informatique, aux Fichiers et aux Libertés, vous disposez des droits d&rsquo;opposition (art. 26 de la loi), d&rsquo;accès (art.34 à 38 de la loi) et de rectification (art. 36 de la loi) des données vous concernant.</p>
+          <p>Ainsi, vous pouvez nous contacter pour que soient rectifiées, complétées, mises à jour ou effacées les informations vous concernant qui sont inexactes, incomplètes, équivoques, périmées ou dont la collecte ou l&rsquo;utilisation, la communication ou la conservation est interdite.</p>
+          <p>Les informations qui vous concernent sont uniquement destinées à notre société. Nous ne transmettons ces informations à aucun tiers (partenaires commerciaux, etc).</p>
+        </section>
+
+        <section class="legal-section">
+          <h2>Droits à l&rsquo;image</h2>
+          <p>© le nom des sites ou photographes qui vous ont fourni les droits pour les images</p>
+          <p>© Pixabay, photos d&rsquo;illustration</p>
+          <p>© Toutes les autres images et illustrations de ce site sont la propriété exclusive de l&rsquo;ENTITE</p>
+        </section>
+
+        <section class="legal-section">
+          <h2>Liens hypertextes</h2>
+          <p>Nous déclinons toute responsabilité sur le contenu des sites dont nous ne sommes pas l&rsquo;éditeur et qui sont accessibles par l&rsquo;intermédiaire de liens hypertextes.</p>
+        </section>
+
+        <!-- Accès administration : discret, tout en bas -->
+        <div class="admin-trigger-wrap">
+          <a href="#" id="admin-trigger" class="admin-trigger" title="Espace administrateur" aria-label="Administration">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
+            <span>Admin</span>
+          </a>
+        </div>
+
       </div>
     </div>
   </main>
-
-  <!-- ==================== PIED DE PAGE ==================== -->
+<!-- ==================== PIED DE PAGE ==================== -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-credits">
@@ -1865,15 +1961,13 @@ img { max-width: 100%; height: auto; }
           <ul>
             <li><a href="politique-de-confidentialite.html">Politique de confidentialité</a></li>
             <li><a href="mentions-legales.html">Mentions légales</a></li>
-            <li><a href="plan-du-site.html">Plan du site</a></li>
-            <li><a href="contactez-nous.html">Contactez-nous</a></li>
+              <li><a href="contactez-nous.html">Contactez-nous</a></li>
           </ul>
         </nav>
       </div>
     </div>
   </footer>
-
-  <!-- ==================== BANDEAU COOKIES ==================== -->
+<!-- ==================== BANDEAU COOKIES ==================== -->
   <div id="cookie-notice" class="cookie-notice" role="dialog" aria-label="Gestion des cookies">
     <p>Nous utilisons des cookies pour vous garantir la meilleure expérience sur notre site web, seuls les cookies techniques sont obligatoires pour le bon fonctionnement du site.<br>
     Nous vous informons également que nous ne disposons d'aucun outil permettant la traçabilité d'informations au travers de cookies publicitaires ou tiers</p>
@@ -1906,9 +2000,19 @@ img { max-width: 100%; height: auto; }
     });
   }
 
-  /* ---- Bandeau cookies : accepte / refuse -> on masque ---- */
+  /* ---- Bandeau cookies : UNE SEULE FOIS par visiteur ----
+     Si le visiteur a déjà répondu (accepte ou refuse), on ne
+     réaffiche plus le bandeau sur aucune page. */
   var cookieNotice = document.getElementById('cookie-notice');
+  var cookieAnswered = false;
+  try {
+    cookieAnswered = !!localStorage.getItem('rance_cookie_choice');
+  } catch (err) { /* stockage indisponible */ }
+
   if (cookieNotice) {
+    if (cookieAnswered) {
+      cookieNotice.classList.add('hidden');   /* déjà répondu : caché définitivement */
+    }
     var buttons = cookieNotice.querySelectorAll('[data-cookie-set]');
     for (var i = 0; i < buttons.length; i++) {
       buttons[i].addEventListener('click', function (e) {

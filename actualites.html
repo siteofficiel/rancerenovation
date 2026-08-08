@@ -8,6 +8,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="favicon.png">
   <style>
 /* ============================================================
    RANCE RENOVATION — Design épuré
@@ -711,12 +712,19 @@ img { max-width: 100%; height: auto; }
 }
 .realisation-carousel .rc-viewport { overflow: hidden; border-radius: 12px; }
 .realisation-carousel .rc-track { display: flex; transition: transform .45s ease; }
-.realisation-carousel .rc-slide { flex: 0 0 100%; text-align: center; }
+.realisation-carousel .rc-slide {
+  flex: 0 0 100%;
+  text-align: center;
+  aspect-ratio: 16 / 9;
+  background: #e9ecee;
+  overflow: hidden;
+}
 .realisation-carousel .rc-slide img {
-  max-width: 100%;
-  height: auto;
-  max-height: 460px;
-  display: inline-block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;          /* recadrage propre et uniforme */
+  object-position: center;
+  display: block;
   border-radius: 12px;
 }
 .realisation-carousel .rc-prev,
@@ -972,13 +980,24 @@ img { max-width: 100%; height: auto; }
   aspect-ratio: 16 / 9;
   overflow: hidden;
   background: #eef1f3;
+  position: relative;
+}
+.actus-card-img::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.25), transparent 45%);
+  pointer-events: none;
 }
 .actus-card-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
+  transition: transform .5s ease;
 }
+.actus-card:hover .actus-card-img img { transform: scale(1.05); }
 
 .actus-card-body {
   padding: 20px 22px 22px;
@@ -991,21 +1010,25 @@ img { max-width: 100%; height: auto; }
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   color: #449699;
   text-transform: uppercase;
   letter-spacing: .8px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  background: rgba(126, 198, 198, 0.14);
+  padding: 4px 10px;
+  border-radius: 20px;
+  align-self: flex-start;
 }
 
 .actus-card-title {
   font-family: Lato, Arial, sans-serif;
-  font-size: 19px;
+  font-size: 16.5px;
   font-weight: 600;
   color: #1a1a1a;
-  margin: 0 0 10px;
-  line-height: 1.4;
+  margin: 0 0 8px;
+  line-height: 1.45;
 }
 
 .actus-card-text {
@@ -1340,6 +1363,52 @@ img { max-width: 100%; height: auto; }
   .actus-fb-card { max-width: 100%; border-radius: 14px; }
   .actus-fb-head { padding: 12px 14px; }
 }
+
+/* ------------------------------------------------------------
+   PAGES LÉGALES (mentions légales, confidentialité)
+   ------------------------------------------------------------ */
+.legal-page {
+  max-width: 860px;
+  margin: 0 auto 50px;
+}
+.legal-section {
+  margin-bottom: 34px;
+}
+.legal-section h2 {
+  font-family: Lato, Arial, sans-serif;
+  font-size: 21px;
+  font-weight: 600;
+  color: #222;
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--primary);
+  display: inline-block;
+}
+.legal-section h3 {
+  font-family: Lato, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 18px 0 8px;
+}
+.legal-section p {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: #444;
+  margin: 0 0 10px;
+}
+.legal-section ul {
+  margin: 0 0 10px 20px;
+  padding: 0;
+}
+.legal-section ul li {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: #444;
+  margin-bottom: 6px;
+}
+.legal-section a { color: var(--primary-dark); }
+.legal-section a:hover { text-decoration: underline; }
 
 /* ============================================================
    PANNEAU ADMINISTRATEUR — ajout de photos
@@ -1795,9 +1864,6 @@ img { max-width: 100%; height: auto; }
           <li><a href="nos-prestations.html">Nos prestations</a></li>
           <li><a href="nos-realisations.html">Nos réalisations</a></li>
           <li><a href="contactez-nous.html">Contactez-nous</a></li>
-          <li><a href="politique-de-confidentialite.html">Politique de confidentialité</a></li>
-          <li><a href="mentions-legales.html">Mentions légales</a></li>
-          <li><a href="plan-du-site.html">Plan du site</a></li>
         </ul>
       </div>
 
@@ -1916,14 +1982,6 @@ img { max-width: 100%; height: auto; }
         </a>
       </div>
 
-      <!-- Accès administration : discret, tout en bas de la page -->
-      <div class="admin-trigger-wrap">
-        <a href="#" id="admin-trigger" class="admin-trigger" title="Espace administrateur" aria-label="Administration">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>
-          <span>Admin</span>
-        </a>
-      </div>
-
     </div>
   </main>
 <!-- ==================== PIED DE PAGE ==================== -->
@@ -1935,8 +1993,7 @@ img { max-width: 100%; height: auto; }
           <ul>
             <li><a href="politique-de-confidentialite.html">Politique de confidentialité</a></li>
             <li><a href="mentions-legales.html">Mentions légales</a></li>
-            <li><a href="plan-du-site.html">Plan du site</a></li>
-            <li><a href="contactez-nous.html">Contactez-nous</a></li>
+              <li><a href="contactez-nous.html">Contactez-nous</a></li>
           </ul>
         </nav>
       </div>
@@ -1975,9 +2032,19 @@ img { max-width: 100%; height: auto; }
     });
   }
 
-  /* ---- Bandeau cookies : accepte / refuse -> on masque ---- */
+  /* ---- Bandeau cookies : UNE SEULE FOIS par visiteur ----
+     Si le visiteur a déjà répondu (accepte ou refuse), on ne
+     réaffiche plus le bandeau sur aucune page. */
   var cookieNotice = document.getElementById('cookie-notice');
+  var cookieAnswered = false;
+  try {
+    cookieAnswered = !!localStorage.getItem('rance_cookie_choice');
+  } catch (err) { /* stockage indisponible */ }
+
   if (cookieNotice) {
+    if (cookieAnswered) {
+      cookieNotice.classList.add('hidden');   /* déjà répondu : caché définitivement */
+    }
     var buttons = cookieNotice.querySelectorAll('[data-cookie-set]');
     for (var i = 0; i < buttons.length; i++) {
       buttons[i].addEventListener('click', function (e) {

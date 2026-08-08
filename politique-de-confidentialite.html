@@ -4,10 +4,11 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Politique de confidentialité - RANCE RENOVATION</title>
-  <meta name="description" content="Politique de confidentialité de RANCE RENOVATION.">
+  <meta name="description" content="Politique de confidentialité de RANCE RENOVATION : collecte et traitement des données personnelles, cookies, droits des utilisateurs."> : maçonnerie, isolation/plâtrerie, menuiseries extérieures, revêtements de sols et peinture.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" href="favicon.png">
   <style>
 /* ============================================================
    RANCE RENOVATION — Design épuré
@@ -711,12 +712,19 @@ img { max-width: 100%; height: auto; }
 }
 .realisation-carousel .rc-viewport { overflow: hidden; border-radius: 12px; }
 .realisation-carousel .rc-track { display: flex; transition: transform .45s ease; }
-.realisation-carousel .rc-slide { flex: 0 0 100%; text-align: center; }
+.realisation-carousel .rc-slide {
+  flex: 0 0 100%;
+  text-align: center;
+  aspect-ratio: 16 / 9;
+  background: #e9ecee;
+  overflow: hidden;
+}
 .realisation-carousel .rc-slide img {
-  max-width: 100%;
-  height: auto;
-  max-height: 460px;
-  display: inline-block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;          /* recadrage propre et uniforme */
+  object-position: center;
+  display: block;
   border-radius: 12px;
 }
 .realisation-carousel .rc-prev,
@@ -972,13 +980,24 @@ img { max-width: 100%; height: auto; }
   aspect-ratio: 16 / 9;
   overflow: hidden;
   background: #eef1f3;
+  position: relative;
+}
+.actus-card-img::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.25), transparent 45%);
+  pointer-events: none;
 }
 .actus-card-img img {
   width: 100%;
   height: 100%;
   object-fit: cover;
+  object-position: center;
   display: block;
+  transition: transform .5s ease;
 }
+.actus-card:hover .actus-card-img img { transform: scale(1.05); }
 
 .actus-card-body {
   padding: 20px 22px 22px;
@@ -991,21 +1010,25 @@ img { max-width: 100%; height: auto; }
   display: inline-flex;
   align-items: center;
   gap: 6px;
-  font-size: 12px;
+  font-size: 11.5px;
   font-weight: 600;
   color: #449699;
   text-transform: uppercase;
   letter-spacing: .8px;
-  margin-bottom: 8px;
+  margin-bottom: 10px;
+  background: rgba(126, 198, 198, 0.14);
+  padding: 4px 10px;
+  border-radius: 20px;
+  align-self: flex-start;
 }
 
 .actus-card-title {
   font-family: Lato, Arial, sans-serif;
-  font-size: 19px;
+  font-size: 16.5px;
   font-weight: 600;
   color: #1a1a1a;
-  margin: 0 0 10px;
-  line-height: 1.4;
+  margin: 0 0 8px;
+  line-height: 1.45;
 }
 
 .actus-card-text {
@@ -1340,6 +1363,52 @@ img { max-width: 100%; height: auto; }
   .actus-fb-card { max-width: 100%; border-radius: 14px; }
   .actus-fb-head { padding: 12px 14px; }
 }
+
+/* ------------------------------------------------------------
+   PAGES LÉGALES (mentions légales, confidentialité)
+   ------------------------------------------------------------ */
+.legal-page {
+  max-width: 860px;
+  margin: 0 auto 50px;
+}
+.legal-section {
+  margin-bottom: 34px;
+}
+.legal-section h2 {
+  font-family: Lato, Arial, sans-serif;
+  font-size: 21px;
+  font-weight: 600;
+  color: #222;
+  margin: 0 0 12px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid var(--primary);
+  display: inline-block;
+}
+.legal-section h3 {
+  font-family: Lato, Arial, sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  color: #333;
+  margin: 18px 0 8px;
+}
+.legal-section p {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: #444;
+  margin: 0 0 10px;
+}
+.legal-section ul {
+  margin: 0 0 10px 20px;
+  padding: 0;
+}
+.legal-section ul li {
+  font-size: 14.5px;
+  line-height: 1.75;
+  color: #444;
+  margin-bottom: 6px;
+}
+.legal-section a { color: var(--primary-dark); }
+.legal-section a:hover { text-decoration: underline; }
 
 /* ============================================================
    PANNEAU ADMINISTRATEUR — ajout de photos
@@ -1731,26 +1800,9 @@ img { max-width: 100%; height: auto; }
 </style>
 </head>
 <body>
-
-  <!-- ==================== BARRE SUPÉRIEURE ==================== -->
-  <div class="topbar">
-    <div class="container topbar-inner">
-
-      <div class="topbar-search">
-        <form role="search" method="get" class="form-search" action="index.html">
-          <label>
-            <span class="screen-reader-text" style="position:absolute;left:-9999px;">Rechercher :</span>
-            <input type="text" name="s" class="search-query" placeholder="Recherche">
-          </label>
-          <button type="submit" class="search-icon" aria-label="Submit Search">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-              <circle cx="11" cy="11" r="7"></circle>
-              <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
-            </svg>
-          </button>
-        </form>
-      </div>
-
+  <!-- ==================== EN-TÊTE ==================== -->
+  <header class="site-header">
+    <div class="container header-top">
       <nav class="topbar-nav" aria-label="Barre supérieure">
         <ul>
           <li><a href="contactez-nous.html">Contactez-nous</a></li>
@@ -1770,12 +1822,7 @@ img { max-width: 100%; height: auto; }
           </a>
         </div>
       </nav>
-
     </div>
-  </div>
-
-  <!-- ==================== EN-TÊTE ==================== -->
-  <header class="site-header">
     <div class="container header-inner">
 
       <div id="logo">
@@ -1786,7 +1833,7 @@ img { max-width: 100%; height: auto; }
 
       <nav id="nav-main" class="main-nav" aria-label="Menu principal">
         <ul>
-          <li><a href="index.html">Accueil</a></li>
+          <li><a href="index.html" >Accueil</a></li>
           <li><a href="a-propos.html">A propos</a></li>
           <li><a href="nos-prestations.html">Nos prestations</a></li>
           <li class="has-children">
@@ -1810,15 +1857,6 @@ img { max-width: 100%; height: auto; }
       </div>
 
       <div id="mobile-nav" class="mobile-nav" aria-label="Menu mobile">
-        <form role="search" method="get" class="form-search" action="index.html">
-          <label>
-            <span style="position:absolute;left:-9999px;">Rechercher :</span>
-            <input type="text" name="s" class="search-query" placeholder="Recherche">
-          </label>
-          <button type="submit" class="search-icon" aria-label="Submit Search">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>
-          </button>
-        </form>
         <ul>
           <li><a href="index.html">Accueil</a></li>
           <li><a href="a-propos.html">A propos de RANCE RENOVATION</a></li>
@@ -1826,16 +1864,13 @@ img { max-width: 100%; height: auto; }
           <li><a href="nos-prestations.html">Nos prestations</a></li>
           <li><a href="nos-realisations.html">Nos réalisations</a></li>
           <li><a href="contactez-nous.html">Contactez-nous</a></li>
-          <li><a href="politique-de-confidentialite.html">Politique de confidentialité</a></li>
-          <li><a href="mentions-legales.html">Mentions légales</a></li>
-          <li><a href="plan-du-site.html">Plan du site</a></li>
         </ul>
       </div>
 
     </div>
   </header>
 
-  <!-- ==================== TITRE DE PAGE ==================== -->
+      <!-- ==================== TITRE DE PAGE ==================== -->
   <div class="container">
     <div class="page-title">
       <h1>Politique de confidentialité</h1>
@@ -1846,17 +1881,110 @@ img { max-width: 100%; height: auto; }
       </div>
     </div>
   </div>
-
   <main class="site-content">
     <div class="container">
-      <div class="placeholder">
-        <h2>Politique de confidentialité</h2>
-        <p>Cette page est en cours de construction. Elle reprendra la politique de confidentialité du site original.</p>
+      <div class="legal-page">
+
+        <section class="legal-section">
+          <h2>Qui sommes-nous ?</h2>
+          <p>L&rsquo;adresse de notre site est : <a href="https://rancerenovation.fr">https://rancerenovation.fr</a>.</p>
+        </section>
+
+        <section class="legal-section">
+          <h2>Article 1 : Préambule</h2>
+          <p>La présente politique de confidentialité a pour but d&rsquo;informer les utilisateurs du site :</p>
+          <ul>
+            <li>Sur la manière dont sont collectées leurs données personnelles. Sont considérées comme des données personnelles, toute information permettant d&rsquo;identifier un utilisateur. À ce titre, il peut s&rsquo;agir : de ses noms et prénoms, de son âge, de son adresse postale ou email, de sa localisation ou encore de son adresse IP (liste non-exhaustive) ;</li>
+            <li>Sur les droits dont ils disposent concernant ces données ;</li>
+            <li>Sur la personne responsable du traitement des données à caractère personnel collectées et traitées ;</li>
+            <li>Sur les destinataires de ces données personnelles ;</li>
+            <li>Sur la politique du site en matière de cookies.</li>
+          </ul>
+        </section>
+
+        <section class="legal-section">
+          <h2>Article 2 : Principes relatifs à la collecte et au traitement des données personnelles</h2>
+          <p>Conformément à l&rsquo;article 5 du Règlement européen 2016/679, les données à caractère personnel sont :</p>
+          <ul>
+            <li>Traitées de manière licite, loyale et transparente au regard de la personne concernée ;</li>
+            <li>Collectées pour des finalités déterminées, explicites et légitimes, et ne pas être traitées ultérieurement d&rsquo;une manière incompatible avec ces finalités ;</li>
+            <li>Adéquates, pertinentes et limitées à ce qui est nécessaire au regard des finalités pour lesquelles elles sont traitées ;</li>
+            <li>Exactes et, si nécessaire, tenues à jour. Toutes les mesures raisonnables doivent être prises pour que les données à caractère personnel qui sont inexactes, eu égard aux finalités pour lesquelles elles sont traitées, soient effacées ou rectifiées sans tarder ;</li>
+            <li>Conservées sous une forme permettant l&rsquo;identification des personnes concernées pendant une durée n&rsquo;excédant pas celle nécessaire au regard des finalités pour lesquelles elles sont traitées ;</li>
+            <li>Traitées de façon à garantir une sécurité appropriée des données collectées, y compris la protection contre le traitement non autorisé ou illicite et contre la perte, la destruction ou les dégâts d&rsquo;origine accidentelle, à l&rsquo;aide de mesures techniques ou organisationnelles appropriées.</li>
+          </ul>
+          <p>Le traitement n&rsquo;est licite que si, et dans la mesure où, au moins une des conditions suivantes est remplie :</p>
+          <ul>
+            <li>La personne concernée a consenti au traitement de ses données à caractère personnel pour une ou plusieurs finalités spécifiques ;</li>
+            <li>Le traitement est nécessaire à l&rsquo;exécution d&rsquo;un contrat auquel la personne concernée est partie ou à l&rsquo;exécution de mesures précontractuelles prises à la demande de celle-ci ;</li>
+            <li>Le traitement est nécessaire au respect d&rsquo;une obligation légale à laquelle le responsable du traitement est soumis ;</li>
+            <li>Le traitement est nécessaire à la sauvegarde des intérêts vitaux de la personne concernée ou d&rsquo;une autre personne physique ;</li>
+            <li>Le traitement est nécessaire à l&rsquo;exécution d&rsquo;une mission d&rsquo;intérêt public ou relevant de l&rsquo;exercice de l&rsquo;autorité publique dont est investi le responsable du traitement ;</li>
+            <li>Le traitement est nécessaire aux fins des intérêts légitimes poursuivis par le responsable du traitement ou par un tiers, à moins que ne prévalent les intérêts ou les libertés et droits fondamentaux de la personne concernée qui exigent une protection des données à caractère personnel, notamment lorsque la personne concernée est un enfant.</li>
+          </ul>
+        </section>
+
+        <section class="legal-section">
+          <h2>Article 3 : Données à caractère personnel collectées et traitées dans le cadre de la navigation sur le site</h2>
+          <h3>Article 3.1 : Données collectées</h3>
+          <p>Les données personnelles collectées dans le cadre de notre activité sont les suivantes :</p>
+          <ul>
+            <li>Prénom</li>
+            <li>Nom</li>
+            <li>E-mail</li>
+            <li>Téléphone</li>
+          </ul>
+          <p>La collecte et le traitement de ces données répond à la finalité suivante : gestion de contrat.</p>
+          <p>Elles sont conservées par le responsable du traitement dans des conditions raisonnables de sécurité, pour une durée de 2 ans.</p>
+          <p>La société est susceptible de conserver certaines données à caractère personnel au-delà des délais annoncés ci-dessus afin de remplir ses obligations légales ou réglementaires.</p>
+          <h3>Article 3.3 : Hébergement des données</h3>
+          <p>Le site est hébergé par :</p>
+          <p><strong>LWS (Ligne Web Services)</strong><br>2 rue Jules Ferry 88190 Golbey<br>Tél. : 01 77 62 30 03</p>
+        </section>
+
+        <section class="legal-section">
+          <h2>Article 4 : Responsable du traitement des données et délégué à la protection des données</h2>
+          <h3>Article 4.1 : Le responsable du traitement des données</h3>
+          <p>Les données à caractère personnelles sont collectées par <strong>RANCE RENOVATION</strong>, dont le numéro d&rsquo;immatriculation est le 97895947600018.</p>
+          <p>Le responsable du traitement des données à caractère personnel peut être contacté de la manière suivante :</p>
+          <ul>
+            <li>Par courrier à l&rsquo;adresse : 44 RUE DE LA COULEBART, 22100 DINAN ;</li>
+            <li>Par téléphone, au 0771454619 ;</li>
+            <li>Par mail : <a href="mailto:contact@rancerenovation.fr">contact@rancerenovation.fr</a>.</li>
+          </ul>
+          <h3>Article 4.2 : Le délégué à la protection des données</h3>
+          <p>Le délégué à la protection des données de l&rsquo;entreprise ou du responsable est <strong>Christophe BEURIER</strong> – <a href="mailto:contact@rancerenovation.fr">contact@rancerenovation.fr</a>.</p>
+          <p>Si vous estimez, après nous avoir contactés, que vos droits &ldquo;Informatique et Libertés&rdquo;, ne sont pas respectés, vous pouvez adresser une information à la CNIL.</p>
+        </section>
+
+        <section class="legal-section">
+          <h2>Article 5 : Les droits de l&rsquo;utilisateur en matière de collecte et de traitement des données</h2>
+          <p>Tout utilisateur concerné par le traitement de ses données personnelles peut se prévaloir des droits suivants, en application du règlement européen 2016/679 et de la Loi Informatique et Liberté (Loi 78-17 du 6 janvier 1978) :</p>
+          <ul>
+            <li>Droit d&rsquo;accès, de rectification et droit à l&rsquo;effacement des données (posés respectivement aux articles 15, 16 et 17 du RGPD) ;</li>
+            <li>Droit à la portabilité des données (article 20 du RGPD) ;</li>
+            <li>Droit à la limitation (article 18 du RGPD) et à l&rsquo;opposition du traitement des données (article 21 du RGPD) ;</li>
+            <li>Droit de ne pas faire l&rsquo;objet d&rsquo;une décision fondée exclusivement sur un procédé automatisé ;</li>
+            <li>Droit de déterminer le sort des données après la mort ;</li>
+            <li>Droit de saisir l&rsquo;autorité de contrôle compétente (article 77 du RGPD).</li>
+          </ul>
+          <p>Pour exercer vos droits, veuillez adresser votre courrier à RANCE RENOVATION ou par mail à <a href="mailto:contact@rancerenovation.fr">contact@rancerenovation.fr</a>.</p>
+          <p>Afin que le responsable du traitement des données puisse faire droit à sa demande, l&rsquo;utilisateur peut être tenu de lui communiquer certaines informations telles que : ses noms et prénoms, son adresse e-mail ainsi que son numéro de compte, d&rsquo;espace personnel ou d&rsquo;abonné.</p>
+          <p>Consultez le site <a href="https://cnil.fr" target="_blank" rel="noopener">cnil.fr</a> pour plus d&rsquo;informations sur vos droits.</p>
+        </section>
+
+        <section class="legal-section">
+          <h2>Article 6 : Conditions de modification de la politique de confidentialité</h2>
+          <p>L&rsquo;éditeur du site se réserve le droit de pouvoir modifier la présente Politique à tout moment afin d&rsquo;assurer aux utilisateurs du site sa conformité avec le droit en vigueur.</p>
+          <p>Les éventuelles modifications ne sauraient avoir d&rsquo;incidence sur les achats antérieurement effectués sur le site, lesquels restent soumis à la Politique en vigueur au moment de l&rsquo;achat et telle qu&rsquo;acceptée par l&rsquo;utilisateur lors de la validation de l&rsquo;achat.</p>
+          <p>L&rsquo;utilisateur est invité à prendre connaissance de cette Politique à chaque fois qu&rsquo;il utilise nos services, sans qu&rsquo;il soit nécessaire de l&rsquo;en prévenir formellement.</p>
+          <p>La présente politique, éditée le 25/11/2024, a été mise à jour le 25/11/2024.</p>
+        </section>
+
       </div>
     </div>
   </main>
-
-  <!-- ==================== PIED DE PAGE ==================== -->
+<!-- ==================== PIED DE PAGE ==================== -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-credits">
@@ -1865,15 +1993,13 @@ img { max-width: 100%; height: auto; }
           <ul>
             <li><a href="politique-de-confidentialite.html">Politique de confidentialité</a></li>
             <li><a href="mentions-legales.html">Mentions légales</a></li>
-            <li><a href="plan-du-site.html">Plan du site</a></li>
-            <li><a href="contactez-nous.html">Contactez-nous</a></li>
+              <li><a href="contactez-nous.html">Contactez-nous</a></li>
           </ul>
         </nav>
       </div>
     </div>
   </footer>
-
-  <!-- ==================== BANDEAU COOKIES ==================== -->
+<!-- ==================== BANDEAU COOKIES ==================== -->
   <div id="cookie-notice" class="cookie-notice" role="dialog" aria-label="Gestion des cookies">
     <p>Nous utilisons des cookies pour vous garantir la meilleure expérience sur notre site web, seuls les cookies techniques sont obligatoires pour le bon fonctionnement du site.<br>
     Nous vous informons également que nous ne disposons d'aucun outil permettant la traçabilité d'informations au travers de cookies publicitaires ou tiers</p>
@@ -1906,9 +2032,19 @@ img { max-width: 100%; height: auto; }
     });
   }
 
-  /* ---- Bandeau cookies : accepte / refuse -> on masque ---- */
+  /* ---- Bandeau cookies : UNE SEULE FOIS par visiteur ----
+     Si le visiteur a déjà répondu (accepte ou refuse), on ne
+     réaffiche plus le bandeau sur aucune page. */
   var cookieNotice = document.getElementById('cookie-notice');
+  var cookieAnswered = false;
+  try {
+    cookieAnswered = !!localStorage.getItem('rance_cookie_choice');
+  } catch (err) { /* stockage indisponible */ }
+
   if (cookieNotice) {
+    if (cookieAnswered) {
+      cookieNotice.classList.add('hidden');   /* déjà répondu : caché définitivement */
+    }
     var buttons = cookieNotice.querySelectorAll('[data-cookie-set]');
     for (var i = 0; i < buttons.length; i++) {
       buttons[i].addEventListener('click', function (e) {

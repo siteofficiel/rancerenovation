@@ -2607,6 +2607,27 @@ img { max-width: 100%; height: auto; }
     });
   }
 
+  /* Convertit la structure Firebase {section: {id: dataURI}} en format sections */
+  function convertFirebase(data) {
+    if (!data || typeof data !== 'object') return { sections: [] };
+    var sections = [];
+    Object.keys(data).forEach(function (secKey) {
+      var idx = parseInt(secKey, 10);
+      if (isNaN(idx)) return;
+      var photos = data[secKey];
+      if (!photos || typeof photos !== 'object') return;
+      var list = [];
+      Object.keys(photos).forEach(function (pid) {
+        var uri = photos[pid];
+        if (typeof uri === 'string' && uri.indexOf('data:image') === 0) {
+          list.push(uri);
+        }
+      });
+      sections.push({ section: idx, title: '', photos: list });
+    });
+    return { sections: sections };
+  }
+
   function loadRemotePhotos() {
     /* fichier inexistant ou site ouvert en local : on ignore silencieusement */
     try {
@@ -2617,11 +2638,18 @@ img { max-width: 100%; height: auto; }
         return;
       }
 
-      /* Fallback : photos/photos.json déposé sur l'hébergeur.
-         Les photos publiées via ImgBB sont déjà intégrées à la page
-         lorsque vous téléchargez le « site configuré ». */
-      var source = fetch('photos/photos.json', { cache: 'no-store' })
-        .then(function (r) { if (!r.ok) throw new Error('pas de photos.json'); return r.json(); });
+      /* 1. Publication automatique : lire les photos sur Firebase
+            (config intégrée au site par le panneau admin) */
+      var source = null;
+      if (ONLINE_PUBLISH && ONLINE_PUBLISH.url) {
+        source = fetch(ONLINE_PUBLISH.url + '/photos.json', { cache: 'no-store' })
+          .then(function (r) { if (!r.ok) throw new Error('firebase indisponible'); return r.json(); })
+          .then(function (data) { return convertFirebase(data); });
+      } else {
+        /* 2. Fallback : photos/photos.json déposé sur l'hébergeur */
+        source = fetch('photos/photos.json', { cache: 'no-store' })
+          .then(function (r) { if (!r.ok) throw new Error('pas de photos.json'); return r.json(); });
+      }
 
       source.then(function (data) {
           try { localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), data: data })); } catch (e) {}
@@ -3205,8 +3233,11 @@ img { max-width: 100%; height: auto; }
   }
 
   /* ============================================================
-     PUBLICATION AUTOMATIQUE — ImgBB (sans FTP)
+     PUBLICATION AUTOMATIQUE — Firebase (sans clé, sans FTP)
      ============================================================ */
+  var ONLINE_CFG_KEY = 'rance_online_cfg_v1';
+  var onlineCfg = null;   // { fbUrl: "https://xxx-default-rtdb.firebaseio.com" }
+
   function apStatus(msg) {
     var s = document.getElementById('ap-status');
     if (s) s.textContent = msg;
@@ -3217,23 +3248,28 @@ img { max-width: 100%; height: auto; }
   function saveOnlineCfg() {
     try { localStorage.setItem(ONLINE_CFG_KEY, JSON.stringify(onlineCfg)); } catch (e) {}
   }
+  function normUrl(u) {
+    u = (u || '').trim();
+    if (!u) return '';
+    u = u.replace(/\/$/, '');            /* enlever le / final */
+    if (u.indexOf('http') !== 0) u = 'https://' + u;
+    return u;
+  }
 
   function initOnline() {
     var block = document.getElementById('admin-autopub');
     if (!block) {
-      /* créer le bloc s'il n'existe pas */
       block = el('div', 'admin-autopub');
       block.id = 'admin-autopub';
       block.innerHTML =
         '<h4>☁️ Publication automatique en ligne</h4>' +
-        '<p class="admin-online-desc">Envoyez vos photos directement en ligne depuis ce panneau : le site les affiche automatiquement, sur n\'importe quel hébergeur. Aucun FTP ni fichier à déposer. Il faut une clé API gratuite ImgBB (2 minutes, voir le guide).</p>' +
-        '<div class="art-form-row"><input type="text" id="ap-key" placeholder="Clé API ImgBB (gratuite sur imgbb.com)" autocomplete="off"></div>' +
+        '<p class="admin-online-desc">Vos photos sont stockées sur <strong>Firebase</strong> (service gratuit de Google). Collez l\'URL de votre base (créée en 5 min, voir le guide) : le site affiche vos photos automatiquement, sur n\'importe quel hébergeur. <strong>Aucune clé, aucun FTP.</strong></p>' +
+        '<div class="art-form-row"><input type="text" id="ap-url" placeholder="URL de la base Firebase (ex: https://mon-site-photos-default-rtdb.firebaseio.com)" autocomplete="off"></div>' +
         '<div class="admin-online-actions">' +
-          '<button type="button" class="admin-btn" id="ap-create">🔑 Enregistrer ma clé</button>' +
+          '<button type="button" class="admin-btn" id="ap-create">🔧 Tester la connexion</button>' +
           '<button type="button" class="admin-btn" id="ap-publish">📤 Publier mes photos</button>' +
           '<button type="button" class="admin-btn dark" id="ap-download">💾 Télécharger le site configuré (1 fois)</button>' +
-          '<button type="button" class="admin-btn dark" id="ap-test" style="font-size:12px;">🔍 Tester l\'API</button>' +
-          '<button type="button" class="admin-btn red" id="ap-reset" style="font-size:12px;">🗑️ Oublier la clé enregistrée</button>' +
+          '<button type="button" class="admin-btn red" id="ap-reset" style="font-size:12px;">🗑️ Oublier l\'URL enregistrée</button>' +
         '</div>' +
         '<div class="admin-gh-status" id="ap-status"></div>';
       var sections = document.getElementById('admin-sections');
@@ -3244,52 +3280,48 @@ img { max-width: 100%; height: auto; }
     block.dataset.wired = '1';
 
     loadOnlineCfg();
-    var keyInput = document.getElementById('ap-key');
-    if (keyInput && onlineCfg && onlineCfg.imgbbKey) keyInput.value = onlineCfg.imgbbKey;
-    if (onlineCfg && onlineCfg.imgbbKey) {
-      apStatus('✅ Clé enregistrée. Ajoutez des photos puis cliquez sur « Publier mes photos ».');
+    var urlInput = document.getElementById('ap-url');
+    /* champ toujours vide : l'utilisateur colle son URL actuelle */
+    if (urlInput) urlInput.value = '';
+    if (onlineCfg && onlineCfg.fbUrl) {
+      apStatus('ℹ️ Une URL est déjà enregistrée dans ce navigateur. Pour la remplacer : collez la nouvelle URL ci-dessous puis « Tester la connexion ». (Bouton rouge pour tout oublier.)');
     } else {
-      apStatus('ℹ️ Collez votre clé API ImgBB puis cliquez sur « Enregistrer ma clé ».');
+      apStatus('ℹ️ Collez l\'URL de votre base Firebase puis cliquez sur « Tester la connexion ».');
     }
 
-    document.getElementById('ap-create').addEventListener('click', createOnlineSpace);
+    document.getElementById('ap-create').addEventListener('click', testFirebase);
     document.getElementById('ap-publish').addEventListener('click', publishPhotosOnline);
     document.getElementById('ap-download').addEventListener('click', downloadConfiguredSite);
-    var testBtn = document.getElementById('ap-test');
-    if (testBtn) testBtn.addEventListener('click', testApiDirect);
     var resetBtn = document.getElementById('ap-reset');
     if (resetBtn) resetBtn.addEventListener('click', resetOnlineCfg);
   }
 
-  function createOnlineSpace() {
-    var key = document.getElementById('ap-key').value.trim();
-    if (!key) { apStatus('⚠️ Collez votre clé API ImgBB (gratuite sur imgbb.com, onglet API).'); return; }
-    apStatus('🔑 Vérification de la clé…');
-    var fd = new FormData();
-    fd.append('key', key);
-    /* petite image JPEG valide pour tester la clé */
-    fd.append('image', '/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAADAAMDARASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCgD//Z');
-    fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: fd })
-      .then(function (r) { return r.json(); })
+  /* ---- Tester la connexion Firebase ---- */
+  function testFirebase() {
+    var url = normUrl(document.getElementById('ap-url').value);
+    if (!url) { apStatus('⚠️ Collez d\'abord l\'URL de votre base Firebase.'); return; }
+    apStatus('🔧 Test de la connexion…');
+    fetch(url + '/photos.json', { cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('Réponse ' + r.status);
+        return r.json();
+      })
       .then(function (j) {
-        if (j && j.data && j.data.url) {
-          onlineCfg = { imgbbKey: key };
-          saveOnlineCfg();
-          apStatus('✅ Clé valide et enregistrée ! Ajoutez des photos puis cliquez sur « Publier mes photos ».');
-          toast('🔑 Clé ImgBB enregistrée !');
-        } else {
-          var msg = (j && j.error && j.error.message) ? j.error.message : 'Réponse inattendue';
-          apStatus('❌ ' + msg + ' — Vérifiez votre clé sur imgbb.com → API. Elle doit faire 30 caractères (ex: a1b2c3d4...).');
-        }
+        onlineCfg = { fbUrl: url };
+        saveOnlineCfg();
+        var n = (j && typeof j === 'object') ? Object.keys(j).length : 0;
+        apStatus('✅ Connexion réussie ! (' + n + ' section(s) trouvée(s)). Ajoutez des photos puis « Publier mes photos ».');
+        toast('🔧 Firebase connecté !');
       })
       .catch(function (e) {
-        apStatus('❌ Impossible de contacter ImgBB : ' + (e && e.message ? e.message : 'erreur réseau') + ' — Vérifiez votre connexion Internet.');
+        apStatus('❌ Impossible de joindre Firebase : ' + (e && e.message ? e.message : 'erreur') + ' — Vérifiez l\'URL (ex: https://mon-projet-default-rtdb.firebaseio.com) et que la base existe (voir guide).');
       });
   }
 
+  /* ---- Publier les photos (écriture dans Firebase) ---- */
   function publishPhotosOnline() {
-    if (!onlineCfg || !onlineCfg.imgbbKey) {
-      apStatus('⚠️ Enregistrez d\'abord votre clé ImgBB (bouton « Enregistrer ma clé »).');
+    if (!onlineCfg || !onlineCfg.fbUrl) {
+      apStatus('⚠️ Testez d\'abord la connexion Firebase (bouton « Tester la connexion »).');
       return;
     }
     if (!newPhotos.length) {
@@ -3298,70 +3330,63 @@ img { max-width: 100%; height: auto; }
     }
 
     var toPublish = newPhotos.slice();
-    apStatus('📤 Envoi de ' + toPublish.length + ' photo(s) sur ImgBB…');
+    apStatus('📤 Envoi de ' + toPublish.length + ' photo(s) sur Firebase…');
     var done = 0, ok = 0;
 
     toPublish.forEach(function (p) {
-      var blob = dataUriToBlob(p.src);
-      var fd = new FormData();
-      fd.append('image', blob, 'photo.jpg');
-      fd.append('key', onlineCfg.imgbbKey);
-      fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: fd })
-        .then(function (r) { return r.json(); })
-        .then(function (j) {
+      /* la photo est un data URI JPEG (déjà compressée) */
+      var key = 'photo' + Date.now() + '_' + Math.floor(Math.random() * 100000);
+      var path = '/photos/' + p.section + '/' + key + '.json';
+      fetch(onlineCfg.fbUrl + path, {
+        method: 'PUT',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(p.src)
+      })
+        .then(function (r) {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+        })
+        .then(function () {
           done++;
-          if (j && j.data && j.data.url) {
-            ok++;
-            p.src = j.data.url;
-            /* mise à jour galerie + vignette */
-            var section = document.querySelectorAll('.prestation-section')[p.section];
-            if (section) {
-              section.querySelectorAll('a[data-added="' + p.id + '"]').forEach(function (a) {
-                a.href = j.data.url;
-                var im = a.querySelector('img');
-                if (im) im.src = j.data.url;
-              });
-            }
-            var th = document.querySelector('.admin-section[data-section="' + p.section + '"] .thumb.new[data-id="' + p.id + '"]');
-            if (th) {
-              var tim = th.querySelector('img');
-              if (tim) tim.src = j.data.url;
-              var badge = th.querySelector('.thumb-new-badge');
-              if (badge) badge.textContent = 'EN LIGNE ✓';
-            }
-            newPhotos = newPhotos.filter(function (x) { return x.id !== p.id; });
-            onlinePhotos.push({ id: p.id, section: p.section, url: j.data.url });
-            saveStorage();
-            updateCount();
-          } else {
-            toast('⚠️ Échec upload : ' + ((j && j.error && j.error.message) || 'erreur ImgBB'));
+          ok++;
+          /* mise à jour visuelle : badge EN LIGNE */
+          p.src = p.src;
+          var th = document.querySelector('.admin-section[data-section="' + p.section + '"] .thumb.new[data-id="' + p.id + '"]');
+          if (th) {
+            var badge = th.querySelector('.thumb-new-badge');
+            if (badge) badge.textContent = 'EN LIGNE ✓';
           }
-          if (done === toPublish.length) {
-            if (ok > 0) {
-              apStatus('✅ ' + ok + ' photo(s) publiée(s) ! Téléchargez le « site configuré » une fois, puis remplacez-le sur l\'hébergeur : les photos seront en ligne.');
-              toast('📤 Photos publiées !');
-            } else {
-              apStatus('❌ Aucune photo envoyée. Vérifiez votre clé ImgBB.');
-            }
-          }
+          newPhotos = newPhotos.filter(function (x) { return x.id !== p.id; });
+          onlinePhotos.push({ id: p.id, section: p.section, url: p.src, path: path });
+          saveStorage();
+          updateCount();
+          if (done === toPublish.length) finishPublish(ok, toPublish.length);
         })
         .catch(function () {
           done++;
-          toast('⚠️ Erreur réseau avec ImgBB');
-          if (done === toPublish.length && ok === 0) {
-            apStatus('❌ Échec de l\'envoi. Vérifiez votre connexion.');
-          }
+          toast('⚠️ Échec envoi d\'une photo');
+          if (done === toPublish.length) finishPublish(ok, toPublish.length);
         });
     });
   }
 
+  function finishPublish(ok, total) {
+    if (ok > 0) {
+      apStatus('✅ ' + ok + '/' + total + ' photo(s) publiée(s) sur Firebase ! Téléchargez le « site configuré » une fois (bouton ci-dessous), remplacez-le sur l\'hébergeur : ensuite tout est automatique.');
+      toast('📤 Photos publiées !');
+    } else {
+      apStatus('❌ Aucune photo envoyée. Vérifiez l\'URL Firebase et que la base autorise l\'écriture (mode test).');
+    }
+  }
+
+  /* ---- Télécharger le site configuré (1 seule fois) ---- */
   function downloadConfiguredSite() {
-    if (!onlineCfg || !onlineCfg.imgbbKey) {
-      apStatus('⚠️ Enregistrez d\'abord votre clé ImgBB.');
+    if (!onlineCfg || !onlineCfg.fbUrl) {
+      apStatus('⚠️ Testez d\'abord la connexion Firebase.');
       return;
     }
     var html = currentPageHtml();
-    var cfgJson = JSON.stringify({ key: onlineCfg.imgbbKey });
+    var cfgJson = JSON.stringify({ url: onlineCfg.fbUrl });
     if (html.indexOf('var ONLINE_PUBLISH = null;') !== -1) {
       html = html.replace('var ONLINE_PUBLISH = null;', 'var ONLINE_PUBLISH = ' + cfgJson + ';');
     }
@@ -3369,41 +3394,18 @@ img { max-width: 100%; height: auto; }
     apStatus('💾 Site configuré téléchargé ! Remplacez-le sur votre hébergeur UNE seule fois.');
   }
 
-  /* Effacer la clé API enregistrée dans le navigateur */
+  /* ---- Oublier l'URL enregistrée ---- */
   function resetOnlineCfg() {
     try {
       localStorage.removeItem(ONLINE_CFG_KEY);
       onlineCfg = null;
-      var keyInput = document.getElementById('ap-key');
-      if (keyInput) keyInput.value = '';
-      apStatus('🗑️ Ancienne clé oubliée ! Collez votre NOUVELLE clé puis cliquez « Enregistrer ma clé ».');
-      toast('🗑️ Clé API oubliée');
+      var urlInput = document.getElementById('ap-url');
+      if (urlInput) urlInput.value = '';
+      apStatus('🗑️ URL oubliée ! Collez votre nouvelle URL puis « Tester la connexion ».');
+      toast('🗑️ URL Firebase oubliée');
     } catch (e) {
       apStatus('⚠️ Impossible d\'effacer le stockage local du navigateur.');
     }
-  }
-
-  /* Diagnostic direct de l'API ImgBB (pour déboguer) */
-  function testApiDirect() {
-    var key = document.getElementById('ap-key').value.trim();
-    if (!key) { apStatus('⚠️ Collez d\'abord votre clé dans le champ.'); return; }
-    apStatus('🔍 Test direct de l\'API…');
-    var fd = new FormData();
-    fd.append('key', key);
-    fd.append('image', '/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAADAAMDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCgD//Z');
-    fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: fd })
-      .then(function (r) { return r.json(); })
-      .then(function (j) {
-        if (j && j.data && j.data.url) {
-          apStatus('🔍 Test réussi : l\'API accepte votre clé ! Cliquez « Enregistrer ma clé ».');
-        } else {
-          var msg = (j && j.error && j.error.message) ? j.error.message : JSON.stringify(j);
-          apStatus('🔍 Réponse API : « ' + msg + ' » — Clé de 30 caractères ? Copiée sans espaces ? Sinon régénérez sur imgbb.com.');
-        }
-      })
-      .catch(function (e) {
-        apStatus('🔍 Erreur réseau : ' + (e && e.message ? e.message : '?'));
-      });
   }
 
   /* ---------- Déclencheur discret ---------- */

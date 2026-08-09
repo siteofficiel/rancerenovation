@@ -2227,6 +2227,13 @@ img { max-width: 100%; height: auto; }
   .admin-trigger-wrap { margin: 40px 0 16px; }
 }
 
+/* Bouton rouge (suppression / réinitialisation) */
+.admin-btn.red {
+  background: #e74c3c;
+  color: #fff;
+}
+.admin-btn.red:hover { background: #c0392b; }
+
 </style>
 </head>
 <body>
@@ -3196,6 +3203,8 @@ img { max-width: 100%; height: auto; }
           '<button type="button" class="admin-btn" id="ap-create">🔑 Enregistrer ma clé</button>' +
           '<button type="button" class="admin-btn" id="ap-publish">📤 Publier mes photos</button>' +
           '<button type="button" class="admin-btn dark" id="ap-download">💾 Télécharger le site configuré (1 fois)</button>' +
+          '<button type="button" class="admin-btn dark" id="ap-test" style="font-size:12px;">🔍 Tester l\'API</button>' +
+          '<button type="button" class="admin-btn red" id="ap-reset" style="font-size:12px;">🗑️ Oublier la clé enregistrée</button>' +
         '</div>' +
         '<div class="admin-gh-status" id="ap-status"></div>';
       var sections = document.getElementById('admin-sections');
@@ -3217,6 +3226,10 @@ img { max-width: 100%; height: auto; }
     document.getElementById('ap-create').addEventListener('click', createOnlineSpace);
     document.getElementById('ap-publish').addEventListener('click', publishPhotosOnline);
     document.getElementById('ap-download').addEventListener('click', downloadConfiguredSite);
+    var testBtn = document.getElementById('ap-test');
+    if (testBtn) testBtn.addEventListener('click', testApiDirect);
+    var resetBtn = document.getElementById('ap-reset');
+    if (resetBtn) resetBtn.addEventListener('click', resetOnlineCfg);
   }
 
   function createOnlineSpace() {
@@ -3225,7 +3238,8 @@ img { max-width: 100%; height: auto; }
     apStatus('🔑 Vérification de la clé…');
     var fd = new FormData();
     fd.append('key', key);
-    fd.append('image', 'R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
+    /* petite image JPEG valide pour tester la clé */
+    fd.append('image', '/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAADAAMDARASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCgD//Z');
     fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: fd })
       .then(function (r) { return r.json(); })
       .then(function (j) {
@@ -3235,11 +3249,12 @@ img { max-width: 100%; height: auto; }
           apStatus('✅ Clé valide et enregistrée ! Ajoutez des photos puis cliquez sur « Publier mes photos ».');
           toast('🔑 Clé ImgBB enregistrée !');
         } else {
-          apStatus('❌ Clé invalide. Vérifiez votre clé sur imgbb.com (API).');
+          var msg = (j && j.error && j.error.message) ? j.error.message : 'Réponse inattendue';
+          apStatus('❌ ' + msg + ' — Vérifiez votre clé sur imgbb.com → API. Elle doit faire 30 caractères (ex: a1b2c3d4...).');
         }
       })
-      .catch(function () {
-        apStatus('❌ Impossible de contacter ImgBB. Vérifiez votre connexion Internet.');
+      .catch(function (e) {
+        apStatus('❌ Impossible de contacter ImgBB : ' + (e && e.message ? e.message : 'erreur réseau') + ' — Vérifiez votre connexion Internet.');
       });
   }
 
@@ -3323,6 +3338,43 @@ img { max-width: 100%; height: auto; }
     }
     downloadHtml(html, OUTPUT_NAME);
     apStatus('💾 Site configuré téléchargé ! Remplacez-le sur votre hébergeur UNE seule fois.');
+  }
+
+  /* Effacer la clé API enregistrée dans le navigateur */
+  function resetOnlineCfg() {
+    try {
+      localStorage.removeItem(ONLINE_CFG_KEY);
+      onlineCfg = null;
+      var keyInput = document.getElementById('ap-key');
+      if (keyInput) keyInput.value = '';
+      apStatus('🗑️ Ancienne clé oubliée ! Collez votre NOUVELLE clé puis cliquez « Enregistrer ma clé ».');
+      toast('🗑️ Clé API oubliée');
+    } catch (e) {
+      apStatus('⚠️ Impossible d\'effacer le stockage local du navigateur.');
+    }
+  }
+
+  /* Diagnostic direct de l'API ImgBB (pour déboguer) */
+  function testApiDirect() {
+    var key = document.getElementById('ap-key').value.trim();
+    if (!key) { apStatus('⚠️ Collez d\'abord votre clé dans le champ.'); return; }
+    apStatus('🔍 Test direct de l\'API…');
+    var fd = new FormData();
+    fd.append('key', key);
+    fd.append('image', '/9j/4AAQSkZJRgABAQAAAQABAAD/2wBDAAYEBQYFBAYGBQYHBwYIChAKCgkJChQODwwQFxQYGBcUFhYaHSUfGhsjHBYWICwgIyYnKSopGR8tMC0oMCUoKSj/2wBDAQcHBwoIChMKChMoGhYaKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCgoKCj/wAARCAADAAMDASIAAhEBAxEB/8QAFQABAQAAAAAAAAAAAAAAAAAAAAf/xAAUEAEAAAAAAAAAAAAAAAAAAAAA/8QAFQEBAQAAAAAAAAAAAAAAAAAAAAX/xAAUEQEAAAAAAAAAAAAAAAAAAAAA/9oADAMBAAIRAxEAPwCgD//Z');
+    fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: fd })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (j && j.data && j.data.url) {
+          apStatus('🔍 Test réussi : l\'API accepte votre clé ! Cliquez « Enregistrer ma clé ».');
+        } else {
+          var msg = (j && j.error && j.error.message) ? j.error.message : JSON.stringify(j);
+          apStatus('🔍 Réponse API : « ' + msg + ' » — Clé de 30 caractères ? Copiée sans espaces ? Sinon régénérez sur imgbb.com.');
+        }
+      })
+      .catch(function (e) {
+        apStatus('🔍 Erreur réseau : ' + (e && e.message ? e.message : '?'));
+      });
   }
 
   /* ---------- Déclencheur discret ---------- */

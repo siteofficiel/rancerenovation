@@ -1,0 +1,323 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tutoriel — Ajouter des photos au site RANCE RENOVATION</title>
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: 'Segoe UI', Arial, sans-serif;
+    background: #f0f4f5;
+    color: #223;
+    line-height: 1.6;
+    padding: 20px;
+  }
+  .wrap { max-width: 900px; margin: 0 auto; }
+  header.tuto {
+    background: linear-gradient(135deg, #141414, #2a3a3a);
+    color: #fff;
+    border-radius: 18px;
+    padding: 34px 30px;
+    margin-bottom: 26px;
+    text-align: center;
+  }
+  header.tuto h1 { font-size: 28px; margin-bottom: 6px; color: #78e8d9; }
+  header.tuto p { font-size: 15px; opacity: .9; }
+  .toc {
+    background: #fff;
+    border-radius: 14px;
+    padding: 20px 24px;
+    margin-bottom: 26px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.06);
+  }
+  .toc h2 { font-size: 17px; margin-bottom: 10px; color: #141414; }
+  .toc a {
+    display: inline-block;
+    background: #e8f4f4;
+    color: #1d5d5d;
+    padding: 6px 14px;
+    border-radius: 20px;
+    margin: 4px 4px 0 0;
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 600;
+  }
+  .toc a:hover { background: #d0eaea; }
+  .step {
+    background: #fff;
+    border-radius: 14px;
+    padding: 26px 28px;
+    margin-bottom: 22px;
+    box-shadow: 0 4px 16px rgba(0,0,0,.06);
+    border-left: 5px solid #7ec6c6;
+  }
+  .step.once { border-left-color: #ec26ef; }
+  .step .badge {
+    display: inline-block;
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 20px;
+    margin-bottom: 10px;
+  }
+  .badge.once { background: #fde8fd; color: #a312a3; }
+  .badge.each { background: #e2f6ec; color: #1d7a3e; }
+  .step h2 { font-size: 20px; margin-bottom: 6px; color: #141414; }
+  .step .sub { font-size: 13.5px; color: #888; margin-bottom: 14px; }
+  .step ol, .step ul { margin-left: 20px; margin-bottom: 10px; }
+  .step li { margin-bottom: 8px; font-size: 14.5px; }
+  .step li strong { color: #1d5d5d; }
+  .box {
+    background: #f7fafa;
+    border: 1px solid #e0e8e8;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 10px 0;
+    font-size: 14px;
+  }
+  .box.warn { background: #fff8e8; border-color: #f0ddb0; }
+  .box.ok { background: #e8f7ee; border-color: #b8e6c9; }
+  .box.info { background: #eef4fb; border-color: #cfe0f2; }
+  .phone-sim {
+    background: #141414;
+    border-radius: 22px;
+    padding: 16px;
+    max-width: 300px;
+    margin: 14px auto;
+    text-align: center;
+  }
+  .phone-sim .screen {
+    background: #fff;
+    border-radius: 14px;
+    padding: 18px;
+    font-size: 13px;
+    text-align: left;
+  }
+  .btn-demo {
+    display: inline-block;
+    background: #7ec6c6;
+    color: #123;
+    padding: 8px 16px;
+    border-radius: 30px;
+    font-size: 13px;
+    font-weight: 700;
+    margin-top: 8px;
+  }
+  .kbd {
+    display: inline-block;
+    background: #eee;
+    border: 1px solid #ccc;
+    border-bottom-width: 3px;
+    border-radius: 6px;
+    padding: 2px 9px;
+    font-size: 13px;
+    font-weight: 700;
+    font-family: Consolas, monospace;
+  }
+  .arrow { font-size: 22px; color: #7ec6c6; }
+  footer.tuto {
+    text-align: center;
+    color: #888;
+    font-size: 13px;
+    margin-top: 30px;
+  }
+  @media (max-width: 600px) {
+    body { padding: 10px; }
+    .step { padding: 18px 16px; }
+    header.tuto h1 { font-size: 22px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<header class="tuto">
+  <h1>📸 Ajouter des photos au site</h1>
+  <p>Tutoriel complet de A à Z — PC et téléphone</p>
+</header>
+
+<div class="toc">
+  <h2>📋 Sommaire</h2>
+  <a href="#p1">1. Créer la clé ImgBB (1 fois)</a>
+  <a href="#p2">2. Enregistrer la clé (1 fois)</a>
+  <a href="#p3">3. Mettre le site en ligne (1 fois)</a>
+  <a href="#p4">4. Ajouter une photo (à chaque fois)</a>
+  <a href="#p5">5. Dépannage</a>
+</div>
+
+<!-- ================= PARTIE 1 ================= -->
+<div class="step once" id="p1">
+  <span class="badge once">⚠️ Une seule fois</span>
+  <h2>1️⃣ Créer votre clé ImgBB</h2>
+  <p class="sub">ImgBB héberge vos photos gratuitement. Sans clé, impossible de publier.</p>
+  <ol>
+    <li>Sur votre téléphone ou PC, ouvrez : <strong>https://imgbb.com</strong></li>
+    <li>Cliquez sur <strong>« Sign up »</strong> (S'inscrire) en haut à droite</li>
+    <li>Créez un compte (email + mot de passe) et <strong>confirmez l'email</strong> reçu</li>
+    <li>Connectez-vous, cliquez sur votre <strong>avatar</strong> (en haut à droite)</li>
+    <li>Cliquez sur <strong>« API »</strong> (ou allez sur https://api.imgbb.com)</li>
+    <li>Cliquez sur <strong>« Generate API key »</strong></li>
+    <li>Une clé s'affiche (30 caractères). <strong>Copiez-la</strong> et gardez-la.</li>
+  </ol>
+  <div class="box info">
+    💡 La clé ressemble à : <code>a1b2c3d4e5f6a7b8c9d0e1f2a3b4c5d6</code><br>
+    Elle est gratuite et illimitée. Ne la partagez à personne.
+  </div>
+</div>
+
+<!-- ================= PARTIE 2 ================= -->
+<div class="step once" id="p2">
+  <span class="badge once">⚠️ Une seule fois</span>
+  <h2>2️⃣ Enregistrer la clé dans le panneau admin</h2>
+  <p class="sub">Le panneau admin est caché dans votre site.</p>
+
+  <h3 style="margin:12px 0 6px;font-size:15px;">Sur téléphone 📱</h3>
+  <ol>
+    <li>Ouvrez <strong>votre site en ligne</strong> sur le téléphone</li>
+    <li>Appuyez sur le menu <strong>☰</strong> (en haut à droite)</li>
+    <li>Allez dans <strong>« Mentions légales »</strong></li>
+    <li>Descendez <strong>tout en bas</strong> de la page</li>
+    <li>Appuyez sur le petit <strong>⚙ Admin</strong></li>
+  </ol>
+
+  <h3 style="margin:12px 0 6px;font-size:15px;">Sur ordinateur 💻</h3>
+  <ol>
+    <li>Ouvrez <strong>nos-prestations.html</strong> (ou le site en ligne)</li>
+    <li>Appuyez sur <span class="kbd">Ctrl</span> + <span class="kbd">Maj</span> + <span class="kbd">A</span></li>
+  </ol>
+
+  <div class="phone-sim">
+    <div class="screen">
+      <strong style="color:#1d5d5d;">⚙️ Administration</strong><br><br>
+      <em>Mot de passe :</em>
+      <div style="border:1px solid #ccc;border-radius:8px;padding:8px;margin:4px 0;background:#fafafa;">••••••••</div>
+      <div class="btn-demo">Se connecter</div><br><br>
+      <em>Clé API ImgBB :</em>
+      <div style="border:1px solid #ccc;border-radius:8px;padding:8px;margin:4px 0;background:#fafafa;">Collez votre clé ici…</div>
+      <div class="btn-demo">🔑 Enregistrer ma clé</div>
+    </div>
+  </div>
+
+  <ol start="6">
+    <li>Mot de passe : <strong>rance2024</strong> → <strong>« Se connecter »</strong></li>
+    <li>Section <strong>« ☁️ Publication automatique »</strong> : collez votre clé ImgBB</li>
+    <li>Cliquez <strong>« 🔑 Enregistrer ma clé »</strong> → message <span style="color:#1d7a3e;font-weight:700;">« ✅ Clé valide et enregistrée ! »</span></li>
+    <li>Cliquez <strong>« 💾 Télécharger le site configuré »</strong> → un fichier se télécharge</li>
+  </ol>
+  <div class="box warn">
+    ⚠️ <strong>IMPORTANT</strong> : ce fichier téléchargé doit remplacer l'ancien
+    sur votre hébergeur (étape 3). C'est lui qui contient votre clé.
+  </div>
+</div>
+
+<!-- ================= PARTIE 3 ================= -->
+<div class="step once" id="p3">
+  <span class="badge once">⚠️ Une seule fois</span>
+  <h2>3️⃣ Mettre le site configuré en ligne</h2>
+  <p class="sub">Remplacez simplement le fichier sur votre hébergeur.</p>
+
+  <h3 style="margin:12px 0 6px;font-size:15px;">Avec FileZilla (LWS, OVH…) 📁</h3>
+  <ol>
+    <li>Ouvrez <strong>FileZilla</strong> et connectez-vous (identifiants FTP)</li>
+    <li>À droite : ouvrez le dossier du site (souvent <code>www/</code>)</li>
+    <li>Glissez le fichier téléchargé <strong>par-dessus</strong> l'ancien</li>
+    <li>« Écraser ? » → <strong>Oui</strong></li>
+  </ol>
+
+  <h3 style="margin:12px 0 6px;font-size:15px;">Avec GitHub Pages 🐙</h3>
+  <ol>
+    <li>Sur github.com, ouvrez votre dépôt</li>
+    <li>Cliquez <strong>« Add file » → « Upload files »</strong></li>
+    <li>Glissez le fichier téléchargé par-dessus l'ancien (remplacement)</li>
+    <li><strong>Commit changes</strong></li>
+  </ol>
+
+  <div class="box ok">
+    ✅ Une fois fait : <strong>c'est terminé pour toujours !</strong>
+    Vous n'aurez plus jamais besoin de remettre le site en ligne.
+  </div>
+</div>
+
+<!-- ================= PARTIE 4 ================= -->
+<div class="step each" id="p4">
+  <span class="badge each">✅ À chaque fois — 30 secondes</span>
+  <h2>4️⃣ Ajouter et publier une photo</h2>
+
+  <h3 style="margin:12px 0 6px;font-size:15px;">Étape A — Ouvrir le panneau</h3>
+  <p style="font-size:14px;">
+    Téléphone : <strong>☰ Menu → Mentions légales → ⚙ Admin</strong><br>
+    PC : <span class="kbd">Ctrl</span> + <span class="kbd">Maj</span> + <span class="kbd">A</span> → mot de passe <strong>rance2024</strong>
+  </p>
+
+  <h3 style="margin:14px 0 6px;font-size:15px;">Étape B — Ajouter la photo</h3>
+  <ol>
+    <li>Choisissez la galerie : <strong>Maçonnerie, Isolation, Menuiseries, Sols ou Peinture</strong></li>
+    <li>
+      <strong>📷 Prendre une photo</strong> (téléphone : la caméra s'ouvre directement)
+      <span class="arrow">→</span> ou cliquez sur la <strong>zone en pointillés</strong> pour choisir dans vos photos
+    </li>
+    <li>La photo apparaît avec le badge <strong style="background:#7ec6c6;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">NOUVEAU</strong></li>
+  </ol>
+
+  <h3 style="margin:14px 0 6px;font-size:15px;">Étape C — Publier</h3>
+  <ol>
+    <li>Cliquez sur <strong>« 📤 Publier mes photos »</strong></li>
+    <li>Patientez 2-3 secondes…</li>
+    <li>Le badge passe à <strong style="background:#1d7a3e;color:#fff;padding:2px 8px;border-radius:10px;font-size:11px;">EN LIGNE ✓</strong></li>
+  </ol>
+
+  <div class="phone-sim">
+    <div class="screen">
+      <strong style="color:#1d5d5d;">☁️ Publication automatique</strong><br><br>
+      <div class="btn-demo" style="width:100%;text-align:center;">📤 Publier mes photos</div>
+      <div style="font-size:12px;color:#1d7a3e;margin-top:8px;font-weight:700;">✅ 2 photo(s) publiée(s) !</div>
+    </div>
+  </div>
+
+  <h3 style="margin:14px 0 6px;font-size:15px;">Étape D — Vérifier en ligne</h3>
+  <ol>
+    <li>Ouvrez votre site → rechargez (<span class="kbd">F5</span> ou <span class="kbd">Ctrl</span>+<span class="kbd">F5</span>)</li>
+    <li>Allez dans la galerie → <strong>la photo est là !</strong> 🎉</li>
+  </ol>
+  <div class="box info">
+    ⏱️ Si la photo n'apparaît pas tout de suite : attendez <strong>2 à 5 minutes</strong>
+    (le site garde un cache court) puis rechargez.
+  </div>
+</div>
+
+<!-- ================= PARTIE 5 ================= -->
+<div class="step" id="p5">
+  <span class="badge each">🆘 En cas de problème</span>
+  <h2>5️⃣ Dépannage</h2>
+
+  <div class="box warn">
+    <strong>« Clé invalide »</strong> → Re-vérifiez la clé (30 caractères, sans espaces).
+    Régénérez-la sur imgbb.com → API → Generate key.
+  </div>
+  <div class="box warn">
+    <strong>« Impossible de contacter ImgBB »</strong> → Vérifiez votre connexion Internet, réessayez.
+  </div>
+  <div class="box warn">
+    <strong>« Aucune nouvelle photo à publier »</strong> → Ajoutez d'abord des photos (étape B), puis publiez.
+  </div>
+  <div class="box warn">
+    <strong>La photo n'apparaît pas en ligne</strong> → 1) Avez-vous mis le « site configuré » en ligne (Partie 3) ?
+    2) Attendez 2-5 min. 3) Rechargez avec Ctrl+F5.
+  </div>
+  <div class="box warn">
+    <strong>Je ne trouve pas le ⚙ Admin</strong> → Il est tout en bas de la page
+    <strong>Mentions légales</strong>, en petit et gris. Descendez tout en bas !
+  </div>
+</div>
+
+<footer class="tuto">
+  📸 RANCE RENOVATION — Tutoriel d'ajout de photos<br>
+  Une fois configuré : téléphone → ⚙ Admin → 📷 photo → 📤 Publier → c'est en ligne !
+</footer>
+
+</div>
+</body>
+</html>

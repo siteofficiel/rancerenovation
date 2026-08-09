@@ -1646,6 +1646,84 @@ img { max-width: 100%; height: auto; }
   .footer-admin { font-size: 12px; opacity: .6; }
 }
 
+/* ------------------------------------------------------------
+   FLUX FACEBOOK (publications en temps réel)
+   ------------------------------------------------------------ */
+.actus-fb-feed {
+  max-width: 620px;
+  margin: 0 auto 50px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.10);
+  border: 1px solid #e8eaec;
+  overflow: hidden;
+}
+.actus-fb-feed-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #f7f9fa, #eef1f3);
+  border-bottom: 1px solid #e8eaec;
+}
+.actus-fb-feed .actus-fb-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #1877f2;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.actus-fb-feed .actus-fb-logo svg { width: 24px; height: 24px; }
+.actus-fb-feed .actus-fb-infos { flex: 1; min-width: 0; }
+.actus-fb-feed .actus-fb-infos strong {
+  display: block;
+  font-family: Lato, Arial, sans-serif;
+  font-size: 15.5px;
+  color: #1a1a1a;
+}
+.actus-fb-feed .actus-fb-infos span { font-size: 12.5px; color: #777; }
+.actus-fb-feed .actus-fb-follow {
+  display: inline-flex;
+  align-items: center;
+  background: #1877f2;
+  color: #fff !important;
+  font-family: Lato, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 30px;
+  text-decoration: none !important;
+  transition: background .3s;
+}
+.actus-fb-feed .actus-fb-follow:hover { background: #1466d4; }
+.actus-fb-feed .fb-page { width: 100% !important; }
+.actus-fb-feed .fb-page iframe { border: 0; width: 100% !important; }
+.actus-fb-fallback {
+  padding: 30px 20px;
+  text-align: center;
+  font-size: 14.5px;
+  color: #555;
+}
+.actus-fb-fallback a {
+  display: inline-block;
+  margin-top: 12px;
+  background: #1877f2;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.actus-fb-fallback a:hover { background: #1466d4; }
+@media (max-width: 767px) {
+  .actus-fb-feed { max-width: 100%; border-radius: 14px; }
+  .actus-fb-feed-head { padding: 12px 14px; }
+}
+
 /* ============================================================
    PANNEAU ADMINISTRATEUR — ajout de photos
    ============================================================ */
@@ -2430,6 +2508,49 @@ img { max-width: 100%; height: auto; }
         </a>
       </div>
 
+      <!-- Flux Facebook officiel : publications en temps réel -->
+      <div class="actus-fb-feed">
+        <div class="actus-fb-feed-head">
+          <div class="actus-fb-logo">
+            <svg viewBox="0 0 24 24" fill="currentColor"><path d="M13.5 21v-8h2.7l.4-3.2h-3.1V7.7c0-.9.3-1.6 1.6-1.6h1.7V3.2c-.3 0-1.3-.1-2.5-.1-2.5 0-4.2 1.5-4.2 4.3v2.4H7.4V13h2.7v8h3.4z"/></svg>
+          </div>
+          <div class="actus-fb-infos">
+            <strong>RANCE RENOVATION</strong>
+            <span>Dernières publications — mises à jour automatiques</span>
+          </div>
+          <a class="actus-fb-follow" href="https://www.facebook.com/people/Rance-R%C3%A9novation/61568768357167/" target="_blank" rel="noopener">Suivre</a>
+        </div>
+        <div id="fb-root"></div>
+        <div class="fb-page"
+             data-href="https://www.facebook.com/people/Rance-R%C3%A9novation/61568768357167/"
+             data-tabs="timeline"
+             data-width="500"
+             data-height="700"
+             data-small-header="true"
+             data-adapt-container-width="true"
+             data-hide-cover="false"
+             data-show-facepile="false">
+        </div>
+        <div class="actus-fb-fallback" id="fb-fallback" style="display:none;">
+          <p>Le flux Facebook ne peut pas s&rsquo;afficher ici (page privée ou région bloquée).</p>
+          <a href="https://www.facebook.com/people/Rance-R%C3%A9novation/61568768357167/" target="_blank" rel="noopener">👉 Voir notre page Facebook</a>
+        </div>
+      </div>
+
+      <!-- SDK Facebook : affiche le flux (chargé une seule fois) -->
+      <script async defer crossorigin="anonymous" src="https://connect.facebook.net/fr_FR/sdk.js#xfbml=1&version=v19.0"></script>
+      <script>
+      (function () {
+        setTimeout(function () {
+          var page = document.querySelector('.fb-page');
+          var fallback = document.getElementById('fb-fallback');
+          if (fallback && page && !page.querySelector('iframe')) {
+            fallback.style.display = 'block';
+          }
+        }, 8000);
+      })();
+      </script>
+
     </div>
   </main>
 <!-- ==================== PIED DE PAGE ==================== -->
@@ -2948,10 +3069,13 @@ img { max-width: 100%; height: auto; }
     downloadBlob(blob, name);
   }
   function currentPageHtml() {
+    /* IMPORTANT : supprimer le panneau et le toast du DOM avant la sérialisation.
+       Sinon ils sont inclus dans le fichier téléchargé, et au chargement
+       du fichier le script ne rattache pas leurs événements → panneau inerte. */
     var overlay = document.getElementById('admin-overlay');
     var toastEl = document.getElementById('admin-toast');
-    if (overlay) overlay.classList.remove('open');
-    if (toastEl) toastEl.classList.remove('show');
+    if (overlay) overlay.remove();
+    if (toastEl) toastEl.remove();
     var errBox = document.getElementById('admin-error');
     if (errBox) errBox.textContent = '';
     var passInput = document.getElementById('admin-pass');
@@ -2991,7 +3115,14 @@ img { max-width: 100%; height: auto; }
   /* ---------- Construire le panneau ---------- */
   function buildPanel() {
     var overlay = document.getElementById('admin-overlay');
-    if (overlay) return overlay;
+    if (overlay) {
+      /* Si un panneau existe déjà dans le HTML (cas des anciens fichiers
+         téléchargés), on le SUPPRIME pour le recréer avec ses événements. */
+      overlay.remove();
+      var oldToast = document.getElementById('admin-toast');
+      if (oldToast) oldToast.remove();
+      overlay = null;
+    }
 
     overlay = el('div', 'admin-overlay');
     overlay.id = 'admin-overlay';
@@ -3511,7 +3642,8 @@ img { max-width: 100%; height: auto; }
   function init() {
     initTrigger();
     initShortcut();
-    buildPanel();
+    /* Le panneau n'est PAS créé au chargement : il n'est construit qu'à
+       l'ouverture (openAdmin). Ainsi il ne pollue jamais le HTML téléchargé. */
     loadStorage();
     if (location.hash === '#admin') {
       setTimeout(openAdmin, 300);
@@ -3526,5 +3658,5 @@ img { max-width: 100%; height: auto; }
 })();
 
 </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a2899ef3b8698aa0',t:'MTc4NjMwODQ5OA=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>

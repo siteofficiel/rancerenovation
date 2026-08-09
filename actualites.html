@@ -1635,6 +1635,17 @@ img { max-width: 100%; height: auto; }
   body { font-size: 12px; }
 }
 
+/* Lien Admin dans le footer (petit et discret) */
+.footer-admin {
+  opacity: .5;
+  font-size: 11px;
+  transition: opacity .3s;
+}
+.footer-admin:hover { opacity: 1; }
+@media (max-width: 767px) {
+  .footer-admin { font-size: 12px; opacity: .6; }
+}
+
 /* ============================================================
    PANNEAU ADMINISTRATEUR — ajout de photos
    ============================================================ */
@@ -2431,6 +2442,7 @@ img { max-width: 100%; height: auto; }
             <li><a href="politique-de-confidentialite.html">Politique de confidentialité</a></li>
             <li><a href="mentions-legales.html">Mentions légales</a></li>
               <li><a href="contactez-nous.html">Contactez-nous</a></li>
+            <li><a href="#" id="admin-trigger" class="footer-admin" title="Administration">⚙ Admin</a></li>
           </ul>
         </nav>
       </div>
@@ -3073,6 +3085,10 @@ img { max-width: 100%; height: auto; }
     container.innerHTML = '';
 
     var sections = document.querySelectorAll('.prestation-section');
+    if (!sections.length) {
+      container.innerHTML = '<div class="art-empty">Aucune galerie sur cette page. Ouvrez le panneau depuis la page « Nos prestations » (ou cliquez sur le lien du menu).</div>';
+      return;
+    }
     sections.forEach(function (section, idx) {
       var titleEl = section.querySelector('.prestation-title');
       var grid = section.querySelector('.media-grid');
@@ -3451,6 +3467,21 @@ img { max-width: 100%; height: auto; }
   /* ---------- Déclencheur discret ---------- */
   function openAdmin() {
     buildPanel();
+    /* Si la page courante n'a pas de galeries (ex: Mentions légales),
+       on va directement sur la page Prestations où se trouvent les galeries. */
+    var hasGalleries = document.querySelectorAll('.prestation-section').length > 0;
+    if (!hasGalleries) {
+      var prestaLink = document.querySelector('#nav-main a[href*="prestations"], .footer-menu a[href*="prestations"], .mobile-nav a[href*="prestations"]');
+      if (prestaLink) {
+        prestaLink.click();
+        setTimeout(function () {
+          document.getElementById('admin-overlay').classList.add('open');
+          var pass = document.getElementById('admin-pass');
+          if (pass) setTimeout(function () { pass.focus(); }, 100);
+        }, 600);
+        return;
+      }
+    }
     document.getElementById('admin-overlay').classList.add('open');
     var pass = document.getElementById('admin-pass');
     if (pass) setTimeout(function () { pass.focus(); }, 100);

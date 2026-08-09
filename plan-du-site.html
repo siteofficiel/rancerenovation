@@ -4,10 +4,15 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Plan du site - RANCE RENOVATION</title>
-  <meta name="description" content="Plan du site RANCE RENOVATION.">
+  <meta name="description" content="Plan du site RANCE RENOVATION : entité, hébergement, propriété intellectuelle, responsabilité, cookies, données nominatives."> : maçonnerie, isolation/plâtrerie, menuiseries extérieures, revêtements de sols et peinture.">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+  <link rel="icon" type="image/png" sizes="48x48" href="favicon-48.png">
+  <link rel="icon" type="image/png" sizes="64x64" href="favicon.png">
+  <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
   <style>
 /* ============================================================
    RANCE RENOVATION — Design épuré
@@ -1630,6 +1635,17 @@ img { max-width: 100%; height: auto; }
   body { font-size: 12px; }
 }
 
+/* Lien Admin dans le footer (petit et discret) */
+.footer-admin {
+  opacity: .5;
+  font-size: 11px;
+  transition: opacity .3s;
+}
+.footer-admin:hover { opacity: 1; }
+@media (max-width: 767px) {
+  .footer-admin { font-size: 12px; opacity: .6; }
+}
+
 /* ============================================================
    PANNEAU ADMINISTRATEUR — ajout de photos
    ============================================================ */
@@ -2232,26 +2248,9 @@ img { max-width: 100%; height: auto; }
 </style>
 </head>
 <body>
-
-  <!-- ==================== BARRE SUPÉRIEURE ==================== -->
-  <div class="topbar">
-    <div class="container topbar-inner">
-
-      <div class="topbar-search">
-        <form role="search" method="get" class="form-search" action="index.html">
-          <label>
-            <span class="screen-reader-text" style="position:absolute;left:-9999px;">Rechercher :</span>
-            <input type="text" name="s" class="search-query" placeholder="Recherche">
-          </label>
-          <button type="submit" class="search-icon" aria-label="Submit Search">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round">
-              <circle cx="11" cy="11" r="7"></circle>
-              <line x1="16.5" y1="16.5" x2="21" y2="21"></line>
-            </svg>
-          </button>
-        </form>
-      </div>
-
+  <!-- ==================== EN-TÊTE ==================== -->
+  <header class="site-header">
+    <div class="container header-top">
       <nav class="topbar-nav" aria-label="Barre supérieure">
         <ul>
           <li><a href="contactez-nous.html">Contactez-nous</a></li>
@@ -2271,12 +2270,7 @@ img { max-width: 100%; height: auto; }
           </a>
         </div>
       </nav>
-
     </div>
-  </div>
-
-  <!-- ==================== EN-TÊTE ==================== -->
-  <header class="site-header">
     <div class="container header-inner">
 
       <div id="logo">
@@ -2287,7 +2281,7 @@ img { max-width: 100%; height: auto; }
 
       <nav id="nav-main" class="main-nav" aria-label="Menu principal">
         <ul>
-          <li><a href="index.html">Accueil</a></li>
+          <li><a href="index.html" >Accueil</a></li>
           <li><a href="a-propos.html">A propos</a></li>
           <li><a href="nos-prestations.html">Nos prestations</a></li>
           <li class="has-children">
@@ -2311,15 +2305,6 @@ img { max-width: 100%; height: auto; }
       </div>
 
       <div id="mobile-nav" class="mobile-nav" aria-label="Menu mobile">
-        <form role="search" method="get" class="form-search" action="index.html">
-          <label>
-            <span style="position:absolute;left:-9999px;">Rechercher :</span>
-            <input type="text" name="s" class="search-query" placeholder="Recherche">
-          </label>
-          <button type="submit" class="search-icon" aria-label="Submit Search">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><circle cx="11" cy="11" r="7"></circle><line x1="16.5" y1="16.5" x2="21" y2="21"></line></svg>
-          </button>
-        </form>
         <ul>
           <li><a href="index.html">Accueil</a></li>
           <li><a href="a-propos.html">A propos de RANCE RENOVATION</a></li>
@@ -2327,16 +2312,14 @@ img { max-width: 100%; height: auto; }
           <li><a href="nos-prestations.html">Nos prestations</a></li>
           <li><a href="nos-realisations.html">Nos réalisations</a></li>
           <li><a href="contactez-nous.html">Contactez-nous</a></li>
-          <li><a href="politique-de-confidentialite.html">Politique de confidentialité</a></li>
-          <li><a href="mentions-legales.html">Mentions légales</a></li>
-          <li><a href="plan-du-site.html">Plan du site</a></li>
         </ul>
       </div>
 
     </div>
   </header>
 
-  <!-- ==================== TITRE DE PAGE ==================== -->
+      
+<!-- ==================== TITRE DE PAGE ==================== -->
   <div class="container">
     <div class="page-title">
       <h1>Plan du site</h1>
@@ -2348,7 +2331,8 @@ img { max-width: 100%; height: auto; }
     </div>
   </div>
 
-  <main class="site-content">
+  
+<main class="site-content">
     <div class="container">
       <div class="placeholder">
         <h2>Plan du site</h2>
@@ -2361,8 +2345,7 @@ img { max-width: 100%; height: auto; }
       </div>
     </div>
   </main>
-
-  <!-- ==================== PIED DE PAGE ==================== -->
+<!-- ==================== PIED DE PAGE ==================== -->
   <footer class="site-footer">
     <div class="container">
       <div class="footer-credits">
@@ -2371,15 +2354,14 @@ img { max-width: 100%; height: auto; }
           <ul>
             <li><a href="politique-de-confidentialite.html">Politique de confidentialité</a></li>
             <li><a href="mentions-legales.html">Mentions légales</a></li>
-            <li><a href="plan-du-site.html">Plan du site</a></li>
-            <li><a href="contactez-nous.html">Contactez-nous</a></li>
+              <li><a href="contactez-nous.html">Contactez-nous</a></li>
+            <li><a href="#" id="admin-trigger" class="footer-admin" title="Administration">⚙ Admin</a></li>
           </ul>
         </nav>
       </div>
     </div>
   </footer>
-
-  <!-- ==================== BANDEAU COOKIES ==================== -->
+<!-- ==================== BANDEAU COOKIES ==================== -->
   <div id="cookie-notice" class="cookie-notice" role="dialog" aria-label="Gestion des cookies">
     <p>Nous utilisons des cookies pour vous garantir la meilleure expérience sur notre site web, seuls les cookies techniques sont obligatoires pour le bon fonctionnement du site.<br>
     Nous vous informons également que nous ne disposons d'aucun outil permettant la traçabilité d'informations au travers de cookies publicitaires ou tiers</p>
@@ -3016,6 +2998,10 @@ img { max-width: 100%; height: auto; }
     container.innerHTML = '';
 
     var sections = document.querySelectorAll('.prestation-section');
+    if (!sections.length) {
+      container.innerHTML = '<div class="art-empty">Aucune galerie sur cette page. Ouvrez le panneau depuis la page « Nos prestations » (ou cliquez sur le lien du menu).</div>';
+      return;
+    }
     sections.forEach(function (section, idx) {
       var titleEl = section.querySelector('.prestation-title');
       var grid = section.querySelector('.media-grid');
@@ -3394,6 +3380,21 @@ img { max-width: 100%; height: auto; }
   /* ---------- Déclencheur discret ---------- */
   function openAdmin() {
     buildPanel();
+    /* Si la page courante n'a pas de galeries (ex: Mentions légales),
+       on va directement sur la page Prestations où se trouvent les galeries. */
+    var hasGalleries = document.querySelectorAll('.prestation-section').length > 0;
+    if (!hasGalleries) {
+      var prestaLink = document.querySelector('#nav-main a[href*="prestations"], .footer-menu a[href*="prestations"], .mobile-nav a[href*="prestations"]');
+      if (prestaLink) {
+        prestaLink.click();
+        setTimeout(function () {
+          document.getElementById('admin-overlay').classList.add('open');
+          var pass = document.getElementById('admin-pass');
+          if (pass) setTimeout(function () { pass.focus(); }, 100);
+        }, 600);
+        return;
+      }
+    }
     document.getElementById('admin-overlay').classList.add('open');
     var pass = document.getElementById('admin-pass');
     if (pass) setTimeout(function () { pass.focus(); }, 100);

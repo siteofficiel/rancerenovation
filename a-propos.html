@@ -1925,6 +1925,40 @@ img { max-width: 100%; height: auto; }
   min-height: 20px;
 }
 
+/* ---------- Bloc mise à jour en ligne (pack photos) ---------- */
+.admin-online {
+  background: #eef7f7;
+  border: 1px solid #cfe6e6;
+  border-radius: 12px;
+  padding: 20px 22px;
+  margin-bottom: 18px;
+}
+.admin-online h4 {
+  margin: 0 0 8px;
+  font-size: 17px;
+  color: #1d3d3d;
+  font-family: Lato, Arial, sans-serif;
+}
+.admin-online-desc {
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: #3d5c5c;
+  margin: 0 0 14px;
+}
+.admin-online-desc strong { color: #1d3d3d; }
+.admin-online-actions { display: flex; gap: 10px; flex-wrap: wrap; }
+.admin-gh-status {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #2c5a5a;
+  line-height: 1.6;
+  background: #fff;
+  border-radius: 8px;
+  padding: 10px 14px;
+  border: 1px solid #d8eaea;
+  min-height: 20px;
+}
+
 /* ---------- Bloc Articles (publications en articles) ---------- */
 .admin-articles {
   background: #f4f6fb;
@@ -2287,6 +2321,7 @@ img { max-width: 100%; height: auto; }
 
 
 
+
 <main class="site-content">
     <div class="about-section">
       <div class="about-section-inner">
@@ -2546,16 +2581,11 @@ img { max-width: 100%; height: auto; }
         return;
       }
 
-      /* 1. Publication automatique : lire la liste en ligne (jsonblob) */
-      var source = null;
-      if (ONLINE_PUBLISH && ONLINE_PUBLISH.url) {
-        source = fetch(ONLINE_PUBLISH.url, { cache: 'no-store' })
-          .then(function (r) { if (!r.ok) throw new Error('liste indisponible'); return r.json(); });
-      } else {
-        /* 2. Fallback : photos/photos.json déposé sur l'hébergeur */
-        source = fetch('photos/photos.json', { cache: 'no-store' })
-          .then(function (r) { if (!r.ok) throw new Error('pas de photos.json'); return r.json(); });
-      }
+      /* Fallback : photos/photos.json déposé sur l'hébergeur.
+         Les photos publiées via ImgBB sont déjà intégrées à la page
+         lorsque vous téléchargez le « site configuré ». */
+      var source = fetch('photos/photos.json', { cache: 'no-store' })
+        .then(function (r) { if (!r.ok) throw new Error('pas de photos.json'); return r.json(); });
 
       source.then(function (data) {
           try { localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), data: data })); } catch (e) {}
@@ -2830,41 +2860,6 @@ img { max-width: 100%; height: auto; }
           '</div>' +
           '<div class="admin-sections" id="admin-sections" style="display:none;"></div>' +
         '</div>' +
-        '<div class="admin-articles" id="admin-articles" style="display:none;">' +
-          '<h4>📝 Articles — publications Facebook en version site</h4>' +
-          '<p class="admin-online-desc">Copiez ici le contenu de vos publications Facebook (titre, date, texte, photo). ' +
-          'Le site les affichera en belles cartes d\'articles sur la page Actualités, sans ré-uploader les pages.</p>' +
-          '<div class="art-form">' +
-            '<div class="art-form-row">' +
-              '<input type="text" id="art-title" placeholder="Titre de l\'article (ex : Nouveau chantier à Dinan)" autocomplete="off">' +
-            '</div>' +
-            '<div class="art-form-row">' +
-              '<input type="date" id="art-date" autocomplete="off">' +
-              '<input type="file" id="art-image" accept="image/*" title="Photo de l\'article (optionnel)">' +
-            '</div>' +
-            '<div class="art-form-row">' +
-              '<textarea id="art-text" rows="3" placeholder="Texte de la publication / description du chantier..."></textarea>' +
-            '</div>' +
-            '<div class="art-form-row art-form-actions">' +
-              '<button type="button" class="admin-btn" id="art-add">➕ Ajouter l\'article</button>' +
-            '</div>' +
-          '</div>' +
-          '<div class="art-list" id="art-list"></div>' +
-          '<div class="admin-online-actions" style="margin-top:14px;">' +
-            '<button type="button" class="admin-btn" id="art-pack">📦 Générer le pack articles</button>' +
-          '</div>' +
-          '<div class="admin-gh-status" id="art-status"></div>' +
-        '</div>' +
-        '<div class="admin-online" id="admin-online" style="display:none;">' +
-          '<h4>☁️ Mise à jour en ligne (indépendant — n\'importe quel hébergeur)</h4>' +
-          '<p class="admin-online-desc">Une seule fois : déposez le dossier <strong>photos/</strong> (généré ci-dessous) sur votre hébergeur, à côté du site. ' +
-          'Ensuite, à chaque ajout de photo : générez le pack et déposez les <strong>nouveaux fichiers</strong> dans le dossier photos/ ' +
-          '(FTP ou gestionnaire de fichiers). Le site en ligne affichera automatiquement les nouvelles photos — sans jamais ré-uploader le site.</p>' +
-          '<div class="admin-online-actions">' +
-            '<button type="button" class="admin-btn" id="pack-gen">📦 Générer le pack photos (photos.json + images)</button>' +
-          '</div>' +
-          '<div class="admin-gh-status" id="gh-status"></div>' +
-        '</div>' +
         '<div class="admin-autopub" id="admin-autopub" style="display:none;">' +
           '<h4>☁️ Publication automatique en ligne</h4>' +
           '<p class="admin-online-desc">Envoyez vos photos directement en ligne depuis ce panneau : le site les affiche automatiquement, sur n\'importe quel hébergeur. Aucun FTP ni fichier à déposer. Il faut une clé API gratuite ImgBB (2 minutes, voir le guide).</p>' +
@@ -2909,12 +2904,9 @@ img { max-width: 100%; height: auto; }
         document.getElementById('admin-sections').style.display = 'block';
         document.getElementById('admin-footer').style.display = 'flex';
         buildSections();
-        var artBlock = document.getElementById('admin-articles');
-        if (artBlock) artBlock.style.display = 'block';
         var onlineBlock = document.getElementById('admin-online');
         if (onlineBlock) onlineBlock.style.display = 'block';
         wirePackButton();
-        wireArticles();
         wireAutoPub();
       } else {
         errBox.textContent = 'Mot de passe incorrect.';
@@ -3194,180 +3186,7 @@ img { max-width: 100%; height: auto; }
 
 
   /* ============================================================
-     ARTICLES — publications en articles pour le site
-     ============================================================ */
-  var articles = [];
-  var ARTICLES_KEY = 'rance_articles_v1';
-
-  function artStatus(msg) {
-    var s = document.getElementById('art-status');
-    if (s) s.textContent = msg;
-  }
-
-  function wireArticles() {
-    var btn = document.getElementById('art-add');
-    if (!btn || btn.dataset.wired) return;
-    btn.dataset.wired = '1';
-    btn.addEventListener('click', addArticleFromForm);
-    var packBtn = document.getElementById('art-pack');
-    if (packBtn) packBtn.addEventListener('click', generateArticlesPack);
-    loadArticlesStorage();
-    renderArticlesList();
-  }
-
-  function addArticleFromForm() {
-    var title = document.getElementById('art-title').value.trim();
-    var date = document.getElementById('art-date').value;
-    var text = document.getElementById('art-text').value.trim();
-    var fileInput = document.getElementById('art-image');
-    if (!title) { artStatus('⚠️ Indiquez un titre pour l\'article.'); return; }
-
-    var imageSrc = null;
-    var imageName = null;
-    if (fileInput && fileInput.files && fileInput.files[0]) {
-      var file = fileInput.files[0];
-      /* on encode l'image en data URI pour la prévisualisation ; au moment du
-         pack, elle sera téléchargée comme fichier séparé */
-      var reader = new FileReader();
-      reader.onload = function (e) {
-        var img = new Image();
-        img.onload = function () {
-          var canvas = document.createElement('canvas');
-          var scale = Math.min(1, 1000 / img.width);
-          canvas.width = Math.max(1, Math.round(img.width * scale));
-          canvas.height = Math.max(1, Math.round(img.height * scale));
-          var ctx = canvas.getContext('2d');
-          ctx.drawImage(img, 0, 0, canvas.width, canvas.height);
-          imageSrc = canvas.toDataURL('image/jpeg', 0.75);
-          imageName = sanitizeName(file.name || 'article.jpg');
-          pushArticle(title, date, text, imageSrc, imageName);
-        };
-        img.src = e.target.result;
-      };
-      reader.readAsDataURL(file);
-    } else {
-      pushArticle(title, date, text, null, null);
-    }
-  }
-
-  function pushArticle(title, date, text, imageSrc, imageName) {
-    articles.push({
-      id: 'a' + Date.now() + '_' + articles.length,
-      title: title,
-      date: date,
-      text: text,
-      image: imageSrc,
-      imageName: imageName
-    });
-    document.getElementById('art-title').value = '';
-    document.getElementById('art-text').value = '';
-    document.getElementById('art-date').value = '';
-    var fi = document.getElementById('art-image');
-    if (fi) fi.value = '';
-    saveArticlesStorage();
-    renderArticlesList();
-    artStatus('✅ Article ajouté ! Pensez à générer le pack articles (bouton ci-dessous).');
-    toast('📝 Article ajouté !');
-  }
-
-  function renderArticlesList() {
-    var list = document.getElementById('art-list');
-    if (!list) return;
-    list.innerHTML = '';
-    if (!articles.length) {
-      list.innerHTML = '<div class="art-empty">Aucun article pour le moment.</div>';
-      return;
-    }
-    articles.forEach(function (a) {
-      var item = document.createElement('div');
-      item.className = 'art-item';
-      var thumb = a.image ? '<img src="' + a.image + '" alt="">' : '';
-      item.innerHTML =
-        '<div class="art-item-thumb">' + thumb + '</div>' +
-        '<div class="art-item-info">' +
-          '<strong>' + a.title + '</strong>' +
-          '<span>' + (a.date || 'sans date') + '</span>' +
-        '</div>' +
-        '<button type="button" class="thumb-del art-item-del" data-id="' + a.id + '" title="Supprimer">×</button>';
-      item.querySelector('.art-item-del').addEventListener('click', function () {
-        removeArticle(a.id);
-      });
-      list.appendChild(item);
-    });
-  }
-
-  function removeArticle(id) {
-    articles = articles.filter(function (a) { return a.id !== id; });
-    saveArticlesStorage();
-    renderArticlesList();
-    artStatus('Article supprimé.');
-  }
-
-  function saveArticlesStorage() {
-    try {
-      localStorage.setItem(ARTICLES_KEY, JSON.stringify(
-        articles.map(function (a) { return { i: a.id, t: a.title, d: a.date, x: a.text, im: a.image, n: a.imageName }; })
-      ));
-    } catch (e) {}
-  }
-
-  function loadArticlesStorage() {
-    try {
-      var raw = localStorage.getItem(ARTICLES_KEY);
-      if (!raw) return;
-      var data = JSON.parse(raw);
-      if (!Array.isArray(data)) return;
-      data.forEach(function (a) {
-        if (a && a.t) {
-          articles.push({ id: a.i || ('a' + Date.now()), title: a.t, date: a.d || '', text: a.x || '', image: a.im || null, imageName: a.n || null });
-        }
-      });
-    } catch (e) {}
-  }
-
-  function generateArticlesPack() {
-    if (!articles.length) {
-      artStatus('ℹ️ Aucun article à packager. Ajoutez d\'abord des articles.');
-      return;
-    }
-    var stamp = Date.now();
-    var json = {
-      version: 1,
-      generated: new Date().toISOString(),
-      articles: articles.map(function (a) {
-        return {
-          id: a.id,
-          title: a.title,
-          date: a.date || '',
-          text: a.text || '',
-          image: a.image ? ('articles/' + stamp + '-' + a.id.replace(/[^a-zA-Z0-9]/g, '') + '-' + (a.imageName || 'img.jpg')) : null
-        };
-      })
-    };
-
-    /* Télécharger articles.json */
-    downloadBlob(new Blob([JSON.stringify(json, null, 2)], { type: 'application/json' }), 'articles.json');
-    artStatus('📦 articles.json généré. Téléchargement des images…');
-
-    /* Télécharger les images des articles */
-    var delay = 0;
-    articles.forEach(function (a, i) {
-      if (!a.image) return;
-      var name = json.articles[i].image.split('/').pop();
-      setTimeout(function () {
-        downloadBlob(dataUriToBlob(a.image), name);
-      }, delay);
-      delay += 400;
-    });
-
-    setTimeout(function () {
-      artStatus('✅ Pack articles généré : déposez articles.json et les images dans le dossier articles/ de votre hébergeur, à côté du site. Les articles apparaîtront sur la page Actualités.');
-      toast('📦 Pack articles généré !');
-    }, delay + 500);
-  }
-
-  /* ============================================================
-     PUBLICATION AUTOMATIQUE (sans FTP) — ImgBB + jsonblob
+     PUBLICATION AUTOMATIQUE (sans FTP) — ImgBB uniquement
      ============================================================ */
   var ONLINE_CFG_KEY = 'rance_online_cfg_v1';
   var onlineCfg = null;
@@ -3394,8 +3213,8 @@ img { max-width: 100%; height: auto; }
     loadOnlineCfg();
     var keyInput = document.getElementById('ap-key');
     if (keyInput && onlineCfg && onlineCfg.imgbbKey) keyInput.value = onlineCfg.imgbbKey;
-    if (onlineCfg && onlineCfg.jsonUrl) {
-      apStatus('✅ Espace de publication prêt. Ajoutez des photos puis cliquez sur « Publier mes photos ».');
+    if (onlineCfg && onlineCfg.imgbbKey) {
+      apStatus('✅ Clé enregistrée. Ajoutez des photos puis cliquez sur « Publier mes photos ».');
     }
 
     document.getElementById('ap-create').addEventListener('click', createOnlineSpace);
@@ -3403,61 +3222,36 @@ img { max-width: 100%; height: auto; }
     document.getElementById('ap-download').addEventListener('click', downloadConfiguredSite);
   }
 
-  /* ---- 1. Créer l'espace de publication (clé ImgBB + stockage JSON) ---- */
+  /* ---- 1. Enregistrer la clé ImgBB ---- */
   function createOnlineSpace() {
     var key = document.getElementById('ap-key').value.trim();
     if (!key) { apStatus('⚠️ Collez votre clé API ImgBB (gratuite sur imgbb.com, onglet API).'); return; }
-
-    apStatus('🔑 Création de l\'espace de publication…');
-
-    /* Créer le stockage JSON (jsonblob, gratuit sans compte) */
-    var initial = {
-      version: 1,
-      generated: new Date().toISOString(),
-      sections: [0, 1, 2, 3, 4].map(function (s) {
-        return { section: s, title: '', photos: [] };
-      })
-    };
-
-    fetch('https://jsonblob.com/api/jsonBlob', {
-      method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify(initial)
-    }).then(function (r) {
-      var loc = r.headers.get('Location') || '';
-      var id = loc.split('/').pop();
-      if (!id) throw new Error('Réponse inattendue');
-      onlineCfg = { imgbbKey: key, jsonUrl: 'https://jsonblob.com/api/jsonBlob/' + id };
-      saveOnlineCfg();
-      apStatus('✅ Espace créé ! Cliquez maintenant sur « Publier mes photos » après chaque ajout. Le site configuré (bouton ci-dessous) doit être mis en ligne UNE fois.');
-      toast('🔑 Espace de publication créé !');
-    }).catch(function () {
-      apStatus('❌ Impossible de créer l\'espace. Vérifiez votre connexion Internet.');
-    });
-  }
-
-  /* ---- 2. Uploader les photos sur ImgBB et mettre à jour la liste ---- */
-  function uploadToImgBB(dataUri, cb) {
-    var parts = dataUri.split(',');
-    var bin = atob(parts[1]);
-    var arr = new Uint8Array(bin.length);
-    for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
-    var blob = new Blob([arr], { type: 'image/jpeg' });
+    /* Vérifier la clé avec un test d\'upload minimal */
+    apStatus('🔑 Vérification de la clé…');
     var fd = new FormData();
-    fd.append('image', blob, 'photo.jpg');
-    fd.append('key', onlineCfg.imgbbKey);
+    fd.append('key', key);
+    fd.append('image', 'R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'); /* pixel GIF 1x1 */
     fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: fd })
       .then(function (r) { return r.json(); })
       .then(function (j) {
-        if (j && j.data && j.data.url) cb(null, j.data.url);
-        else cb((j && j.error && j.error.message) || 'Erreur ImgBB');
+        if (j && j.data && j.data.url) {
+          onlineCfg = { imgbbKey: key };
+          saveOnlineCfg();
+          apStatus('✅ Clé valide et enregistrée ! Ajoutez des photos puis cliquez sur « Publier mes photos ».');
+          toast('🔑 Clé ImgBB enregistrée !');
+        } else {
+          apStatus('❌ Clé invalide. Vérifiez votre clé sur imgbb.com (API).');
+        }
       })
-      .catch(function (e) { cb('Réseau : ' + e.message); });
+      .catch(function () {
+        apStatus('❌ Impossible de contacter ImgBB. Vérifiez votre connexion Internet.');
+      });
   }
 
+  /* ---- 2. Publier les photos sur ImgBB ---- */
   function publishPhotosOnline() {
-    if (!onlineCfg || !onlineCfg.jsonUrl || !onlineCfg.imgbbKey) {
-      apStatus('⚠️ Créez d\'abord votre espace de publication (bouton ci-dessus).');
+    if (!onlineCfg || !onlineCfg.imgbbKey) {
+      apStatus('⚠️ Enregistrez d\'abord votre clé ImgBB (bouton « 🔑 Créer mon espace »).');
       return;
     }
     if (!newPhotos.length) {
@@ -3470,161 +3264,75 @@ img { max-width: 100%; height: auto; }
     var done = 0, ok = 0;
 
     toPublish.forEach(function (p) {
-      uploadToImgBB(p.src, function (err, url) {
-        done++;
-        if (err) {
-          toast('⚠️ Échec upload : ' + err);
-        } else {
-          ok++;
-          /* marquer la photo comme publiée (remplace le src local par l'URL) */
-          p.src = url;
-        }
-        if (done === toPublish.length) {
-          if (ok === 0) {
-            apStatus('❌ Aucune photo envoyée. Vérifiez la clé ImgBB.');
-            return;
+      var parts = p.src.split(',');
+      var bin = atob(parts[1]);
+      var arr = new Uint8Array(bin.length);
+      for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+      var blob = new Blob([arr], { type: 'image/jpeg' });
+      var fd = new FormData();
+      fd.append('image', blob, 'photo.jpg');
+      fd.append('key', onlineCfg.imgbbKey);
+      fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: fd })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          done++;
+          if (j && j.data && j.data.url) {
+            ok++;
+            /* remplacer la vignette locale par l'URL ImgBB */
+            p.src = j.data.url;
+            document.querySelectorAll('.prestation-section')[p.section].querySelectorAll('a[data-added="' + p.id + '"]').forEach(function (a) {
+              a.href = j.data.url;
+              var im = a.querySelector('img');
+              if (im) im.src = j.data.url;
+            });
+            var th = document.querySelector('.admin-section[data-section="' + p.section + '"] .thumb.new[data-id="' + p.id + '"]');
+            if (th) {
+              var tim = th.querySelector('img');
+              if (tim) tim.src = j.data.url;
+              var badge = th.querySelector('.thumb-new-badge');
+              if (badge) badge.textContent = 'EN LIGNE ✓';
+            }
+            /* déplacer vers onlinePhotos */
+            newPhotos = newPhotos.filter(function (x) { return x.id !== p.id; });
+            onlinePhotos.push({ id: p.id, section: p.section, url: j.data.url, path: '' });
+            saveStorage();
+            updateCount();
+          } else {
+            toast('⚠️ Échec upload : ' + ((j && j.error && j.error.message) || 'erreur ImgBB'));
           }
-          updateJsonList(toPublish, ok);
-        }
-      });
+          if (done === toPublish.length) {
+            if (ok > 0) {
+              apStatus('✅ ' + ok + ' photo(s) publiée(s) ! Le site les affiche dès que vous téléversez le site configuré (une seule fois) — ou dans le panneau ci-dessous.');
+              toast('📤 Photos publiées !');
+            } else {
+              apStatus('❌ Aucune photo envoyée. Vérifiez votre clé ImgBB.');
+            }
+          }
+        })
+        .catch(function () {
+          done++;
+          toast('⚠️ Erreur réseau avec ImgBB');
+          if (done === toPublish.length && ok === 0) {
+            apStatus('❌ Échec de l\'envoi. Vérifiez votre connexion.');
+          }
+        });
     });
   }
 
-  function updateJsonList(published, okCount) {
-    apStatus('📝 Mise à jour de la liste en ligne…');
-    fetch(onlineCfg.jsonUrl)
-      .then(function (r) { return r.json(); })
-      .then(function (data) {
-        if (!data || !Array.isArray(data.sections)) throw new Error('Format');
-        published.forEach(function (p) {
-          var sec = data.sections.find(function (s) { return s.section === p.section; });
-          if (!sec) { sec = { section: p.section, title: '', photos: [] }; data.sections.push(sec); }
-          if (sec.photos.indexOf(p.src) === -1) sec.photos.push(p.src);
-        });
-        return fetch(onlineCfg.jsonUrl, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(data)
-        });
-      })
-      .then(function () {
-        /* les photos publiées passent dans onlinePhotos pour ne pas les renvoyer */
-        published.forEach(function (p) {
-          newPhotos = newPhotos.filter(function (x) { return x.id !== p.id; });
-          onlinePhotos.push({ id: p.id, section: p.section, url: p.src, path: '' });
-        });
-        saveStorage();
-        updateCount();
-        apStatus('✅ ' + okCount + ' photo(s) publiée(s) en ligne ! Le site les affiche automatiquement (5 min max de cache).');
-        toast('📤 Photos publiées en ligne !');
-      })
-      .catch(function () {
-        apStatus('❌ Erreur lors de la mise à jour de la liste en ligne.');
-      });
-  }
-
-  /* ---- 3. Télécharger le site avec la config intégrée (1 seule fois) ---- */
+  /* ---- 3. Télécharger le site avec la config (1 seule fois) ---- */
   function downloadConfiguredSite() {
-    if (!onlineCfg || !onlineCfg.jsonUrl) {
-      apStatus('⚠️ Créez d\'abord votre espace de publication.');
+    if (!onlineCfg || !onlineCfg.imgbbKey) {
+      apStatus('⚠️ Enregistrez d\'abord votre clé ImgBB.');
       return;
     }
     var html = currentPageHtml();
-    var cfgJson = JSON.stringify({ url: onlineCfg.jsonUrl });
+    var cfgJson = JSON.stringify({ key: onlineCfg.imgbbKey });
     if (html.indexOf('var ONLINE_PUBLISH = null;') !== -1) {
       html = html.replace('var ONLINE_PUBLISH = null;', 'var ONLINE_PUBLISH = ' + cfgJson + ';');
     }
     downloadHtml(html, OUTPUT_NAME);
-    apStatus('💾 Site configuré téléchargé ! Remplacez-le sur votre hébergeur UNE seule fois. Ensuite, vos photos s\'afficheront automatiquement.');
+    apStatus('💾 Site configuré téléchargé ! Remplacez-le sur votre hébergeur UNE seule fois.');
   }
-
-  /* ============================================================
-     PACK PHOTOS — mise à jour en ligne indépendante
-     ============================================================ */
-  function sanitizeName(n) {
-    n = (n || 'photo.jpg').replace(/[^a-zA-Z0-9._-]/g, '_').toLowerCase();
-    if (!/\.(jpe?g|png)$/i.test(n)) n += '.jpg';
-    return n;
-  }
-
-  function ghStatus(msg) {
-    var s = document.getElementById('gh-status');
-    if (s) s.textContent = msg;
-  }
-
-  function wirePackButton() {
-    var btn = document.getElementById('pack-gen');
-    if (!btn || btn.dataset.wired) return;
-    btn.dataset.wired = '1';
-    btn.addEventListener('click', generatePack);
-  }
-
-  function dataUriToBlob(dataUri) {
-    var parts = dataUri.split(',');
-    var mime = (parts[0].match(/data:([^;]+)/) || [])[1] || 'image/jpeg';
-    var bin = atob(parts[1]);
-    var arr = new Uint8Array(bin.length);
-    for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
-    return new Blob([arr], { type: mime });
-  }
-
-  function downloadBlob(blob, name) {
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = name;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(url); }, 300);
-  }
-
-  function generatePack() {
-    if (!newPhotos.length) {
-      ghStatus('ℹ️ Aucune nouvelle photo à packager. Ajoutez d\'abord des photos dans les galeries.');
-      return;
-    }
-
-    /* --- 1. Construire photos.json --- */
-    var bySection = {};
-    newPhotos.forEach(function (p) {
-      if (!bySection[p.section]) bySection[p.section] = [];
-      bySection[p.section].push(p);
-    });
-
-    var sections = [];
-    var pathByPhoto = {};   /* id photo -> chemin dans le pack */
-    var stamp = Date.now();
-    Object.keys(bySection).forEach(function (secIdx) {
-      var list = bySection[secIdx];
-      var titleEl = document.querySelectorAll('.prestation-section')[parseInt(secIdx, 10)];
-      var title = titleEl ? titleEl.querySelector('.prestation-title').textContent.trim() : 'Section ' + secIdx;
-      var photos = list.map(function (p, i) {
-        return 'photos/s' + secIdx + '/' + stamp + '-' + i + '-' + sanitizeName(p.name);
-      });
-      list.forEach(function (p, i) { pathByPhoto[p.id] = photos[i]; });
-      sections.push({ section: parseInt(secIdx, 10), title: title, photos: photos });
-    });
-
-    var json = { version: 1, generated: new Date().toISOString(), sections: sections };
-
-    /* --- 2. Télécharger photos.json --- */
-    downloadBlob(new Blob([JSON.stringify(json, null, 2)], { type: 'application/json' }), 'photos.json');
-    ghStatus('📦 photos.json généré. Téléchargement des images…');
-
-    /* --- 3. Télécharger chaque image (espacées pour le navigateur) --- */
-    newPhotos.forEach(function (p, i) {
-      var name = pathByPhoto[p.id].split('/').pop();
-      setTimeout(function () {
-        downloadBlob(dataUriToBlob(p.src), name);
-      }, i * 400);
-    });
-
-    setTimeout(function () {
-      ghStatus('✅ Pack généré : déposez photos.json et les images dans le dossier photos/ de votre hébergeur, à côté du site. Les visiteurs verront les nouvelles photos au prochain rechargement.');
-      toast('📦 Pack photos généré !');
-    }, (newPhotos.length * 400) + 500);
-  }
-
 
   /* ---------- Déclencheur discret (en bas de la page Actualités) ---------- */
   function openAdmin() {

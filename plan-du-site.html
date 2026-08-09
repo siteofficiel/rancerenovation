@@ -2017,6 +2017,177 @@ img { max-width: 100%; height: auto; }
   flex-shrink: 0;
 }
 
+/* ---------- Publication automatique en ligne ---------- */
+.admin-autopub {
+  background: #eefbf3;
+  border: 1px solid #c9ebd6;
+  border-radius: 12px;
+  padding: 20px 22px;
+  margin-bottom: 18px;
+}
+.admin-autopub h4 {
+  margin: 0 0 8px;
+  font-size: 17px;
+  color: #1d4d33;
+  font-family: Lato, Arial, sans-serif;
+}
+.admin-autopub .admin-online-desc { color: #3d6d50; }
+.admin-autopub input[type="text"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1.5px solid #bfe0cb;
+  border-radius: 8px;
+  font-size: 14px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  outline: none;
+  box-sizing: border-box;
+  background: #fff;
+}
+.admin-autopub input[type="text"]:focus { border-color: #7ec6c6; }
+
+/* ============================================================
+   ADMIN — VERSION MOBILE / TACTILE (téléphone, tablette)
+   ============================================================ */
+@media (max-width: 767px) {
+  /* Panneau plein écran */
+  .admin-overlay { padding: 0; }
+  .admin-panel {
+    margin: 0;
+    border-radius: 0;
+    min-height: 100vh;
+    box-shadow: none;
+  }
+  .admin-header {
+    padding: 14px 16px;
+    position: sticky;
+    top: 0;
+    z-index: 10;
+  }
+  .admin-header h2 { font-size: 18px; }
+  .admin-header p { font-size: 12px; }
+  .admin-close { font-size: 26px; padding: 8px 12px; }
+
+  .admin-body { padding: 16px 14px 24px; }
+  .admin-footer {
+    padding: 14px 16px;
+    position: sticky;
+    bottom: 0;
+    z-index: 10;
+    box-shadow: 0 -4px 16px rgba(0,0,0,0.08);
+  }
+
+  /* Boutons tactiles : plus grands */
+  .admin-btn {
+    padding: 14px 18px;
+    font-size: 15px;
+    min-height: 48px;
+    width: 100%;
+    margin-bottom: 8px;
+  }
+  .admin-footer .admin-btn { width: auto; flex: 1; }
+  .admin-footer > div:last-child { width: 100%; }
+
+  /* Champs de saisie plus grands */
+  .admin-pass-wrap { width: 100%; max-width: 300px; }
+  .admin-login input[type="password"], .admin-login input[type="text"] {
+    padding: 14px 46px 14px 16px;
+    font-size: 16px;
+  }
+  .admin-pass-toggle { right: 12px; }
+  .admin-pass-toggle svg { width: 22px; height: 22px; }
+
+  /* Sections */
+  .admin-section, .admin-online, .admin-articles, .admin-autopub {
+    padding: 14px;
+    margin-bottom: 14px;
+  }
+  .admin-section h4, .admin-online h4, .admin-articles h4, .admin-autopub h4 {
+    font-size: 15.5px;
+  }
+
+  /* Zone de dépôt : grande et tactile */
+  .admin-dropzone {
+    padding: 34px 16px;
+    font-size: 15px;
+    min-height: 120px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+  }
+  .admin-dropzone .dz-icon { font-size: 44px; }
+  .admin-dropzone .dz-hint { font-size: 12.5px; }
+
+  /* Vignettes plus grandes pour vérifier ses photos */
+  .admin-thumbs .thumb { width: 92px; height: 92px; }
+  .admin-thumbs .thumb .thumb-del {
+    width: 26px;
+    height: 26px;
+    font-size: 15px;
+  }
+
+  /* Articles : champs tactiles */
+  .art-form-row input[type="text"], .art-form-row input[type="date"], .art-form-row textarea {
+    padding: 13px 14px;
+    font-size: 16px;
+  }
+  .art-item { padding: 12px; }
+  .art-item-thumb { width: 56px; height: 56px; }
+
+  /* Toast */
+  .admin-toast {
+    bottom: 90px;
+    left: 12px;
+    right: 12px;
+    transform: none;
+    text-align: center;
+    font-size: 13.5px;
+    padding: 14px 18px;
+  }
+  .admin-toast.show { animation: adminFadeM .3s; }
+  @keyframes adminFadeM { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+}
+
+/* Écrans très petits */
+@media (max-width: 360px) {
+  .admin-header h2 { font-size: 16px; }
+  .admin-body { padding: 12px 10px 20px; }
+  .admin-thumbs .thumb { width: 78px; height: 78px; }
+}
+
+/* Éviter le zoom intempestif sur iPhone (input 16px+) */
+.admin-login input, .admin-login button,
+.art-form-row input, .art-form-row textarea,
+.admin-autopub input {
+  font-size: 16px;
+}
+
+/* Bouton caméra (mobile) */
+.admin-cam-btn {
+  background: #141414;
+  color: #78e8d9;
+  font-size: 14px;
+  padding: 12px 16px;
+  border-radius: 30px;
+  width: auto;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+.admin-cam-btn:hover { background: #2a2a2a; }
+
+/* Engrenage admin : zone tactile suffisante sur mobile */
+@media (max-width: 767px) {
+  .admin-trigger {
+    padding: 12px 18px;
+    font-size: 14px;
+    min-height: 46px;
+  }
+  .admin-trigger svg { width: 18px; height: 18px; }
+  .admin-trigger-wrap { margin: 40px 0 16px; }
+}
+
 </style>
 </head>
 <body>
@@ -2341,6 +2512,10 @@ img { max-width: 100%; height: auto; }
   var CACHE_KEY = 'rance_photos_cache_v1';
   var CACHE_TTL = 5 * 60 * 1000; /* 5 minutes */
 
+  /* Publication automatique : config intégrée au site (remplie par le
+     panneau admin, bouton « Télécharger le site configuré ») */
+  var ONLINE_PUBLISH = null;
+
   function inject(photosJson) {
     if (!photosJson || !Array.isArray(photosJson.sections)) return;
     photosJson.sections.forEach(function (sec) {
@@ -2383,9 +2558,19 @@ img { max-width: 100%; height: auto; }
         inject(cached.data);
         return;
       }
-      fetch('photos/photos.json', { cache: 'no-store' })
-        .then(function (r) { if (!r.ok) throw new Error('pas de photos.json'); return r.json(); })
-        .then(function (data) {
+
+      /* 1. Publication automatique : lire la liste en ligne (jsonblob) */
+      var source = null;
+      if (ONLINE_PUBLISH && ONLINE_PUBLISH.url) {
+        source = fetch(ONLINE_PUBLISH.url, { cache: 'no-store' })
+          .then(function (r) { if (!r.ok) throw new Error('liste indisponible'); return r.json(); });
+      } else {
+        /* 2. Fallback : photos/photos.json déposé sur l'hébergeur */
+        source = fetch('photos/photos.json', { cache: 'no-store' })
+          .then(function (r) { if (!r.ok) throw new Error('pas de photos.json'); return r.json(); });
+      }
+
+      source.then(function (data) {
           try { localStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), data: data })); } catch (e) {}
           inject(data);
         })
@@ -2471,15 +2656,15 @@ img { max-width: 100%; height: auto; }
        et on remplace ceux qui ont le même id (pas de doublon). */
     data.articles.forEach(function (art) {
       if (!art || !art.title) return;
-      var card = buildArticleCard(art);
+      /* Si l'article existe déjà dans la page (carte statique embarquée),
+         on le GARDE : les images intégrées sont déjà les bonnes.
+         Le JSON sert uniquement à AJOUTER les nouveaux articles. */
       var existing = null;
       if (art.id) {
         existing = zone.querySelector('.actus-card[data-id="' + art.id + '"]');
       }
-      if (existing) {
-        existing.replaceWith(card);
-      } else {
-        zone.appendChild(card);
+      if (!existing) {
+        zone.appendChild(buildArticleCard(art));
       }
     });
 
@@ -2693,6 +2878,17 @@ img { max-width: 100%; height: auto; }
           '</div>' +
           '<div class="admin-gh-status" id="gh-status"></div>' +
         '</div>' +
+        '<div class="admin-autopub" id="admin-autopub" style="display:none;">' +
+          '<h4>☁️ Publication automatique en ligne</h4>' +
+          '<p class="admin-online-desc">Envoyez vos photos directement en ligne depuis ce panneau : le site les affiche automatiquement, sur n\'importe quel hébergeur. Aucun FTP ni fichier à déposer. Il faut une clé API gratuite ImgBB (2 minutes, voir le guide).</p>' +
+          '<div class="art-form-row"><input type="text" id="ap-key" placeholder="Clé API ImgBB (gratuite sur imgbb.com)" autocomplete="off"></div>' +
+          '<div class="admin-online-actions">' +
+            '<button type="button" class="admin-btn" id="ap-create">🔑 Créer mon espace de publication</button>' +
+            '<button type="button" class="admin-btn" id="ap-publish">📤 Publier mes photos</button>' +
+            '<button type="button" class="admin-btn dark" id="ap-download">💾 Télécharger le site configuré (1 seule fois)</button>' +
+          '</div>' +
+          '<div class="admin-gh-status" id="ap-status"></div>' +
+        '</div>' +
         '<div class="admin-footer" id="admin-footer" style="display:none;">' +
           '<div class="admin-info"><span class="count" id="admin-count">0</span> photo(s) ajoutée(s) — elles seront incluses dans le fichier téléchargé.</div>' +
           '<div style="display:flex;gap:10px;flex-wrap:wrap;">' +
@@ -2732,6 +2928,7 @@ img { max-width: 100%; height: auto; }
         if (onlineBlock) onlineBlock.style.display = 'block';
         wirePackButton();
         wireArticles();
+        wireAutoPub();
       } else {
         errBox.textContent = 'Mot de passe incorrect.';
         passInput.select();
@@ -2798,7 +2995,28 @@ img { max-width: 100%; height: auto; }
       fileInput.type = 'file';
       fileInput.accept = 'image/*';
       fileInput.multiple = true;
+      fileInput.id = 'file-input-' + idx;
       dz.appendChild(fileInput);
+
+      /* Bouton caméra (mobile) : prend une photo directement */
+      var camBtn = el('button', 'admin-btn admin-cam-btn', '📷 Prendre une photo (téléphone)');
+      camBtn.type = 'button';
+      camBtn.style.marginTop = '10px';
+      var camInput = el('input');
+      camInput.type = 'file';
+      camInput.accept = 'image/*';
+      camInput.capture = 'environment';   /* ouvre la caméra arrière sur mobile */
+      camInput.style.display = 'none';
+      camBtn.appendChild(camInput);
+      camBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        camInput.click();
+      });
+      camInput.addEventListener('change', function () {
+        handleFiles(idx, camInput.files);
+        camInput.value = '';
+      });
+      dz.appendChild(camBtn);
 
       dz.addEventListener('click', function () { fileInput.click(); });
       dz.addEventListener('dragover', function (e) { e.preventDefault(); dz.classList.add('dragover'); });
@@ -3159,6 +3377,178 @@ img { max-width: 100%; height: auto; }
       artStatus('✅ Pack articles généré : déposez articles.json et les images dans le dossier articles/ de votre hébergeur, à côté du site. Les articles apparaîtront sur la page Actualités.');
       toast('📦 Pack articles généré !');
     }, delay + 500);
+  }
+
+  /* ============================================================
+     PUBLICATION AUTOMATIQUE (sans FTP) — ImgBB + jsonblob
+     ============================================================ */
+  var ONLINE_CFG_KEY = 'rance_online_cfg_v1';
+  var onlineCfg = null;
+
+  function apStatus(msg) {
+    var s = document.getElementById('ap-status');
+    if (s) s.textContent = msg;
+  }
+
+  function loadOnlineCfg() {
+    try { onlineCfg = JSON.parse(localStorage.getItem(ONLINE_CFG_KEY) || 'null'); } catch (e) { onlineCfg = null; }
+  }
+  function saveOnlineCfg() {
+    try { localStorage.setItem(ONLINE_CFG_KEY, JSON.stringify(onlineCfg)); } catch (e) {}
+  }
+
+  function wireAutoPub() {
+    var block = document.getElementById('admin-autopub');
+    if (!block) return;
+    block.style.display = 'block';
+    if (block.dataset.wired) return;
+    block.dataset.wired = '1';
+
+    loadOnlineCfg();
+    var keyInput = document.getElementById('ap-key');
+    if (keyInput && onlineCfg && onlineCfg.imgbbKey) keyInput.value = onlineCfg.imgbbKey;
+    if (onlineCfg && onlineCfg.jsonUrl) {
+      apStatus('✅ Espace de publication prêt. Ajoutez des photos puis cliquez sur « Publier mes photos ».');
+    }
+
+    document.getElementById('ap-create').addEventListener('click', createOnlineSpace);
+    document.getElementById('ap-publish').addEventListener('click', publishPhotosOnline);
+    document.getElementById('ap-download').addEventListener('click', downloadConfiguredSite);
+  }
+
+  /* ---- 1. Créer l'espace de publication (clé ImgBB + stockage JSON) ---- */
+  function createOnlineSpace() {
+    var key = document.getElementById('ap-key').value.trim();
+    if (!key) { apStatus('⚠️ Collez votre clé API ImgBB (gratuite sur imgbb.com, onglet API).'); return; }
+
+    apStatus('🔑 Création de l\'espace de publication…');
+
+    /* Créer le stockage JSON (jsonblob, gratuit sans compte) */
+    var initial = {
+      version: 1,
+      generated: new Date().toISOString(),
+      sections: [0, 1, 2, 3, 4].map(function (s) {
+        return { section: s, title: '', photos: [] };
+      })
+    };
+
+    fetch('https://jsonblob.com/api/jsonBlob', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(initial)
+    }).then(function (r) {
+      var loc = r.headers.get('Location') || '';
+      var id = loc.split('/').pop();
+      if (!id) throw new Error('Réponse inattendue');
+      onlineCfg = { imgbbKey: key, jsonUrl: 'https://jsonblob.com/api/jsonBlob/' + id };
+      saveOnlineCfg();
+      apStatus('✅ Espace créé ! Cliquez maintenant sur « Publier mes photos » après chaque ajout. Le site configuré (bouton ci-dessous) doit être mis en ligne UNE fois.');
+      toast('🔑 Espace de publication créé !');
+    }).catch(function () {
+      apStatus('❌ Impossible de créer l\'espace. Vérifiez votre connexion Internet.');
+    });
+  }
+
+  /* ---- 2. Uploader les photos sur ImgBB et mettre à jour la liste ---- */
+  function uploadToImgBB(dataUri, cb) {
+    var parts = dataUri.split(',');
+    var bin = atob(parts[1]);
+    var arr = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    var blob = new Blob([arr], { type: 'image/jpeg' });
+    var fd = new FormData();
+    fd.append('image', blob, 'photo.jpg');
+    fd.append('key', onlineCfg.imgbbKey);
+    fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: fd })
+      .then(function (r) { return r.json(); })
+      .then(function (j) {
+        if (j && j.data && j.data.url) cb(null, j.data.url);
+        else cb((j && j.error && j.error.message) || 'Erreur ImgBB');
+      })
+      .catch(function (e) { cb('Réseau : ' + e.message); });
+  }
+
+  function publishPhotosOnline() {
+    if (!onlineCfg || !onlineCfg.jsonUrl || !onlineCfg.imgbbKey) {
+      apStatus('⚠️ Créez d\'abord votre espace de publication (bouton ci-dessus).');
+      return;
+    }
+    if (!newPhotos.length) {
+      apStatus('ℹ️ Aucune nouvelle photo à publier. Ajoutez d\'abord des photos dans les galeries.');
+      return;
+    }
+
+    var toPublish = newPhotos.slice();
+    apStatus('📤 Envoi de ' + toPublish.length + ' photo(s) sur ImgBB…');
+    var done = 0, ok = 0;
+
+    toPublish.forEach(function (p) {
+      uploadToImgBB(p.src, function (err, url) {
+        done++;
+        if (err) {
+          toast('⚠️ Échec upload : ' + err);
+        } else {
+          ok++;
+          /* marquer la photo comme publiée (remplace le src local par l'URL) */
+          p.src = url;
+        }
+        if (done === toPublish.length) {
+          if (ok === 0) {
+            apStatus('❌ Aucune photo envoyée. Vérifiez la clé ImgBB.');
+            return;
+          }
+          updateJsonList(toPublish, ok);
+        }
+      });
+    });
+  }
+
+  function updateJsonList(published, okCount) {
+    apStatus('📝 Mise à jour de la liste en ligne…');
+    fetch(onlineCfg.jsonUrl)
+      .then(function (r) { return r.json(); })
+      .then(function (data) {
+        if (!data || !Array.isArray(data.sections)) throw new Error('Format');
+        published.forEach(function (p) {
+          var sec = data.sections.find(function (s) { return s.section === p.section; });
+          if (!sec) { sec = { section: p.section, title: '', photos: [] }; data.sections.push(sec); }
+          if (sec.photos.indexOf(p.src) === -1) sec.photos.push(p.src);
+        });
+        return fetch(onlineCfg.jsonUrl, {
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(data)
+        });
+      })
+      .then(function () {
+        /* les photos publiées passent dans onlinePhotos pour ne pas les renvoyer */
+        published.forEach(function (p) {
+          newPhotos = newPhotos.filter(function (x) { return x.id !== p.id; });
+          onlinePhotos.push({ id: p.id, section: p.section, url: p.src, path: '' });
+        });
+        saveStorage();
+        updateCount();
+        apStatus('✅ ' + okCount + ' photo(s) publiée(s) en ligne ! Le site les affiche automatiquement (5 min max de cache).');
+        toast('📤 Photos publiées en ligne !');
+      })
+      .catch(function () {
+        apStatus('❌ Erreur lors de la mise à jour de la liste en ligne.');
+      });
+  }
+
+  /* ---- 3. Télécharger le site avec la config intégrée (1 seule fois) ---- */
+  function downloadConfiguredSite() {
+    if (!onlineCfg || !onlineCfg.jsonUrl) {
+      apStatus('⚠️ Créez d\'abord votre espace de publication.');
+      return;
+    }
+    var html = currentPageHtml();
+    var cfgJson = JSON.stringify({ url: onlineCfg.jsonUrl });
+    if (html.indexOf('var ONLINE_PUBLISH = null;') !== -1) {
+      html = html.replace('var ONLINE_PUBLISH = null;', 'var ONLINE_PUBLISH = ' + cfgJson + ';');
+    }
+    downloadHtml(html, OUTPUT_NAME);
+    apStatus('💾 Site configuré téléchargé ! Remplacez-le sur votre hébergeur UNE seule fois. Ensuite, vos photos s\'afficheront automatiquement.');
   }
 
   /* ============================================================

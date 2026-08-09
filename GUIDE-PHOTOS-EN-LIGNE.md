@@ -167,3 +167,116 @@ connecté ni clé API. Le script récupère donc les **photos** des posts et les
 associe à des articles types. Pour les textes exacts de vos publications,
 utilisez le panneau admin (section « 📝 Articles ») — le pack se dépose de
 la même façon dans `articles/`.
+
+---
+
+# ☁️ NOUVEAU : Publication automatique (sans FTP, sans GitHub)
+
+Désormais, vous pouvez **publier vos photos en un clic** depuis le panneau
+admin : elles apparaissent sur le site en ligne **sans rien déposer**
+sur l'hébergeur. Ça fonctionne sur **n'importe quel hébergeur** (LWS, OVH,
+GitHub Pages, etc.).
+
+## ⚙️ Configuration initiale (UNE SEULE FOIS, ~5 minutes)
+
+### 1. Obtenir une clé API ImgBB (gratuite)
+1. Allez sur **https://imgbb.com** → créez un compte gratuit
+2. Connectez-vous → cliquez sur votre avatar → **API** (ou https://api.imgbb.com)
+3. Cliquez sur **Generate API key** → copiez la clé (une chaîne de ~30 caractères)
+
+### 2. Créer l'espace de publication
+1. Ouvrez `nos-prestations.html` → **Ctrl+Maj+A** → mot de passe `rance2024`
+2. Section **« ☁️ Publication automatique »** :
+   - Collez votre **clé API ImgBB** dans le champ
+   - Cliquez **« 🔑 Créer mon espace de publication »** → un espace en ligne est créé automatiquement
+
+### 3. Mettre le site configuré en ligne (1 seule fois)
+1. Cliquez **« 💾 Télécharger le site configuré »** → vous obtenez `nos-prestations.html` (ou le fichier unique) avec la configuration intégrée
+2. **Remplacez ce fichier sur votre hébergeur** (comme d'habitude)
+3. C'est fini pour toujours !
+
+## 📸 Publier une photo (à chaque fois, 30 secondes)
+
+1. Panneau admin → ajoutez vos photos dans les galeries (glisser-déposer)
+2. Cliquez **« 📤 Publier mes photos »**
+3. ✅ La photo est envoyée sur ImgBB + la liste est mise à jour automatiquement
+4. Le site en ligne affiche la photo **automatiquement** (cache ≤ 5 min)
+
+## 🎯 Résumé du fonctionnement
+
+```
+Panneau admin ──► ImgBB (photos hébergées gratuitement)
+            └──► jsonblob (liste des photos à afficher)
+                         │
+Site en ligne ◄──────────┘ lit la liste → affiche les photos
+```
+
+- **Aucun FTP, aucun fichier à déposer** après la configuration initiale
+- **N'importe quel hébergeur** : le site n'a besoin que de fichiers statiques
+- Les photos sont stockées sur ImgBB (gratuit, illimité en comptes gratuits)
+
+## ❓ Questions
+
+### C'est gratuit ?
+Oui : ImgBB gratuit (stockage illimité pour comptes gratuits) + jsonblob gratuit.
+
+### Les photos peuvent-elles disparaître ?
+ImgBB conserve les images tant que le compte existe. Pour un usage
+professionnel critique, vous pouvez passer à un service payant (Cloudinary,
+etc.) — le principe reste le même.
+
+### Et si je n'ai pas encore fait la configuration ?
+Sans configuration, le site continue de fonctionner avec le système
+`photos/photos.json` (déposer les fichiers sur l'hébergeur) — les deux
+systèmes coexistent.
+
+---
+
+# 📱 PUBLIER DEPUIS SON TÉLÉPHONE (n'importe où)
+
+Le panneau admin fonctionne **sur le site en ligne**, depuis n'importe quel
+appareil (téléphone, tablette, PC). Une fois la configuration initiale faite,
+vous pouvez publier des photos **de n'importe où**.
+
+## 🔑 Accéder au panneau admin depuis le téléphone
+
+1. Ouvrez votre site en ligne sur le téléphone (Safari / Chrome)
+2. Allez dans le menu **☰** → **Mentions légales**
+3. Descendez **tout en bas** de la page → cliquez sur le petit **⚙ Admin**
+4. Mot de passe : `rance2024`
+
+> 💡 Sur téléphone, le raccourci Ctrl+Maj+A n'existe pas (pas de clavier).
+> L'accès se fait via le lien ⚙ en bas des mentions légales.
+
+## 📷 Ajouter une photo depuis le téléphone
+
+Dans le panneau admin (section galeries) :
+- **« 📷 Prendre une photo »** → la caméra du téléphone s'ouvre directement
+  → prenez la photo → elle est ajoutée à la galerie
+- Ou **cliquez sur la zone pointillée** → choisissez une photo dans la galerie
+  du téléphone
+- La photo est **redimensionnée et compressée automatiquement**
+
+## 📤 Publier depuis le téléphone
+
+1. Une fois vos photos ajoutées, cliquez **« 📤 Publier mes photos »**
+   (section ☁️ Publication automatique)
+2. ✅ Les photos partent sur ImgBB + la liste en ligne est mise à jour
+3. Le site affiche les photos automatiquement (≤ 5 min)
+
+## ✅ Ce que vous pouvez faire depuis le téléphone (tout !)
+
+| Action | Depuis le téléphone |
+|---|---|
+| Ajouter des photos aux galeries | ✅ glisser / caméra / galerie |
+| Publier en ligne | ✅ bouton « Publier mes photos » |
+| Ajouter un article | ✅ section « 📝 Articles » |
+| Gérer les photos (supprimer) | ✅ bouton × |
+| Changer le mot de passe | ✅ (dans le code, une fois) |
+
+## ⚠️ Prérequis (une seule fois, n'importe où)
+1. Créez votre **clé API ImgBB** (imgbb.com → API → Generate key)
+2. Dans le panneau : collez la clé → **« 🔑 Créer mon espace »**
+3. **« 💾 Télécharger le site configuré »** → mettez CE fichier en ligne
+   (remplace l'ancien, une seule fois)
+4. Ensuite : ajoutez + publiez vos photos depuis le téléphone, partout !

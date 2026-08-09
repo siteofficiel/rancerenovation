@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>A propos de RANCE RENOVATION - RANCE RENOVATION</title>
-  <meta name="description" content="A propos de RANCE RENOVATION : maçonnerie, isolation/plâtrerie, menuiseries extérieures, revêtements de sols et peinture.">
+  <meta name="description" content="A propos de RANCE RENOVATION">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
@@ -1646,6 +1646,408 @@ img { max-width: 100%; height: auto; }
   .footer-admin { font-size: 12px; opacity: .6; }
 }
 
+/* ------------------------------------------------------------
+   FLUX FACEBOOK (publications en temps réel)
+   ------------------------------------------------------------ */
+.actus-fb-feed {
+  max-width: 620px;
+  margin: 0 auto 50px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.10);
+  border: 1px solid #e8eaec;
+  overflow: hidden;
+}
+.actus-fb-feed-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #f7f9fa, #eef1f3);
+  border-bottom: 1px solid #e8eaec;
+}
+.actus-fb-feed .actus-fb-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #1877f2;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.actus-fb-feed .actus-fb-logo svg { width: 24px; height: 24px; }
+.actus-fb-feed .actus-fb-infos { flex: 1; min-width: 0; }
+.actus-fb-feed .actus-fb-infos strong {
+  display: block;
+  font-family: Lato, Arial, sans-serif;
+  font-size: 15.5px;
+  color: #1a1a1a;
+}
+.actus-fb-feed .actus-fb-infos span { font-size: 12.5px; color: #777; }
+.actus-fb-feed .actus-fb-follow {
+  display: inline-flex;
+  align-items: center;
+  background: #1877f2;
+  color: #fff !important;
+  font-family: Lato, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 30px;
+  text-decoration: none !important;
+  transition: background .3s;
+}
+.actus-fb-feed .actus-fb-follow:hover { background: #1466d4; }
+.actus-fb-feed .fb-page { width: 100% !important; }
+.actus-fb-feed .fb-page iframe { border: 0; width: 100% !important; }
+.actus-fb-fallback {
+  padding: 30px 20px;
+  text-align: center;
+  font-size: 14.5px;
+  color: #555;
+}
+.actus-fb-fallback a {
+  display: inline-block;
+  margin-top: 12px;
+  background: #1877f2;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.actus-fb-fallback a:hover { background: #1466d4; }
+@media (max-width: 767px) {
+  .actus-fb-feed { max-width: 100%; border-radius: 14px; }
+  .actus-fb-feed-head { padding: 12px 14px; }
+}
+
+/* Iframe officielle Facebook */
+.fb-iframe-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: #f5f6f7;
+}
+.fb-iframe-wrap iframe {
+  max-width: 100%;
+  width: 500px;
+}
+@media (max-width: 540px) {
+  .fb-iframe-wrap iframe { width: 100%; }
+}
+
+/* ------------------------------------------------------------
+   FLUX FACEBOOK — présentation professionnelle
+   ------------------------------------------------------------ */
+.fb-feed-card {
+  max-width: 620px;
+  margin: 0 auto 60px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  border: 1px solid #e3e6ea;
+  overflow: hidden;
+}
+.fb-feed-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  background: linear-gradient(135deg, #f8f9fb, #eef0f4);
+  border-bottom: 1px solid #e3e6ea;
+}
+.fb-feed-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1877f2, #0f5fd0);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(24, 119, 242, 0.3);
+}
+.fb-feed-logo svg { width: 26px; height: 26px; }
+.fb-feed-infos { flex: 1; min-width: 0; }
+.fb-feed-infos strong {
+  display: block;
+  font-family: Lato, Arial, sans-serif;
+  font-size: 16px;
+  color: #1a1a1a;
+}
+.fb-feed-infos span {
+  font-size: 12.5px;
+  color: #8a94a6;
+  letter-spacing: .3px;
+}
+.fb-feed-follow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #1877f2;
+  color: #fff !important;
+  font-family: Lato, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 9px 18px;
+  border-radius: 30px;
+  text-decoration: none !important;
+  box-shadow: 0 4px 12px rgba(24, 119, 242, 0.25);
+  transition: background .3s, transform .2s;
+}
+.fb-feed-follow:hover { background: #1466d4; transform: translateY(-1px); }
+.fb-feed-card .fb-iframe-wrap {
+  background: #f0f2f5;
+  padding: 0;
+}
+.fb-feed-card .fb-iframe-wrap iframe {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+@media (max-width: 767px) {
+  .fb-feed-card { max-width: 100%; border-radius: 16px; }
+  .fb-feed-head { padding: 14px 16px; gap: 10px; }
+  .fb-feed-logo { width: 40px; height: 40px; }
+  .fb-feed-logo svg { width: 22px; height: 22px; }
+  .fb-feed-infos strong { font-size: 14.5px; }
+  .fb-feed-follow { padding: 8px 14px; font-size: 12px; }
+}
+
+/* ------------------------------------------------------------
+   ACTUALITÉS — publications Facebook en « petits articles »
+   ------------------------------------------------------------ */
+.fp-new-banner {
+  max-width: 1000px;
+  margin: 0 auto 26px;
+  padding: 14px 18px;
+  border-radius: 12px;
+  background: #fff8e1;
+  border: 1px solid #ffd54f;
+  color: #6b5200;
+  font-size: 14.5px;
+  line-height: 1.5;
+}
+.fp-new-banner a { color: #1877f2; font-weight: 700; text-decoration: none; }
+.fp-new-banner a:hover { text-decoration: underline; }
+
+.fp-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 26px;
+  max-width: 1000px;
+  margin: 0 auto 30px;
+}
+.fp-card {
+  background: #ffffff;
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.09);
+  border: 1px solid #e8eaec;
+  overflow: hidden;
+  transition: transform .3s ease, box-shadow .3s ease;
+  display: flex;
+  flex-direction: column;
+}
+.fp-card:hover { transform: translateY(-4px); box-shadow: 0 16px 40px rgba(0, 0, 0, 0.13); }
+.fp-img {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background: #eef1f3;
+}
+.fp-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .5s ease;
+}
+.fp-card:hover .fp-img img { transform: scale(1.04); }
+.fp-play {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-left: 4px;
+  box-shadow: 0 4px 18px rgba(0, 0, 0, 0.3);
+  transition: background .3s, transform .3s;
+}
+.fp-card:hover .fp-play { background: rgba(24, 119, 242, 0.85); transform: translate(-50%, -50%) scale(1.08); }
+.fp-body { padding: 20px 22px 22px; display: flex; flex-direction: column; flex: 1; }
+.fp-meta {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px 12px;
+  margin-bottom: 10px;
+}
+.fp-badge {
+  display: inline-block;
+  background: #1877f2;
+  color: #fff;
+  font-size: 11px;
+  font-weight: 700;
+  padding: 4px 12px;
+  border-radius: 20px;
+  letter-spacing: .4px;
+}
+.fp-date, .fp-views {
+  font-size: 12.5px;
+  color: #8a94a6;
+}
+.fp-title {
+  font-family: Lato, Arial, sans-serif;
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.35;
+  color: #111;
+  margin: 0 0 10px;
+}
+.fp-title a { color: inherit; text-decoration: none; }
+.fp-title a:hover { color: #1877f2; }
+.fp-text {
+  font-family: Lato, Arial, sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #333;
+  margin: 0 0 14px;
+  flex: 1;
+}
+.fp-subgallery {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin: 2px 0 14px;
+}
+.fp-thumb {
+  border-radius: 8px;
+  overflow: hidden;
+  aspect-ratio: 1 / 1;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  transition: transform .3s ease;
+}
+.fp-thumb:hover { transform: scale(1.04); }
+.fp-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+.fp-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: #1877f2;
+  font-size: 13.5px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color .3s;
+}
+.fp-link:hover { color: #0f5fd0; }
+.fp-link svg { width: 15px; height: 15px; }
+
+.fp-note {
+  max-width: 1000px;
+  margin: 0 auto 34px;
+  text-align: center;
+  font-size: 12.5px;
+  color: #9aa3b0;
+}
+
+.actus-fb-link { text-align: center; }
+.actus-fb-link a {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #1877f2;
+  color: #fff;
+  font-weight: 700;
+  padding: 13px 26px;
+  border-radius: 30px;
+  text-decoration: none;
+  transition: background .3s, transform .3s;
+}
+.actus-fb-link a:hover { background: #0f5fd0; transform: translateY(-2px); }
+.actus-fb-link svg { width: 19px; height: 19px; }
+
+@media (max-width: 767px) {
+  .fp-grid { grid-template-columns: 1fr; gap: 20px; }
+  .fp-subgallery { grid-template-columns: repeat(3, 1fr); }
+}
+@media (max-width: 479px) {
+  .fp-subgallery { grid-template-columns: repeat(3, 1fr); gap: 6px; }
+  .fp-title { font-size: 17.5px; }
+}
+
+/* ------------------------------------------------------------
+   VISIONNEUSE D'IMAGES (lightbox)
+   ------------------------------------------------------------ */
+.rlb {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background: rgba(0, 0, 0, 0.92);
+  display: none;
+  align-items: center;
+  justify-content: center;
+}
+.rlb.open { display: flex; }
+.rlb-box img {
+  max-width: 92vw;
+  max-height: 85vh;
+  border-radius: 8px;
+  box-shadow: 0 10px 50px rgba(0, 0, 0, 0.6);
+}
+.rlb-close, .rlb-prev, .rlb-next {
+  position: absolute;
+  border: none;
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+  border-radius: 50%;
+  cursor: pointer;
+  font-size: 22px;
+  line-height: 1;
+  transition: background .3s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.rlb-close { top: 18px; right: 18px; width: 44px; height: 44px; font-size: 26px; }
+.rlb-prev { left: 14px; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; }
+.rlb-next { right: 14px; top: 50%; transform: translateY(-50%); width: 48px; height: 48px; }
+.rlb-close:hover, .rlb-prev:hover, .rlb-next:hover { background: rgba(126, 198, 198, 0.45); }
+.rlb-count {
+  position: absolute;
+  bottom: 18px;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ddd;
+  font-size: 13px;
+  letter-spacing: 1px;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 4px 14px;
+  border-radius: 20px;
+}
+@media (max-width: 767px) {
+  .rlb-prev { left: 6px; }
+  .rlb-next { right: 6px; }
+}
+
 /* ============================================================
    PANNEAU ADMINISTRATEUR — ajout de photos
    ============================================================ */
@@ -2259,7 +2661,7 @@ img { max-width: 100%; height: auto; }
           <a href="index.html" title="Accueil" aria-label="Accueil">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V21h14V9.5"/><path d="M10 21v-6h4v6"/></svg>
           </a>
-          <a href="tel:+33771454619" title="Téléphone" aria-label="Téléphone">
+          <a href="tel:+33686390040" title="Téléphone" aria-label="Téléphone">
             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="7" y="2" width="10" height="20" rx="2"/><line x1="11" y1="18" x2="13" y2="18"/></svg>
           </a>
           <a href="https://www.linkedin.com/in/christophe-beurier-453916323/" target="_blank" rel="noopener" title="Suivez-nous sur LINKEDIN" aria-label="LinkedIn">
@@ -2282,7 +2684,7 @@ img { max-width: 100%; height: auto; }
       <nav id="nav-main" class="main-nav" aria-label="Menu principal">
         <ul>
           <li><a href="index.html" >Accueil</a></li>
-          <li class="current"><a href="a-propos.html">A propos</a></li>
+          <li><a href="a-propos.html">A propos</a></li>
           <li><a href="nos-prestations.html">Nos prestations</a></li>
           <li class="has-children">
             <a href="nos-realisations.html">Nos réalisations</a>
@@ -2307,7 +2709,7 @@ img { max-width: 100%; height: auto; }
       <div id="mobile-nav" class="mobile-nav" aria-label="Menu mobile">
         <ul>
           <li><a href="index.html">Accueil</a></li>
-          <li><a href="a-propos.html" class="current">A propos de RANCE RENOVATION</a></li>
+          <li><a href="a-propos.html">A propos de RANCE RENOVATION</a></li>
           <li><a href="actualites.html">Actualités</a></li>
           <li><a href="nos-prestations.html">Nos prestations</a></li>
           <li><a href="nos-realisations.html">Nos réalisations</a></li>
@@ -2333,6 +2735,7 @@ img { max-width: 100%; height: auto; }
 
   <!-- ==================== CONTENU ==================== -->
   
+
 
 
 
@@ -2630,9 +3033,7 @@ img { max-width: 100%; height: auto; }
           .then(function (r) { if (!r.ok) throw new Error('firebase indisponible'); return r.json(); })
           .then(function (data) { return convertFirebase(data); });
       } else {
-        /* 2. Fallback : photos/photos.json déposé sur l'hébergeur */
-        source = fetch('photos/photos.json', { cache: 'no-store' })
-          .then(function (r) { if (!r.ok) throw new Error('pas de photos.json'); return r.json(); });
+        return; /* aucune source en ligne configurée : les photos du site restent affichées */
       }
 
       source.then(function (data) {
@@ -2810,6 +3211,111 @@ img { max-width: 100%; height: auto; }
   });
 })();
 
+/* ---- Formulaire de contact : ouvre la boîte mail avec le message pré-rempli ---- */
+(function () {
+  'use strict';
+  var btn = document.getElementById('cf-submit');
+  if (!btn) return;
+
+  btn.addEventListener('click', function () {
+    var nom = document.getElementById('cf-name').value.trim();
+    var tel = document.getElementById('cf-phone').value.trim();
+    var sujet = document.getElementById('cf-topic') ? document.getElementById('cf-topic').value : 'Contact';
+    var msg = document.getElementById('cf-message').value.trim();
+
+    if (!nom) { alert('Veuillez indiquer votre nom.'); document.getElementById('cf-name').focus(); return; }
+    if (!msg) { alert('Veuillez écrire votre message.'); document.getElementById('cf-message').focus(); return; }
+
+    var corps = 'Bonjour RANCE RENOVATION,\n\n' + msg + '\n\n---\nNom : ' + nom + (tel ? '\nTéléphone : ' + tel : '') + '\n';
+
+    var sujetEnc = encodeURIComponent(sujet + ' - ' + nom);
+    var corpsEnc = encodeURIComponent(corps);
+    var lien = 'mailto:contact@rancerenovation.fr?subject=' + sujetEnc + '&body=' + corpsEnc;
+    window.location.href = lien;
+  });
+})();
+
+/* ---- Visionneuse d'images (lightbox) pour les galeries ---- */
+(function () {
+  'use strict';
+  var overlay = null, imgs = [], idx = 0;
+
+  function build() {
+    overlay = document.createElement('div');
+    overlay.className = 'rlb';
+    overlay.innerHTML =
+      '<button type="button" class="rlb-close" aria-label="Fermer">&times;</button>' +
+      '<button type="button" class="rlb-prev" aria-label="Précédent">&#10094;</button>' +
+      '<button type="button" class="rlb-next" aria-label="Suivant">&#10095;</button>' +
+      '<div class="rlb-box"><img alt="Photo agrandie"></div>' +
+      '<div class="rlb-count"></div>';
+    document.body.appendChild(overlay);
+
+    overlay.addEventListener('click', function (e) {
+      if (e.target === overlay) close();
+    });
+    overlay.querySelector('.rlb-close').addEventListener('click', close);
+    overlay.querySelector('.rlb-prev').addEventListener('click', function (e) { e.stopPropagation(); prev(); });
+    overlay.querySelector('.rlb-next').addEventListener('click', function (e) { e.stopPropagation(); next(); });
+    document.addEventListener('keydown', function (e) {
+      if (!overlay.classList.contains('open')) return;
+      if (e.key === 'Escape') close();
+      if (e.key === 'ArrowLeft') prev();
+      if (e.key === 'ArrowRight') next();
+    });
+  }
+
+  function show() {
+    if (idx < 0) idx = imgs.length - 1;
+    if (idx >= imgs.length) idx = 0;
+    var img = overlay.querySelector('.rlb-box img');
+    img.src = imgs[idx];
+    overlay.querySelector('.rlb-count').textContent = (idx + 1) + ' / ' + imgs.length;
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+  }
+  function close() {
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+  function prev() { idx--; show(); }
+  function next() { idx++; show(); }
+
+  function openAt(list, i) {
+    if (!list.length) return;
+    if (!overlay) build();
+    imgs = list;
+    idx = i;
+    show();
+  }
+
+  /* Galeries « prestations » : chaque vignette est un lien vers l'image */
+  document.addEventListener('click', function (e) {
+    var a = e.target.closest ? e.target.closest('.media-grid a[href]') : null;
+    if (a) {
+      e.preventDefault();
+      var links = [].slice.call(a.parentNode.querySelectorAll('a[href]'));
+      var urls = links.map(function (l) { return l.getAttribute('href'); });
+      openAt(urls, links.indexOf(a));
+    }
+  });
+
+  /* Carrousels « réalisations » : clic sur une image */
+  document.addEventListener('click', function (e) {
+    var slide = e.target.closest ? e.target.closest('.rc-slide img') : null;
+    if (slide) {
+      e.preventDefault();
+      var track = slide.closest('.rc-track');
+      var slides = [].slice.call(track.querySelectorAll('.rc-slide img'));
+      var urls = slides.map(function (im) {
+        var src = im.getAttribute('data-full') || im.getAttribute('src');
+        return src;
+      });
+      openAt(urls, slides.indexOf(slide));
+    }
+  });
+})();
+
 /* ============================================================
    PANNEAU ADMINISTRATEUR — ajout + publication de photos
    ============================================================
@@ -2880,10 +3386,13 @@ img { max-width: 100%; height: auto; }
     downloadBlob(blob, name);
   }
   function currentPageHtml() {
+    /* IMPORTANT : supprimer le panneau et le toast du DOM avant la sérialisation.
+       Sinon ils sont inclus dans le fichier téléchargé, et au chargement
+       du fichier le script ne rattache pas leurs événements → panneau inerte. */
     var overlay = document.getElementById('admin-overlay');
     var toastEl = document.getElementById('admin-toast');
-    if (overlay) overlay.classList.remove('open');
-    if (toastEl) toastEl.classList.remove('show');
+    if (overlay) overlay.remove();
+    if (toastEl) toastEl.remove();
     var errBox = document.getElementById('admin-error');
     if (errBox) errBox.textContent = '';
     var passInput = document.getElementById('admin-pass');
@@ -2923,7 +3432,14 @@ img { max-width: 100%; height: auto; }
   /* ---------- Construire le panneau ---------- */
   function buildPanel() {
     var overlay = document.getElementById('admin-overlay');
-    if (overlay) return overlay;
+    if (overlay) {
+      /* Si un panneau existe déjà dans le HTML (cas des anciens fichiers
+         téléchargés), on le SUPPRIME pour le recréer avec ses événements. */
+      overlay.remove();
+      var oldToast = document.getElementById('admin-toast');
+      if (oldToast) oldToast.remove();
+      overlay = null;
+    }
 
     overlay = el('div', 'admin-overlay');
     overlay.id = 'admin-overlay';
@@ -3443,7 +3959,8 @@ img { max-width: 100%; height: auto; }
   function init() {
     initTrigger();
     initShortcut();
-    buildPanel();
+    /* Le panneau n'est PAS créé au chargement : il n'est construit qu'à
+       l'ouverture (openAdmin). Ainsi il ne pollue jamais le HTML téléchargé. */
     loadStorage();
     if (location.hash === '#admin') {
       setTimeout(openAdmin, 300);

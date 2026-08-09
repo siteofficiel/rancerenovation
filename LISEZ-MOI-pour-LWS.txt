@@ -1,0 +1,44 @@
+LISEZ-MOI — AVANT DE PUBLIER SUR LWS
+=====================================
+
+Ce dossier contient UNIQUEMENT les fichiers du site à publier sur
+votre hébergement LWS (rancerenovation.fr).
+
+IMPORTANT : votre hébergeur contient DÉJÀ l'ancien site. Il faut le
+REMPLACER entièrement, sinon les anciennes pages resteront visibles.
+
+ÉTAPE 1 — Se connecter
+   https://www.lws.fr → Espace client → Hébergement → Gestion des fichiers
+   (ou via FTP : FileZilla)
+
+ÉTAPE 2 — VIDER l'ancien site (très important !)
+   Ouvrez le dossier « www » (ou « htdocs »).
+   Sélectionnez TOUT ce qu'il contient (anciens fichiers, dossiers
+   wp-admin, wp-content, etc. si l'ancien site était un WordPress)
+   → SUPPRIMER.
+
+ÉTAPE 3 — Téléverser les nouveaux fichiers
+   Décompressez ce zip sur votre ordinateur, puis glissez DANS le
+   dossier « www » :
+     • les 9 fichiers .html
+     • les favicons (favicon-16.png, favicon-32.png, favicon-48.png,
+       favicon.png, favicon.ico, apple-touch-icon.png)
+     • le dossier « photos » (avec ses fichiers)
+   Ne gardez PAS ce fichier LISEZ-MOI sur le serveur (ou supprimez-le
+   après le téléversement — c'est sans importance).
+
+ÉTAPE 4 — Vérifier
+   Ouvrez https://rancerenovation.fr dans le navigateur.
+   Si vous voyez l'ancien site : videz le cache (Ctrl + F5) ou attendez
+   quelques minutes (cache LWS).
+   Vérifiez chaque page via le menu : Accueil, Prestations, Réalisations,
+   Actualités, Contact.
+
+ÉTAPE 5 — En cas de problème
+   • Page blanche : refaites l'étape 2 (supprimez tout l'ancien contenu).
+   • Erreur 404 : vérifiez que index.html est bien à la racine de « www ».
+   • Le site reste bloqué sur l'ancien : purger le cache LWS
+     (Espace client → Hébergement → Cache → Purger).
+
+Ce site est 100 % statique : aucun logiciel, aucune base de données
+nécessaire. Il ne peut pas casser.

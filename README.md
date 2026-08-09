@@ -10,7 +10,11 @@
 | `a-propos.html` | À propos | 0,3 Mo |
 | `nos-prestations.html` | Prestations + **panneau admin** | 1,3 Mo |
 | `nos-realisations.html` | Réalisations | 1,9 Mo |
-| `actualites.html` | Actualités | 0,1 Mo |
+| `actualites.html` | Actualités (publications Facebook en petits articles, **mise à jour automatique**) | 0,8 Mo |
+
+> 💡 **Actualités automatiques** : cette page vérifie votre page Facebook
+> toutes les 10 minutes et affiche toute nouvelle publication en haut de la
+> liste, avec sa photo et son texte — sans aucune manipulation.
 | `contactez-nous.html` | Contact | 0,1 Mo |
 | `politique-de-confidentialite.html` | Confidentialité | 0,1 Mo |
 | `mentions-legales.html` | Mentions légales | 0,1 Mo |

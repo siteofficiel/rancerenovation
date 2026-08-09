@@ -2792,12 +2792,12 @@ img { max-width: 100%; height: auto; }
 })();
 
 /* ============================================================
-   PANNEAU ADMINISTRATEUR — ajout de photos aux prestations
+   PANNEAU ADMINISTRATEUR — ajout + publication de photos
    ============================================================
    ⚙️ Config (modifiable ici) :
-   - ADMIN_PASS  : mot de passe du panneau
-   - MAX_WIDTH   : largeur max des photos (px) après compression
-   - JPEG_QUALITY: qualité JPEG (0 = très compressé, 1 = original)
+   - ADMIN_PASS   : mot de passe du panneau
+   - MAX_WIDTH    : largeur max des photos (px) après compression
+   - JPEG_QUALITY : qualité JPEG (0 = très compressé, 1 = original)
    ============================================================ */
 (function () {
   'use strict';
@@ -2806,11 +2806,14 @@ img { max-width: 100%; height: auto; }
   var MAX_WIDTH = 1200;
   var JPEG_QUALITY = 0.78;
   var STORAGE_KEY = 'rance_admin_photos_v1';
+  var ONLINE_CFG_KEY = 'rance_online_cfg_v1';
   var OUTPUT_NAME = (location.pathname.split('/').pop()) || 'index.html';
 
-  var newPhotos = [];   // [{section, src, name}]
+  var newPhotos = [];      // photos ajoutées localement [{id, section, src, name}]
+  var onlinePhotos = [];   // photos publiées [{id, section, url}]
+  var onlineCfg = null;    // {imgbbKey}
 
-  /* ---------- Petites utilitaires ---------- */
+  /* ---------- Utilitaires ---------- */
   function el(tag, cls, html) {
     var e = document.createElement(tag);
     if (cls) e.className = cls;
@@ -2829,10 +2832,47 @@ img { max-width: 100%; height: auto; }
     t.textContent = msg;
     t.classList.add('show');
     clearTimeout(t._timer);
-    t._timer = setTimeout(function () { t.classList.remove('show'); }, 2600);
+    t._timer = setTimeout(function () { t.classList.remove('show'); }, 3000);
+  }
+  function sanitizeName(n) {
+    n = (n || 'photo.jpg').replace(/[^a-zA-Z0-9._-]/g, '_').toLowerCase();
+    if (!/\.(jpe?g|png)$/i.test(n)) n += '.jpg';
+    return n;
+  }
+  function dataUriToBlob(dataUri) {
+    var parts = dataUri.split(',');
+    var mime = (parts[0].match(/data:([^;]+)/) || [])[1] || 'image/jpeg';
+    var bin = atob(parts[1]);
+    var arr = new Uint8Array(bin.length);
+    for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
+    return new Blob([arr], { type: mime });
+  }
+  function downloadBlob(blob, name) {
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    a.href = url;
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () { document.body.removeChild(a); URL.revokeObjectURL(url); }, 300);
+  }
+  function downloadHtml(html, name) {
+    var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
+    downloadBlob(blob, name);
+  }
+  function currentPageHtml() {
+    var overlay = document.getElementById('admin-overlay');
+    var toastEl = document.getElementById('admin-toast');
+    if (overlay) overlay.classList.remove('open');
+    if (toastEl) toastEl.classList.remove('show');
+    var errBox = document.getElementById('admin-error');
+    if (errBox) errBox.textContent = '';
+    var passInput = document.getElementById('admin-pass');
+    if (passInput) passInput.value = '';
+    return '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
   }
 
-  /* ---------- Compression d'une image ---------- */
+  /* ---------- Compression d'image ---------- */
   function compressImage(file, cb) {
     if (!file.type || file.type.indexOf('image/') !== 0) {
       cb(null, file.name, 'Format non supporté');
@@ -2872,7 +2912,7 @@ img { max-width: 100%; height: auto; }
       '<div class="admin-panel">' +
         '<div class="admin-header">' +
           '<div><h2>⚙️ Administration — Photos</h2>' +
-          '<p>Ajoutez des photos aux galeries de prestations, puis téléchargez le site à jour.</p></div>' +
+          '<p>Ajoutez des photos aux galeries et publiez-les en ligne.</p></div>' +
           '<button type="button" class="admin-close" title="Fermer">&times;</button>' +
         '</div>' +
         '<div class="admin-body">' +
@@ -2889,19 +2929,8 @@ img { max-width: 100%; height: auto; }
           '</div>' +
           '<div class="admin-sections" id="admin-sections" style="display:none;"></div>' +
         '</div>' +
-        '<div class="admin-autopub" id="admin-autopub" style="display:none;">' +
-          '<h4>☁️ Publication automatique en ligne</h4>' +
-          '<p class="admin-online-desc">Envoyez vos photos directement en ligne depuis ce panneau : le site les affiche automatiquement, sur n\'importe quel hébergeur. Aucun FTP ni fichier à déposer. Il faut une clé API gratuite ImgBB (2 minutes, voir le guide).</p>' +
-          '<div class="art-form-row"><input type="text" id="ap-key" placeholder="Clé API ImgBB (gratuite sur imgbb.com)" autocomplete="off"></div>' +
-          '<div class="admin-online-actions">' +
-            '<button type="button" class="admin-btn" id="ap-create">🔑 Créer mon espace de publication</button>' +
-            '<button type="button" class="admin-btn" id="ap-publish">📤 Publier mes photos</button>' +
-            '<button type="button" class="admin-btn dark" id="ap-download">💾 Télécharger le site configuré (1 seule fois)</button>' +
-          '</div>' +
-          '<div class="admin-gh-status" id="ap-status"></div>' +
-        '</div>' +
         '<div class="admin-footer" id="admin-footer" style="display:none;">' +
-          '<div class="admin-info"><span class="count" id="admin-count">0</span> photo(s) ajoutée(s) — elles seront incluses dans le fichier téléchargé.</div>' +
+          '<div class="admin-info"><span class="count" id="admin-count">0</span> photo(s) ajoutée(s).</div>' +
           '<div style="display:flex;gap:10px;flex-wrap:wrap;">' +
             '<button type="button" class="admin-btn dark" id="admin-reset">Réinitialiser</button>' +
             '<button type="button" class="admin-btn" id="admin-download">💾 Télécharger le site à jour</button>' +
@@ -2910,12 +2939,11 @@ img { max-width: 100%; height: auto; }
       '</div>';
 
     document.body.appendChild(overlay);
-
     var t = el('div', 'admin-toast');
     t.id = 'admin-toast';
     document.body.appendChild(t);
 
-    // Fermeture
+    /* Fermeture */
     overlay.querySelector('.admin-close').addEventListener('click', function () {
       overlay.classList.remove('open');
     });
@@ -2923,7 +2951,7 @@ img { max-width: 100%; height: auto; }
       if (e.target === overlay) overlay.classList.remove('open');
     });
 
-    // Connexion
+    /* Connexion */
     var passInput = document.getElementById('admin-pass');
     var errBox = document.getElementById('admin-error');
     function tryLogin() {
@@ -2933,10 +2961,7 @@ img { max-width: 100%; height: auto; }
         document.getElementById('admin-sections').style.display = 'block';
         document.getElementById('admin-footer').style.display = 'flex';
         buildSections();
-        var onlineBlock = document.getElementById('admin-online');
-        if (onlineBlock) onlineBlock.style.display = 'block';
-        wirePackButton();
-        wireAutoPub();
+        initOnline();
       } else {
         errBox.textContent = 'Mot de passe incorrect.';
         passInput.select();
@@ -2946,7 +2971,6 @@ img { max-width: 100%; height: auto; }
     passInput.addEventListener('keydown', function (e) {
       if (e.key === 'Enter') tryLogin();
     });
-    /* œil : afficher / masquer la saisie */
     var toggle = document.getElementById('admin-pass-toggle');
     if (toggle) {
       toggle.addEventListener('click', function () {
@@ -2956,7 +2980,6 @@ img { max-width: 100%; height: auto; }
       });
     }
 
-    // Actions du pied
     document.getElementById('admin-download').addEventListener('click', downloadSite);
     document.getElementById('admin-reset').addEventListener('click', function () {
       if (!confirm('Retirer toutes les photos ajoutées dans cette session ?')) return;
@@ -2967,7 +2990,7 @@ img { max-width: 100%; height: auto; }
     return overlay;
   }
 
-  /* ---------- Construire les sections de galeries ---------- */
+  /* ---------- Sections de galeries ---------- */
   function buildSections() {
     var container = document.getElementById('admin-sections');
     if (container.dataset.built) return;
@@ -2986,7 +3009,6 @@ img { max-width: 100%; height: auto; }
       var h4 = el('h4', '', title);
       var thumbs = el('div', 'admin-thumbs');
 
-      // vignettes existantes (non supprimables)
       if (grid) {
         grid.querySelectorAll('img').forEach(function (im) {
           var th = el('div', 'thumb');
@@ -2995,7 +3017,6 @@ img { max-width: 100%; height: auto; }
         });
       }
 
-      // zone de dépôt
       var dz = el('div', 'admin-dropzone');
       dz.innerHTML = '<span class="dz-icon">📷</span>Glissez vos photos ici ou cliquez pour parcourir' +
         '<div class="dz-hint">JPG / PNG — redimensionnées et compressées automatiquement</div>';
@@ -3003,17 +3024,16 @@ img { max-width: 100%; height: auto; }
       fileInput.type = 'file';
       fileInput.accept = 'image/*';
       fileInput.multiple = true;
-      fileInput.id = 'file-input-' + idx;
       dz.appendChild(fileInput);
 
-      /* Bouton caméra (mobile) : prend une photo directement */
+      /* Bouton caméra (mobile) */
       var camBtn = el('button', 'admin-btn admin-cam-btn', '📷 Prendre une photo (téléphone)');
       camBtn.type = 'button';
       camBtn.style.marginTop = '10px';
       var camInput = el('input');
       camInput.type = 'file';
       camInput.accept = 'image/*';
-      camInput.capture = 'environment';   /* ouvre la caméra arrière sur mobile */
+      camInput.capture = 'environment';
       camInput.style.display = 'none';
       camBtn.appendChild(camInput);
       camBtn.addEventListener('click', function (e) {
@@ -3026,7 +3046,10 @@ img { max-width: 100%; height: auto; }
       });
       dz.appendChild(camBtn);
 
-      dz.addEventListener('click', function () { fileInput.click(); });
+      dz.addEventListener('click', function (e) {
+        if (e.target === camBtn || camBtn.contains(e.target)) return;
+        fileInput.click();
+      });
       dz.addEventListener('dragover', function (e) { e.preventDefault(); dz.classList.add('dragover'); });
       dz.addEventListener('dragleave', function () { dz.classList.remove('dragover'); });
       dz.addEventListener('drop', function (e) {
@@ -3048,7 +3071,7 @@ img { max-width: 100%; height: auto; }
     updateCount();
   }
 
-  /* ---------- Traiter les fichiers déposés ---------- */
+  /* ---------- Gestion des fichiers ---------- */
   function handleFiles(sectionIdx, files) {
     if (!files || !files.length) return;
     var pending = files.length;
@@ -3070,7 +3093,7 @@ img { max-width: 100%; height: auto; }
     });
   }
 
-  /* ---------- Ajouter une photo ---------- */
+  /* ---------- Ajouter / retirer une photo ---------- */
   var _photoId = 0;
   function nextId() { return 'p' + Date.now() + '_' + (_photoId++); }
 
@@ -3079,7 +3102,6 @@ img { max-width: 100%; height: auto; }
     if (!section) return;
     var id = existingId || nextId();
 
-    // dans la galerie du site
     var grid = section.querySelector('.media-grid');
     if (grid) {
       var a = el('a');
@@ -3090,7 +3112,6 @@ img { max-width: 100%; height: auto; }
       grid.appendChild(a);
     }
 
-    // dans le panneau admin
     var box = document.querySelector('.admin-section[data-section="' + sectionIdx + '"] .admin-thumbs');
     if (box) {
       var th = el('div', 'thumb new');
@@ -3111,35 +3132,27 @@ img { max-width: 100%; height: auto; }
     updateCount();
   }
 
-  /* ---------- Retirer une photo ajoutée (par id unique) ---------- */
   function removePhoto(id) {
-    var idx = -1;
-    for (var i = 0; i < newPhotos.length; i++) {
-      if (newPhotos[i].id === id) { idx = i; break; }
+    var ni = -1;
+    for (var j = 0; j < newPhotos.length; j++) {
+      if (newPhotos[j].id === id) { ni = j; break; }
     }
-    if (idx < 0) return;
-    var photo = newPhotos[idx];
-    var sectionIdx = photo.section;
-    var src = photo.src;
+    if (ni < 0) return;
+    var p = newPhotos[ni];
 
-    // retirer de la galerie du site (uniquement les éléments marqués ajoutés)
-    var section = document.querySelectorAll('.prestation-section')[sectionIdx];
+    var section = document.querySelectorAll('.prestation-section')[p.section];
     if (section) {
       var grid = section.querySelector('.media-grid');
       if (grid) {
-        grid.querySelectorAll('a[data-added]').forEach(function (a) {
-          if (a.dataset.added === id) a.remove();
-        });
+        grid.querySelectorAll('a[data-added="' + id + '"]').forEach(function (a) { a.remove(); });
       }
     }
-    // retirer de la vignette du panneau
-    var box = document.querySelector('.admin-section[data-section="' + sectionIdx + '"] .admin-thumbs');
+    var box = document.querySelector('.admin-section[data-section="' + p.section + '"] .admin-thumbs');
     if (box) {
       var th = box.querySelector('.thumb.new[data-id="' + id + '"]');
       if (th) th.remove();
     }
-    // retirer du tableau
-    newPhotos.splice(idx, 1);
+    newPhotos.splice(ni, 1);
     saveStorage();
     updateCount();
   }
@@ -3149,7 +3162,6 @@ img { max-width: 100%; height: auto; }
     toRemove.forEach(function (p) { removePhoto(p.id); });
   }
 
-  /* ---------- Compteur ---------- */
   function updateCount() {
     var c = document.getElementById('admin-count');
     if (c) c.textContent = newPhotos.length;
@@ -3158,73 +3170,40 @@ img { max-width: 100%; height: auto; }
   /* ---------- Persistance locale ---------- */
   function saveStorage() {
     try {
-      var data = newPhotos.map(function (p) { return { i: p.id, s: p.section, d: p.src, n: p.name }; });
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    } catch (e) {
-      console.warn('Stockage local plein — pensez à télécharger le site à jour.');
-    }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify({
+        new: newPhotos.map(function (p) { return { i: p.id, s: p.section, d: p.src, n: p.name }; }),
+        online: onlinePhotos.map(function (p) { return { i: p.id, s: p.section, u: p.url }; })
+      }));
+    } catch (e) {}
   }
   function loadStorage() {
     try {
       var raw = localStorage.getItem(STORAGE_KEY);
       if (!raw) return;
       var data = JSON.parse(raw);
-      if (!Array.isArray(data)) return;
-      data.forEach(function (p) {
-        if (!p || typeof p.s !== 'number' || typeof p.d !== 'string' || p.d.indexOf('data:image') !== 0) return;
-        /* anti-doublon : si cette photo est déjà dans la page (fichier téléchargé), on l'ignore */
-        var dejaPresent = false;
-        document.querySelectorAll('a[data-added] img').forEach(function (im) {
-          if (im.src === p.d) dejaPresent = true;
-        });
-        if (!dejaPresent) addPhoto(p.s, p.d, p.n || '', p.i || '');
+      if (!data) return;
+      (data.new || []).forEach(function (p) {
+        if (p && typeof p.s === 'number' && typeof p.d === 'string' && p.d.indexOf('data:image') === 0) {
+          addPhoto(p.s, p.d, p.n || '', p.i || '');
+        }
       });
-    } catch (e) { /* stockage indisponible */ }
+    } catch (e) {}
   }
 
-  /* ---------- Télécharger le site à jour ---------- */
+  /* ---------- Télécharger le site ---------- */
   function downloadSite() {
-    var overlay = document.getElementById('admin-overlay');
-    var toastEl = document.getElementById('admin-toast');
-
-    // nettoyer l'état avant sérialisation
-    if (overlay) overlay.classList.remove('open');
-    if (toastEl) toastEl.classList.remove('show');
-    var errBox = document.getElementById('admin-error');
-    if (errBox) errBox.textContent = '';
-    var passInput = document.getElementById('admin-pass');
-    if (passInput) passInput.value = '';
-
-    var html = '<!DOCTYPE html>\n' + document.documentElement.outerHTML;
-
-    var blob = new Blob([html], { type: 'text/html;charset=utf-8' });
-    var url = URL.createObjectURL(blob);
-    var a = document.createElement('a');
-    a.href = url;
-    a.download = OUTPUT_NAME;
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(function () {
-      document.body.removeChild(a);
-      URL.revokeObjectURL(url);
-    }, 200);
-    /* les photos sont maintenant dans le fichier : on peut nettoyer le stockage local */
-    try { localStorage.removeItem(STORAGE_KEY); } catch (e) { /* ignore */ }
+    downloadHtml(currentPageHtml(), OUTPUT_NAME);
+    try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
     toast('💾 Site téléchargé ! Remplacez votre ancien fichier par celui-ci.');
   }
 
-
   /* ============================================================
-     PUBLICATION AUTOMATIQUE (sans FTP) — ImgBB uniquement
+     PUBLICATION AUTOMATIQUE — ImgBB (sans FTP)
      ============================================================ */
-  var ONLINE_CFG_KEY = 'rance_online_cfg_v1';
-  var onlineCfg = null;
-
   function apStatus(msg) {
     var s = document.getElementById('ap-status');
     if (s) s.textContent = msg;
   }
-
   function loadOnlineCfg() {
     try { onlineCfg = JSON.parse(localStorage.getItem(ONLINE_CFG_KEY) || 'null'); } catch (e) { onlineCfg = null; }
   }
@@ -3232,9 +3211,25 @@ img { max-width: 100%; height: auto; }
     try { localStorage.setItem(ONLINE_CFG_KEY, JSON.stringify(onlineCfg)); } catch (e) {}
   }
 
-  function wireAutoPub() {
+  function initOnline() {
     var block = document.getElementById('admin-autopub');
-    if (!block) return;
+    if (!block) {
+      /* créer le bloc s'il n'existe pas */
+      block = el('div', 'admin-autopub');
+      block.id = 'admin-autopub';
+      block.innerHTML =
+        '<h4>☁️ Publication automatique en ligne</h4>' +
+        '<p class="admin-online-desc">Envoyez vos photos directement en ligne depuis ce panneau : le site les affiche automatiquement, sur n\'importe quel hébergeur. Aucun FTP ni fichier à déposer. Il faut une clé API gratuite ImgBB (2 minutes, voir le guide).</p>' +
+        '<div class="art-form-row"><input type="text" id="ap-key" placeholder="Clé API ImgBB (gratuite sur imgbb.com)" autocomplete="off"></div>' +
+        '<div class="admin-online-actions">' +
+          '<button type="button" class="admin-btn" id="ap-create">🔑 Enregistrer ma clé</button>' +
+          '<button type="button" class="admin-btn" id="ap-publish">📤 Publier mes photos</button>' +
+          '<button type="button" class="admin-btn dark" id="ap-download">💾 Télécharger le site configuré (1 fois)</button>' +
+        '</div>' +
+        '<div class="admin-gh-status" id="ap-status"></div>';
+      var sections = document.getElementById('admin-sections');
+      sections.parentNode.insertBefore(block, sections);
+    }
     block.style.display = 'block';
     if (block.dataset.wired) return;
     block.dataset.wired = '1';
@@ -3244,6 +3239,8 @@ img { max-width: 100%; height: auto; }
     if (keyInput && onlineCfg && onlineCfg.imgbbKey) keyInput.value = onlineCfg.imgbbKey;
     if (onlineCfg && onlineCfg.imgbbKey) {
       apStatus('✅ Clé enregistrée. Ajoutez des photos puis cliquez sur « Publier mes photos ».');
+    } else {
+      apStatus('ℹ️ Collez votre clé API ImgBB puis cliquez sur « Enregistrer ma clé ».');
     }
 
     document.getElementById('ap-create').addEventListener('click', createOnlineSpace);
@@ -3251,15 +3248,13 @@ img { max-width: 100%; height: auto; }
     document.getElementById('ap-download').addEventListener('click', downloadConfiguredSite);
   }
 
-  /* ---- 1. Enregistrer la clé ImgBB ---- */
   function createOnlineSpace() {
     var key = document.getElementById('ap-key').value.trim();
     if (!key) { apStatus('⚠️ Collez votre clé API ImgBB (gratuite sur imgbb.com, onglet API).'); return; }
-    /* Vérifier la clé avec un test d\'upload minimal */
     apStatus('🔑 Vérification de la clé…');
     var fd = new FormData();
     fd.append('key', key);
-    fd.append('image', 'R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'); /* pixel GIF 1x1 */
+    fd.append('image', 'R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7');
     fetch('https://api.imgbb.com/1/upload', { method: 'POST', body: fd })
       .then(function (r) { return r.json(); })
       .then(function (j) {
@@ -3277,10 +3272,9 @@ img { max-width: 100%; height: auto; }
       });
   }
 
-  /* ---- 2. Publier les photos sur ImgBB ---- */
   function publishPhotosOnline() {
     if (!onlineCfg || !onlineCfg.imgbbKey) {
-      apStatus('⚠️ Enregistrez d\'abord votre clé ImgBB (bouton « 🔑 Créer mon espace »).');
+      apStatus('⚠️ Enregistrez d\'abord votre clé ImgBB (bouton « Enregistrer ma clé »).');
       return;
     }
     if (!newPhotos.length) {
@@ -3293,11 +3287,7 @@ img { max-width: 100%; height: auto; }
     var done = 0, ok = 0;
 
     toPublish.forEach(function (p) {
-      var parts = p.src.split(',');
-      var bin = atob(parts[1]);
-      var arr = new Uint8Array(bin.length);
-      for (var i = 0; i < bin.length; i++) arr[i] = bin.charCodeAt(i);
-      var blob = new Blob([arr], { type: 'image/jpeg' });
+      var blob = dataUriToBlob(p.src);
       var fd = new FormData();
       fd.append('image', blob, 'photo.jpg');
       fd.append('key', onlineCfg.imgbbKey);
@@ -3307,13 +3297,16 @@ img { max-width: 100%; height: auto; }
           done++;
           if (j && j.data && j.data.url) {
             ok++;
-            /* remplacer la vignette locale par l'URL ImgBB */
             p.src = j.data.url;
-            document.querySelectorAll('.prestation-section')[p.section].querySelectorAll('a[data-added="' + p.id + '"]').forEach(function (a) {
-              a.href = j.data.url;
-              var im = a.querySelector('img');
-              if (im) im.src = j.data.url;
-            });
+            /* mise à jour galerie + vignette */
+            var section = document.querySelectorAll('.prestation-section')[p.section];
+            if (section) {
+              section.querySelectorAll('a[data-added="' + p.id + '"]').forEach(function (a) {
+                a.href = j.data.url;
+                var im = a.querySelector('img');
+                if (im) im.src = j.data.url;
+              });
+            }
             var th = document.querySelector('.admin-section[data-section="' + p.section + '"] .thumb.new[data-id="' + p.id + '"]');
             if (th) {
               var tim = th.querySelector('img');
@@ -3321,9 +3314,8 @@ img { max-width: 100%; height: auto; }
               var badge = th.querySelector('.thumb-new-badge');
               if (badge) badge.textContent = 'EN LIGNE ✓';
             }
-            /* déplacer vers onlinePhotos */
             newPhotos = newPhotos.filter(function (x) { return x.id !== p.id; });
-            onlinePhotos.push({ id: p.id, section: p.section, url: j.data.url, path: '' });
+            onlinePhotos.push({ id: p.id, section: p.section, url: j.data.url });
             saveStorage();
             updateCount();
           } else {
@@ -3331,7 +3323,7 @@ img { max-width: 100%; height: auto; }
           }
           if (done === toPublish.length) {
             if (ok > 0) {
-              apStatus('✅ ' + ok + ' photo(s) publiée(s) ! Le site les affiche dès que vous téléversez le site configuré (une seule fois) — ou dans le panneau ci-dessous.');
+              apStatus('✅ ' + ok + ' photo(s) publiée(s) ! Téléchargez le « site configuré » une fois, puis remplacez-le sur l\'hébergeur : les photos seront en ligne.');
               toast('📤 Photos publiées !');
             } else {
               apStatus('❌ Aucune photo envoyée. Vérifiez votre clé ImgBB.');
@@ -3348,7 +3340,6 @@ img { max-width: 100%; height: auto; }
     });
   }
 
-  /* ---- 3. Télécharger le site avec la config (1 seule fois) ---- */
   function downloadConfiguredSite() {
     if (!onlineCfg || !onlineCfg.imgbbKey) {
       apStatus('⚠️ Enregistrez d\'abord votre clé ImgBB.');
@@ -3363,14 +3354,13 @@ img { max-width: 100%; height: auto; }
     apStatus('💾 Site configuré téléchargé ! Remplacez-le sur votre hébergeur UNE seule fois.');
   }
 
-  /* ---------- Déclencheur discret (en bas de la page Actualités) ---------- */
+  /* ---------- Déclencheur discret ---------- */
   function openAdmin() {
     buildPanel();
     document.getElementById('admin-overlay').classList.add('open');
     var pass = document.getElementById('admin-pass');
     if (pass) setTimeout(function () { pass.focus(); }, 100);
   }
-
   function initTrigger() {
     var trigger = document.getElementById('admin-trigger');
     if (!trigger) return;
@@ -3383,8 +3373,6 @@ img { max-width: 100%; height: auto; }
       }
     });
   }
-
-  /* ---------- Raccourci clavier : Ctrl+Maj+A ouvre l'admin de partout ---------- */
   function initShortcut() {
     document.addEventListener('keydown', function (e) {
       if (e.ctrlKey && e.shiftKey && (e.key === 'A' || e.key === 'a')) {
@@ -3400,7 +3388,6 @@ img { max-width: 100%; height: auto; }
     initShortcut();
     buildPanel();
     loadStorage();
-    /* auto-ouverture si l'URL contient #admin */
     if (location.hash === '#admin') {
       setTimeout(openAdmin, 300);
     }

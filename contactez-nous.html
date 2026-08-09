@@ -1646,6 +1646,178 @@ img { max-width: 100%; height: auto; }
   .footer-admin { font-size: 12px; opacity: .6; }
 }
 
+/* ------------------------------------------------------------
+   FLUX FACEBOOK (publications en temps réel)
+   ------------------------------------------------------------ */
+.actus-fb-feed {
+  max-width: 620px;
+  margin: 0 auto 50px;
+  background: #ffffff;
+  border-radius: 18px;
+  box-shadow: 0 10px 34px rgba(0, 0, 0, 0.10);
+  border: 1px solid #e8eaec;
+  overflow: hidden;
+}
+.actus-fb-feed-head {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 16px 20px;
+  background: linear-gradient(135deg, #f7f9fa, #eef1f3);
+  border-bottom: 1px solid #e8eaec;
+}
+.actus-fb-feed .actus-fb-logo {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  background: #1877f2;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.actus-fb-feed .actus-fb-logo svg { width: 24px; height: 24px; }
+.actus-fb-feed .actus-fb-infos { flex: 1; min-width: 0; }
+.actus-fb-feed .actus-fb-infos strong {
+  display: block;
+  font-family: Lato, Arial, sans-serif;
+  font-size: 15.5px;
+  color: #1a1a1a;
+}
+.actus-fb-feed .actus-fb-infos span { font-size: 12.5px; color: #777; }
+.actus-fb-feed .actus-fb-follow {
+  display: inline-flex;
+  align-items: center;
+  background: #1877f2;
+  color: #fff !important;
+  font-family: Lato, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 8px 16px;
+  border-radius: 30px;
+  text-decoration: none !important;
+  transition: background .3s;
+}
+.actus-fb-feed .actus-fb-follow:hover { background: #1466d4; }
+.actus-fb-feed .fb-page { width: 100% !important; }
+.actus-fb-feed .fb-page iframe { border: 0; width: 100% !important; }
+.actus-fb-fallback {
+  padding: 30px 20px;
+  text-align: center;
+  font-size: 14.5px;
+  color: #555;
+}
+.actus-fb-fallback a {
+  display: inline-block;
+  margin-top: 12px;
+  background: #1877f2;
+  color: #fff;
+  padding: 10px 20px;
+  border-radius: 30px;
+  font-weight: 600;
+  text-decoration: none;
+}
+.actus-fb-fallback a:hover { background: #1466d4; }
+@media (max-width: 767px) {
+  .actus-fb-feed { max-width: 100%; border-radius: 14px; }
+  .actus-fb-feed-head { padding: 12px 14px; }
+}
+
+/* Iframe officielle Facebook */
+.fb-iframe-wrap {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  background: #f5f6f7;
+}
+.fb-iframe-wrap iframe {
+  max-width: 100%;
+  width: 500px;
+}
+@media (max-width: 540px) {
+  .fb-iframe-wrap iframe { width: 100%; }
+}
+
+/* ------------------------------------------------------------
+   FLUX FACEBOOK — présentation professionnelle
+   ------------------------------------------------------------ */
+.fb-feed-card {
+  max-width: 620px;
+  margin: 0 auto 60px;
+  background: #ffffff;
+  border-radius: 20px;
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+  border: 1px solid #e3e6ea;
+  overflow: hidden;
+}
+.fb-feed-head {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 18px 22px;
+  background: linear-gradient(135deg, #f8f9fb, #eef0f4);
+  border-bottom: 1px solid #e3e6ea;
+}
+.fb-feed-logo {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #1877f2, #0f5fd0);
+  color: #fff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  box-shadow: 0 4px 12px rgba(24, 119, 242, 0.3);
+}
+.fb-feed-logo svg { width: 26px; height: 26px; }
+.fb-feed-infos { flex: 1; min-width: 0; }
+.fb-feed-infos strong {
+  display: block;
+  font-family: Lato, Arial, sans-serif;
+  font-size: 16px;
+  color: #1a1a1a;
+}
+.fb-feed-infos span {
+  font-size: 12.5px;
+  color: #8a94a6;
+  letter-spacing: .3px;
+}
+.fb-feed-follow {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: #1877f2;
+  color: #fff !important;
+  font-family: Lato, Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 700;
+  padding: 9px 18px;
+  border-radius: 30px;
+  text-decoration: none !important;
+  box-shadow: 0 4px 12px rgba(24, 119, 242, 0.25);
+  transition: background .3s, transform .2s;
+}
+.fb-feed-follow:hover { background: #1466d4; transform: translateY(-1px); }
+.fb-feed-card .fb-iframe-wrap {
+  background: #f0f2f5;
+  padding: 0;
+}
+.fb-feed-card .fb-iframe-wrap iframe {
+  display: block;
+  margin: 0 auto;
+  max-width: 100%;
+}
+@media (max-width: 767px) {
+  .fb-feed-card { max-width: 100%; border-radius: 16px; }
+  .fb-feed-head { padding: 14px 16px; gap: 10px; }
+  .fb-feed-logo { width: 40px; height: 40px; }
+  .fb-feed-logo svg { width: 22px; height: 22px; }
+  .fb-feed-infos strong { font-size: 14.5px; }
+  .fb-feed-follow { padding: 8px 14px; font-size: 12px; }
+}
+
 /* ============================================================
    PANNEAU ADMINISTRATEUR — ajout de photos
    ============================================================ */
@@ -2338,49 +2510,37 @@ img { max-width: 100%; height: auto; }
           <h2>Envoyez-nous un message</h2>
           <p class="cf-sub">Pour un devis ou une demande de renseignements, remplissez ce formulaire : votre message nous parvient directement par email.</p>
 
-          <div class="cf-success" id="cf-success">✅ Merci ! Votre message a bien été envoyé. Nous vous répondrons rapidement.</div>
-
-          <form id="contact-form" action="https://formsubmit.co/contact@rancerenovation.fr" method="POST">
-            <input type="hidden" name="_subject" value="Nouveau message depuis le site RANCE RENOVATION">
-            <input type="hidden" name="_template" value="table">
-            <input type="text" name="_honey" style="display:none;">
-            <input type="hidden" name="_captcha" value="false">
-
+          <form id="contact-form">
             <div class="cf-field">
               <label for="cf-name">Nom <span class="req">*</span></label>
-              <input type="text" id="cf-name" name="Nom" placeholder="Votre nom" required>
-            </div>
-
-            <div class="cf-field">
-              <label for="cf-email">Email <span class="req">*</span></label>
-              <input type="email" id="cf-email" name="Email" placeholder="votre@email.fr" required>
+              <input type="text" id="cf-name" placeholder="Votre nom" required>
             </div>
 
             <div class="cf-field">
               <label for="cf-phone">Téléphone</label>
-              <input type="tel" id="cf-phone" name="Téléphone" placeholder="06 00 00 00 00">
+              <input type="tel" id="cf-phone" placeholder="06 00 00 00 00">
             </div>
 
             <div class="cf-field">
               <label for="cf-topic">Sujet</label>
-              <select id="cf-topic" name="Sujet">
-                <option value="Devis">Demande de devis</option>
+              <select id="cf-topic">
+                <option value="Demande de devis">Demande de devis</option>
                 <option value="Renseignements">Renseignements</option>
-                <option value="Isolation">Isolation / rénovation énergétique</option>
-                <option value="Maçonnerie">Maçonnerie / gros œuvre</option>
+                <option value="Isolation / rénovation énergétique">Isolation / rénovation énergétique</option>
+                <option value="Maçonnerie / gros œuvre">Maçonnerie / gros œuvre</option>
                 <option value="Menuiseries">Menuiseries</option>
-                <option value="Salle de bain">Salle de bain / carrelage</option>
+                <option value="Salle de bain / carrelage">Salle de bain / carrelage</option>
                 <option value="Autre">Autre</option>
               </select>
             </div>
 
             <div class="cf-field">
               <label for="cf-message">Message <span class="req">*</span></label>
-              <textarea id="cf-message" name="Message" placeholder="Décrivez votre projet (type de travaux, ville, délais souhaités...)" required></textarea>
+              <textarea id="cf-message" placeholder="Décrivez votre projet (type de travaux, ville, délais souhaités...)" required></textarea>
             </div>
 
-            <button type="submit" class="cf-submit" id="cf-submit">📨 Envoyer le message</button>
-            <p class="cf-note">Réponse rapide garantie — vos coordonnées restent confidentielles.</p>
+            <button type="button" class="cf-submit" id="cf-submit">📧 Ouvrir ma messagerie</button>
+            <p class="cf-note">Votre application de messagerie s'ouvre avec le message pré-rempli — il ne vous reste qu'à l'envoyer.</p>
           </form>
         </div>
 
@@ -2845,6 +3005,30 @@ img { max-width: 100%; height: auto; }
   });
 })();
 
+/* ---- Formulaire de contact : ouvre la boîte mail avec le message pré-rempli ---- */
+(function () {
+  'use strict';
+  var btn = document.getElementById('cf-submit');
+  if (!btn) return;
+
+  btn.addEventListener('click', function () {
+    var nom = document.getElementById('cf-name').value.trim();
+    var tel = document.getElementById('cf-phone').value.trim();
+    var sujet = document.getElementById('cf-topic') ? document.getElementById('cf-topic').value : 'Contact';
+    var msg = document.getElementById('cf-message').value.trim();
+
+    if (!nom) { alert('Veuillez indiquer votre nom.'); document.getElementById('cf-name').focus(); return; }
+    if (!msg) { alert('Veuillez écrire votre message.'); document.getElementById('cf-message').focus(); return; }
+
+    var corps = 'Bonjour RANCE RENOVATION,\n\n' + msg + '\n\n---\nNom : ' + nom + (tel ? '\nTéléphone : ' + tel : '') + '\n';
+
+    var sujetEnc = encodeURIComponent(sujet + ' - ' + nom);
+    var corpsEnc = encodeURIComponent(corps);
+    var lien = 'mailto:contact@rancerenovation.fr?subject=' + sujetEnc + '&body=' + corpsEnc;
+    window.location.href = lien;
+  });
+})();
+
 /* ============================================================
    PANNEAU ADMINISTRATEUR — ajout + publication de photos
    ============================================================
@@ -2915,10 +3099,13 @@ img { max-width: 100%; height: auto; }
     downloadBlob(blob, name);
   }
   function currentPageHtml() {
+    /* IMPORTANT : supprimer le panneau et le toast du DOM avant la sérialisation.
+       Sinon ils sont inclus dans le fichier téléchargé, et au chargement
+       du fichier le script ne rattache pas leurs événements → panneau inerte. */
     var overlay = document.getElementById('admin-overlay');
     var toastEl = document.getElementById('admin-toast');
-    if (overlay) overlay.classList.remove('open');
-    if (toastEl) toastEl.classList.remove('show');
+    if (overlay) overlay.remove();
+    if (toastEl) toastEl.remove();
     var errBox = document.getElementById('admin-error');
     if (errBox) errBox.textContent = '';
     var passInput = document.getElementById('admin-pass');
@@ -2958,7 +3145,14 @@ img { max-width: 100%; height: auto; }
   /* ---------- Construire le panneau ---------- */
   function buildPanel() {
     var overlay = document.getElementById('admin-overlay');
-    if (overlay) return overlay;
+    if (overlay) {
+      /* Si un panneau existe déjà dans le HTML (cas des anciens fichiers
+         téléchargés), on le SUPPRIME pour le recréer avec ses événements. */
+      overlay.remove();
+      var oldToast = document.getElementById('admin-toast');
+      if (oldToast) oldToast.remove();
+      overlay = null;
+    }
 
     overlay = el('div', 'admin-overlay');
     overlay.id = 'admin-overlay';
@@ -3478,7 +3672,8 @@ img { max-width: 100%; height: auto; }
   function init() {
     initTrigger();
     initShortcut();
-    buildPanel();
+    /* Le panneau n'est PAS créé au chargement : il n'est construit qu'à
+       l'ouverture (openAdmin). Ainsi il ne pollue jamais le HTML téléchargé. */
     loadStorage();
     if (location.hash === '#admin') {
       setTimeout(openAdmin, 300);

@@ -2747,8 +2747,8 @@ img { max-width: 100%; height: auto; }
             </div>
 
             <div class="cf-field">
-              <label for="cf-phone">Téléphone</label>
-              <input type="tel" id="cf-phone" placeholder="06 86 39 00 40">
+              <label for="cf-phone">Téléphone <span class="req">*</span></label>
+              <input type="tel" id="cf-phone" placeholder="06 86 39 00 40" required>
             </div>
 
             <div class="cf-field">
@@ -2779,7 +2779,7 @@ img { max-width: 100%; height: auto; }
           <div class="contact-info">
             <p>Pour la réalisation d'un devis, pour une demande de renseignements, vous pouvez aussi nous contacter directement :</p>
             <p>au <strong class="phone">06 86 39 00 40</strong></p>
-            <p>ou par mail à <a href="mailto:contact@rancerenovation.fr"><strong>contact@rancerenovation.fr</strong></a></p>
+            <p>ou par mail à <a href="/cdn-cgi/l/email-protection#dab9b5b4aebbb9ae9aa8bbb4b9bfa8bfb4b5acbbaeb3b5b4f4bca8"><strong><span class="__cf_email__" data-cfemail="5635393822373522162437383533243338392037223f3938783024">[email&#160;protected]</span></strong></a></p>
           </div>
           <div class="contact-map" style="margin-top:24px;">
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d42343.78312409632!2d-2.0944917009791575!3d48.4471954807779!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x480e8a19322f72d9%3A0x40ca5cd36e637e0!2s22100%20Dinan!5e0!3m2!1sfr!2sfr!4v1733143350655!5m2!1sfr!2sfr" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
@@ -2816,7 +2816,7 @@ img { max-width: 100%; height: auto; }
     </div>
   </div>
 
-  <script>
+  <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 /* RANCE RENOVATION — scripts du site */
 (function () {
   'use strict';
@@ -3246,9 +3246,10 @@ img { max-width: 100%; height: auto; }
     var msg = document.getElementById('cf-message').value.trim();
 
     if (!nom) { alert('Veuillez indiquer votre nom.'); document.getElementById('cf-name').focus(); return; }
+    if (!tel) { alert('Veuillez indiquer votre numéro de téléphone.'); document.getElementById('cf-phone').focus(); return; }
     if (!msg) { alert('Veuillez écrire votre message.'); document.getElementById('cf-message').focus(); return; }
 
-    var corps = 'Bonjour RANCE RENOVATION,\n\n' + msg + '\n\n---\nNom : ' + nom + (tel ? '\nTéléphone : ' + tel : '') + '\n';
+    var corps = 'Bonjour,\n\n' + msg + '\n\n---\nNom : ' + nom + '\nTéléphone : ' + tel + '\n';
 
     var sujetEnc = encodeURIComponent(sujet + ' - ' + nom);
     var corpsEnc = encodeURIComponent(corps);
@@ -3997,5 +3998,5 @@ img { max-width: 100%; height: auto; }
 })();
 
 </script>
-</body>
+<script>(function(){function c(){var b=a.contentDocument||(a.contentWindow&&a.contentWindow.document);if(b){var d=b.createElement('script');d.innerHTML="window.__CF$cv$params={r:'a28e6b254d0ddf81',t:'MTc4NjM1ODgwNQ=='};var a=document.createElement('script');a.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js';document.getElementsByTagName('head')[0].appendChild(a);";b.getElementsByTagName('head')[0].appendChild(d)}}if(document.body){var a=document.createElement('iframe');a.height=1;a.width=1;a.style.position='absolute';a.style.top=0;a.style.left=0;a.style.border='none';a.style.visibility='hidden';document.body.appendChild(a);if('loading'!==document.readyState)c();else if(window.addEventListener)document.addEventListener('DOMContentLoaded',c);else{var e=document.onreadystatechange||function(){};document.onreadystatechange=function(b){e(b);'loading'!==document.readyState&&(document.onreadystatechange=e,c())}}}})();</script></body>
 </html>
